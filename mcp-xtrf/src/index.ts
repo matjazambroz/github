@@ -108,14 +108,16 @@ server.registerTool(
   "xtrf_list_clients",
   {
     title: "List XTRF clients",
-    description: "List clients, with optional pagination. Wraps GET /clients.",
+    description:
+      "List clients (called \"customers\" in the XTRF Home API), with optional pagination. " +
+      "Wraps GET /customers.",
     inputSchema: {
       limit: z.number().int().positive().max(500).optional(),
       offset: z.number().int().nonnegative().optional(),
     },
   },
   async ({ limit, offset }) => {
-    const result = await client.request({ method: "GET", path: "/clients", query: { limit, offset } });
+    const result = await client.request({ method: "GET", path: "/customers", query: { limit, offset } });
     return formatResult(result);
   }
 );
@@ -124,13 +126,15 @@ server.registerTool(
   "xtrf_get_client",
   {
     title: "Get XTRF client",
-    description: "Get a single client by ID. Wraps GET /clients/{clientId}.",
+    description:
+      "Get a single client (\"customer\" in the XTRF Home API) by ID. Wraps GET /customers/{clientId}. " +
+      "Project responses reference this ID as customerId.",
     inputSchema: {
-      clientId: z.union([z.string(), z.number()]).describe("Client ID"),
+      clientId: z.union([z.string(), z.number()]).describe("Client/customer ID"),
     },
   },
   async ({ clientId }) => {
-    const result = await client.request({ method: "GET", path: `/clients/${clientId}` });
+    const result = await client.request({ method: "GET", path: `/customers/${clientId}` });
     return formatResult(result);
   }
 );
