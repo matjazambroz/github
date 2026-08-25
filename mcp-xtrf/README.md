@@ -42,7 +42,8 @@ Podprti so trije načini, nastavljivi z `XTRF_AUTH_MODE`:
 
 - `xtrf_request` — generičen klic na poljuben endpoint (`method`, `path`, `query`, `body`). Uporabi to, če specifično orodje ne obstaja ali če pot ne ustreza.
 - `xtrf_list_projects` — `GET /projects`
-- `xtrf_get_project` — `GET /projects/{projectId}`
+- `xtrf_list_project_ids` — `GET /projects/ids` (preverjeno; sprejme `updatedSince`, unix epoch ms)
+- `xtrf_get_project` — `GET /projects/{projectId}` (preverjeno)
 - `xtrf_list_jobs` — `GET /jobs` ali `GET /projects/{projectId}/jobs`
 - `xtrf_list_clients` — `GET /customers` (preverjeno)
 - `xtrf_get_client` — `GET /customers/{clientId}` (preverjeno)

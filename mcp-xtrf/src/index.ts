@@ -70,6 +70,31 @@ server.registerTool(
 );
 
 server.registerTool(
+  "xtrf_list_project_ids",
+  {
+    title: "List XTRF project IDs",
+    description:
+      "List project IDs, optionally only those modified since a given timestamp. " +
+      "Wraps GET /projects/ids (confirmed against the live instance).",
+    inputSchema: {
+      updatedSince: z
+        .number()
+        .int()
+        .optional()
+        .describe("Unix epoch milliseconds ($int64) - only return projects modified since this time"),
+    },
+  },
+  async ({ updatedSince }) => {
+    const result = await client.request({
+      method: "GET",
+      path: "/projects/ids",
+      query: { updatedSince },
+    });
+    return formatResult(result);
+  }
+);
+
+server.registerTool(
   "xtrf_get_project",
   {
     title: "Get XTRF project",
