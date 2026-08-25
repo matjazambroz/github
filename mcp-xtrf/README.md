@@ -4,11 +4,15 @@ MCP (Model Context Protocol) strežnik za dostop do XTRF API-ja (npr. `xtrf.amid
 
 ## Stanje
 
-Amidas uporablja **XTRF Home API**, dokumentiran na `https://xtrf.amidas.si/api-doc#/home-api/`. Avtentikacija je potrjena po Swagger dokumentaciji: header `X-AUTH-ACCESS-TOKEN` (apiKey), surov token brez predpone (npr. brez `Bearer `) — to je zdaj privzeta nastavitev (`XTRF_AUTH_MODE=apikey`, `XTRF_API_KEY_HEADER=X-AUTH-ACCESS-TOKEN`, `XTRF_API_KEY_PREFIX=` prazno).
+Amidas uporablja **XTRF Home API**, dokumentiran na `https://xtrf.amidas.si/api-doc#/home-api/`. Potrjeno po Swagger dokumentaciji in delujočem `curl` primeru:
 
-Ker iz tega razvojnega okolja ni bilo mogoče doseči `xtrf.amidas.si` (omrežje je blokiralo dostop), poti posameznih endpointov (`/projects`, `/clients`, `/jobs`, ...) in oblika njihovih odgovorov niso preverjene proti dejanski dokumentaciji na `/api-doc`. Pred prvo uporabo:
+- Bazna pot: `/home-api` (npr. `GET https://xtrf.amidas.si/home-api/projects/86652`) — brez `/v2` v poti.
+- Avtentikacija: header `X-AUTH-ACCESS-TOKEN` (apiKey), surov token brez predpone (npr. brez `Bearer `).
+- `Accept` header mora biti verzionirani vendor media type, ne navaden `application/json` — npr. `application/vnd.xtrf-v1+json;charset=UTF-8` (`XTRF_ACCEPT_HEADER`). Isti media type se uporabi tudi kot `Content-Type` pri POST/PUT/PATCH.
 
-1. V `/api-doc#/home-api/` preveri točne poti in parametre za operacije, ki jih potrebuješ.
+To je zdaj privzeta nastavitev (glej `.env.example`). Ker iz tega razvojnega okolja ni bilo mogoče doseči `xtrf.amidas.si` (omrežje je blokiralo dostop), poti posameznih endpointov (`/projects`, `/clients`, `/jobs`, ...) in oblika njihovih odgovorov onkraj potrjenega primera niso preverjene proti dejanski dokumentaciji na `/api-doc`. Pred prvo uporabo:
+
+1. V `/api-doc#/home-api/` preveri točne poti in parametre za operacije, ki jih potrebuješ, in ali je verzija medijskega tipa (`vnd.xtrf-v1+json` vs. `v2`, `v3`, ...) povsod enaka.
 2. Če se razlikujejo od privzetih v `xtrf_list_projects`/`xtrf_get_project`/`xtrf_list_jobs`/`xtrf_list_clients`/`xtrf_get_client`, uporabi generično orodje `xtrf_request`, ki sprejme poljubno pot/metodo — ni ti treba čakati, da popravim kodo.
 
 Načina `classic_login` (prijava z uporabniškim imenom/geslom) in `oauth2` sta v kodi ohranjena kot alternativi, če bi jih kdaj potreboval kak drug XTRF endpoint.
@@ -52,7 +56,7 @@ Dodaj v konfiguracijo MCP strežnikov (`claude mcp add` ali `.mcp.json`):
       "args": ["/pot/do/repozitorija/mcp-xtrf/dist/index.js"],
       "env": {
         "XTRF_BASE_URL": "https://xtrf.amidas.si",
-        "XTRF_API_BASE_PATH": "/home-api/v2",
+        "XTRF_API_BASE_PATH": "/home-api",
         "XTRF_AUTH_MODE": "apikey",
         "XTRF_API_KEY": "..."
       }

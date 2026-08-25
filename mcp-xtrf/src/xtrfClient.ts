@@ -4,6 +4,9 @@ interface XtrfConfig {
   baseUrl: string;
   basePath: string;
   authMode: XtrfAuthMode;
+  // XTRF Home API uses a versioned media type, e.g.
+  // "application/vnd.xtrf-v1+json;charset=UTF-8", instead of application/json.
+  acceptHeader: string;
   // apikey mode
   apiKey?: string;
   apiKeyHeader: string;
@@ -33,13 +36,14 @@ function loadConfig(): XtrfConfig {
     throw new Error(`Invalid XTRF_AUTH_MODE "${authMode}", expected one of: ${AUTH_MODES.join(", ")}`);
   }
 
-  const basePath = (process.env.XTRF_API_BASE_PATH ?? "/home-api/v2").replace(/\/+$/, "");
+  const basePath = (process.env.XTRF_API_BASE_PATH ?? "/home-api").replace(/\/+$/, "");
   const normalizedBaseUrl = baseUrl.replace(/\/+$/, "");
 
   return {
     baseUrl: normalizedBaseUrl,
     basePath,
     authMode,
+    acceptHeader: process.env.XTRF_ACCEPT_HEADER ?? "application/vnd.xtrf-v1+json;charset=UTF-8",
     apiKey: process.env.XTRF_API_KEY,
     apiKeyHeader: process.env.XTRF_API_KEY_HEADER ?? "X-AUTH-ACCESS-TOKEN",
     apiKeyPrefix: process.env.XTRF_API_KEY_PREFIX ?? "",
@@ -198,13 +202,13 @@ export class XtrfClient {
     const url = this.buildUrl(options.path, options.query);
 
     const headers: Record<string, string> = {
-      Accept: "application/json",
+      Accept: this.config.acceptHeader,
       ...authHeaders,
     };
 
     let body: string | undefined;
     if (options.body !== undefined) {
-      headers["Content-Type"] = "application/json";
+      headers["Content-Type"] = this.config.acceptHeader;
       body = JSON.stringify(options.body);
     }
 
@@ -217,7 +221,7 @@ export class XtrfClient {
 
     const contentType = response.headers.get("content-type") ?? "";
     let responseBody: unknown;
-    if (contentType.includes("application/json")) {
+    if (contentType.includes("json")) {
       responseBody = await response.json().catch(() => null);
     } else {
       responseBody = await response.text().catch(() => "");
