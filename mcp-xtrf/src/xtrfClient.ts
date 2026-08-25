@@ -1,13 +1,25 @@
+type XtrfAuthMode = "apikey" | "oauth2" | "classic_login";
+
 interface XtrfConfig {
   baseUrl: string;
   basePath: string;
-  authMode: "apikey" | "oauth2";
+  authMode: XtrfAuthMode;
+  // apikey mode
   apiKey?: string;
   apiKeyHeader: string;
+  // oauth2 mode
   clientId?: string;
   clientSecret?: string;
   tokenUrl?: string;
+  // classic_login mode (XTRF Classic REST API v2 session login)
+  loginUrl?: string;
+  username?: string;
+  password?: string;
+  sessionHeader: string;
+  sessionTokenField: string;
 }
+
+const AUTH_MODES: XtrfAuthMode[] = ["apikey", "oauth2", "classic_login"];
 
 function loadConfig(): XtrfConfig {
   const baseUrl = process.env.XTRF_BASE_URL;
@@ -15,20 +27,28 @@ function loadConfig(): XtrfConfig {
     throw new Error("XTRF_BASE_URL is not set");
   }
 
-  const authMode = (process.env.XTRF_AUTH_MODE ?? "apikey") as "apikey" | "oauth2";
-  if (authMode !== "apikey" && authMode !== "oauth2") {
-    throw new Error(`Invalid XTRF_AUTH_MODE "${authMode}", expected "apikey" or "oauth2"`);
+  const authMode = (process.env.XTRF_AUTH_MODE ?? "classic_login") as XtrfAuthMode;
+  if (!AUTH_MODES.includes(authMode)) {
+    throw new Error(`Invalid XTRF_AUTH_MODE "${authMode}", expected one of: ${AUTH_MODES.join(", ")}`);
   }
 
+  const basePath = (process.env.XTRF_API_BASE_PATH ?? "/rest/v2").replace(/\/+$/, "");
+  const normalizedBaseUrl = baseUrl.replace(/\/+$/, "");
+
   return {
-    baseUrl: baseUrl.replace(/\/+$/, ""),
-    basePath: (process.env.XTRF_API_BASE_PATH ?? "").replace(/\/+$/, ""),
+    baseUrl: normalizedBaseUrl,
+    basePath,
     authMode,
     apiKey: process.env.XTRF_API_KEY,
     apiKeyHeader: process.env.XTRF_API_KEY_HEADER ?? "X-API-KEY",
     clientId: process.env.XTRF_CLIENT_ID,
     clientSecret: process.env.XTRF_CLIENT_SECRET,
     tokenUrl: process.env.XTRF_TOKEN_URL,
+    loginUrl: process.env.XTRF_LOGIN_URL ?? `${normalizedBaseUrl}${basePath}/session`,
+    username: process.env.XTRF_USERNAME,
+    password: process.env.XTRF_PASSWORD,
+    sessionHeader: process.env.XTRF_SESSION_HEADER ?? "X-AUTH-ACCESS-TOKEN",
+    sessionTokenField: process.env.XTRF_SESSION_TOKEN_FIELD ?? "id",
   };
 }
 
@@ -64,8 +84,64 @@ export class XtrfClient {
       return { [this.config.apiKeyHeader]: this.config.apiKey };
     }
 
+    if (this.config.authMode === "classic_login") {
+      const token = await this.getClassicSessionToken();
+      return { [this.config.sessionHeader]: token };
+    }
+
     const token = await this.getOAuthToken();
     return { Authorization: `Bearer ${token}` };
+  }
+
+  private async getClassicSessionToken(): Promise<string> {
+    const now = Date.now();
+    if (this.cachedToken && this.cachedToken.expiresAt > now + 5000) {
+      return this.cachedToken.value;
+    }
+
+    const { loginUrl, username, password, sessionHeader, sessionTokenField } = this.config;
+    if (!loginUrl || !username || !password) {
+      throw new Error(
+        "XTRF_LOGIN_URL, XTRF_USERNAME and XTRF_PASSWORD must all be set (required for authMode=classic_login)"
+      );
+    }
+
+    const response = await fetch(loginUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+      const text = await response.text().catch(() => "");
+      throw new Error(`XTRF Classic session login failed: ${response.status} ${text}`);
+    }
+
+    // XTRF Classic returns the session token either as a response header
+    // (commonly the same header used on subsequent requests) or in the
+    // JSON body under sessionTokenField (default "id"). Try the header first.
+    const headerToken = response.headers.get(sessionHeader);
+    let token = headerToken ?? undefined;
+
+    if (!token) {
+      const json = (await response.json().catch(() => null)) as Record<string, unknown> | null;
+      const value = json?.[sessionTokenField];
+      if (typeof value === "string") {
+        token = value;
+      }
+    }
+
+    if (!token) {
+      throw new Error(
+        `Could not extract session token from XTRF Classic login response ` +
+          `(checked header "${sessionHeader}" and body field "${sessionTokenField}"). ` +
+          `Set XTRF_SESSION_HEADER / XTRF_SESSION_TOKEN_FIELD to match your instance's response shape.`
+      );
+    }
+
+    // XTRF Classic sessions commonly last around 30 minutes; refresh a bit early.
+    this.cachedToken = { value: token, expiresAt: now + 25 * 60 * 1000 };
+    return token;
   }
 
   private async getOAuthToken(): Promise<string> {
