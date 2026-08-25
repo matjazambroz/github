@@ -7,6 +7,7 @@ interface XtrfConfig {
   // apikey mode
   apiKey?: string;
   apiKeyHeader: string;
+  apiKeyPrefix: string;
   // oauth2 mode
   clientId?: string;
   clientSecret?: string;
@@ -27,12 +28,12 @@ function loadConfig(): XtrfConfig {
     throw new Error("XTRF_BASE_URL is not set");
   }
 
-  const authMode = (process.env.XTRF_AUTH_MODE ?? "classic_login") as XtrfAuthMode;
+  const authMode = (process.env.XTRF_AUTH_MODE ?? "apikey") as XtrfAuthMode;
   if (!AUTH_MODES.includes(authMode)) {
     throw new Error(`Invalid XTRF_AUTH_MODE "${authMode}", expected one of: ${AUTH_MODES.join(", ")}`);
   }
 
-  const basePath = (process.env.XTRF_API_BASE_PATH ?? "/rest/v2").replace(/\/+$/, "");
+  const basePath = (process.env.XTRF_API_BASE_PATH ?? "/home-api/v2").replace(/\/+$/, "");
   const normalizedBaseUrl = baseUrl.replace(/\/+$/, "");
 
   return {
@@ -40,7 +41,8 @@ function loadConfig(): XtrfConfig {
     basePath,
     authMode,
     apiKey: process.env.XTRF_API_KEY,
-    apiKeyHeader: process.env.XTRF_API_KEY_HEADER ?? "X-API-KEY",
+    apiKeyHeader: process.env.XTRF_API_KEY_HEADER ?? "Authorization",
+    apiKeyPrefix: process.env.XTRF_API_KEY_PREFIX ?? "Bearer ",
     clientId: process.env.XTRF_CLIENT_ID,
     clientSecret: process.env.XTRF_CLIENT_SECRET,
     tokenUrl: process.env.XTRF_TOKEN_URL,
@@ -81,7 +83,7 @@ export class XtrfClient {
       if (!this.config.apiKey) {
         throw new Error("XTRF_API_KEY is not set (required for authMode=apikey)");
       }
-      return { [this.config.apiKeyHeader]: this.config.apiKey };
+      return { [this.config.apiKeyHeader]: `${this.config.apiKeyPrefix}${this.config.apiKey}` };
     }
 
     if (this.config.authMode === "classic_login") {
