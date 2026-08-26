@@ -3,8 +3,10 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { XtrfClient, type XtrfMethod } from "./xtrfClient.js";
+import { dateOnlyToEpochMs } from "./dateUtils.js";
 
 const client = new XtrfClient();
+const instanceTimeZone = process.env.XTRF_TIMEZONE ?? "Europe/Ljubljana";
 
 const server = new McpServer({
   name: "mcp-xtrf",
@@ -74,21 +76,24 @@ server.registerTool(
   {
     title: "List XTRF project IDs",
     description:
-      "List project IDs, optionally only those modified since a given timestamp. " +
-      "Wraps GET /projects/ids (confirmed against the live instance).",
+      "List project IDs, optionally only those modified since (midnight of) a given date. " +
+      "Wraps GET /projects/ids (confirmed against the live instance). The date is converted " +
+      `to the epoch-ms timestamp the API expects, using the ${instanceTimeZone} time zone ` +
+      "(override with XTRF_TIMEZONE).",
     inputSchema: {
       updatedSince: z
-        .number()
-        .int()
+        .string()
+        .date()
         .optional()
-        .describe("Unix epoch milliseconds ($int64) - only return projects modified since this time"),
+        .describe('Only return projects modified since midnight of this date, e.g. "2026-08-24"'),
     },
   },
   async ({ updatedSince }) => {
+    const updatedSinceMs = updatedSince ? dateOnlyToEpochMs(updatedSince, instanceTimeZone) : undefined;
     const result = await client.request({
       method: "GET",
       path: "/projects/ids",
-      query: { updatedSince },
+      query: { updatedSince: updatedSinceMs },
     });
     return formatResult(result);
   }
