@@ -50,28 +50,6 @@ server.registerTool(
 );
 
 server.registerTool(
-  "xtrf_list_projects",
-  {
-    title: "List XTRF projects",
-    description: "List projects, with optional filtering/pagination. Wraps GET /projects.",
-    inputSchema: {
-      status: z.string().optional().describe("Filter by project status, if supported"),
-      client: z.string().optional().describe("Filter by client ID, if supported"),
-      limit: z.number().int().positive().max(500).optional(),
-      offset: z.number().int().nonnegative().optional(),
-    },
-  },
-  async ({ status, client: clientId, limit, offset }) => {
-    const result = await client.request({
-      method: "GET",
-      path: "/projects",
-      query: { status, client: clientId, limit, offset },
-    });
-    return formatResult(result);
-  }
-);
-
-server.registerTool(
   "xtrf_list_project_ids",
   {
     title: "List XTRF project IDs",
@@ -115,21 +93,127 @@ server.registerTool(
 );
 
 server.registerTool(
-  "xtrf_list_jobs",
+  "xtrf_search_projects",
   {
-    title: "List XTRF jobs",
+    title: "Search XTRF projects by client and/or status",
     description:
-      "List jobs, optionally scoped to a project. Wraps GET /jobs or GET /projects/{projectId}/jobs.",
+      "Finds Classic projects matching a client (customerId) and/or status (e.g. OPENED), " +
+      "for questions like 'which open projects do we have for client X' or 'how many projects " +
+      "were touched today'. The XTRF API has no direct search-by-client or search-by-status " +
+      "endpoint (only /browser, which needs a view pre-saved in the XTRF UI), so this fetches " +
+      "candidate project IDs via GET /projects/ids and then GET /projects/{id} for each one, " +
+      "filtering client-side. ALWAYS pass updatedSince when you can (e.g. today's date, or the " +
+      "start of the relevant period) to keep this fast and bound the candidate set - otherwise " +
+      "up to maxCandidates of the most recently created projects are checked and older matches " +
+      "may be missed. Note there is no explicit 'created date' field; updatedSince matches on " +
+      "last-modified time, which is a reasonable proxy for 'created today' on brand-new projects " +
+      "but will also catch projects merely edited today.",
     inputSchema: {
-      projectId: z.union([z.string(), z.number()]).optional(),
-      status: z.string().optional().describe("Filter by job status, if supported"),
-      limit: z.number().int().positive().max(500).optional(),
-      offset: z.number().int().nonnegative().optional(),
+      customerId: z
+        .union([z.string(), z.number()])
+        .optional()
+        .describe("Only match this client/customer ID (find it via xtrf_list_clients or xtrf_get_client)"),
+      status: z
+        .string()
+        .optional()
+        .describe('Only match this project status, e.g. "OPENED", "CLOSED", "CANCELLED"'),
+      updatedSince: z
+        .string()
+        .date()
+        .optional()
+        .describe('Only consider projects modified since midnight of this date, e.g. "2026-08-26"'),
+      maxCandidates: z
+        .number()
+        .int()
+        .positive()
+        .max(1000)
+        .optional()
+        .describe("Max number of project IDs to fetch and check, newest first (default 200)"),
     },
   },
-  async ({ projectId, status, limit, offset }) => {
-    const path = projectId ? `/projects/${projectId}/jobs` : "/jobs";
-    const result = await client.request({ method: "GET", path, query: { status, limit, offset } });
+  async ({ customerId, status, updatedSince, maxCandidates }) => {
+    const updatedSinceMs = updatedSince ? dateOnlyToEpochMs(updatedSince, instanceTimeZone) : undefined;
+    const idsResult = await client.request({
+      method: "GET",
+      path: "/projects/ids",
+      query: { updatedSince: updatedSinceMs },
+    });
+
+    if (!idsResult.ok) {
+      return formatResult(idsResult);
+    }
+
+    const allIds = Array.isArray(idsResult.body) ? (idsResult.body as number[]) : [];
+    const cap = maxCandidates ?? 200;
+    const candidateIds = [...allIds].sort((a, b) => b - a).slice(0, cap);
+
+    const matches: unknown[] = [];
+    for (const id of candidateIds) {
+      const projectResult = await client.request({ method: "GET", path: `/projects/${id}` });
+      if (!projectResult.ok) {
+        continue;
+      }
+      const project = projectResult.body as Record<string, unknown>;
+      if (customerId !== undefined && String(project.customerId) !== String(customerId)) {
+        continue;
+      }
+      if (status !== undefined && project.status !== status) {
+        continue;
+      }
+      matches.push(project);
+    }
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify(
+            {
+              totalCandidateIds: allIds.length,
+              checkedCandidates: candidateIds.length,
+              truncated: allIds.length > candidateIds.length,
+              matchCount: matches.length,
+              matches,
+            },
+            null,
+            2
+          ),
+        },
+      ],
+      isError: false,
+    };
+  }
+);
+
+server.registerTool(
+  "xtrf_get_job",
+  {
+    title: "Get XTRF job",
+    description: "Get a single (Classic) job by ID. Wraps GET /jobs/{jobId}.",
+    inputSchema: {
+      jobId: z.string().describe("Job ID"),
+    },
+  },
+  async ({ jobId }) => {
+    const result = await client.request({ method: "GET", path: `/jobs/${jobId}` });
+    return formatResult(result);
+  }
+);
+
+server.registerTool(
+  "xtrf_list_project_jobs",
+  {
+    title: "List jobs in an XTRF project",
+    description:
+      "List all jobs belonging to a (Smart) project. Wraps GET /v2/projects/{projectId}/jobs " +
+      '(the OpenAPI spec has no generic "list all jobs" endpoint, only this per-project one and ' +
+      "GET /jobs/{jobId} for a single Classic job).",
+    inputSchema: {
+      projectId: z.union([z.string(), z.number()]).describe("Project ID"),
+    },
+  },
+  async ({ projectId }) => {
+    const result = await client.request({ method: "GET", path: `/v2/projects/${projectId}/jobs` });
     return formatResult(result);
   }
 );
@@ -139,15 +223,24 @@ server.registerTool(
   {
     title: "List XTRF clients",
     description:
-      "List clients (called \"customers\" in the XTRF Home API), with optional pagination. " +
-      "Wraps GET /customers.",
+      'List clients (called "customers" in the XTRF Home API). Wraps GET /customers ' +
+      '("Returns list of simple clients representations").',
     inputSchema: {
-      limit: z.number().int().positive().max(500).optional(),
-      offset: z.number().int().nonnegative().optional(),
+      updatedSince: z
+        .string()
+        .date()
+        .optional()
+        .describe('Only return clients modified since midnight of this date, e.g. "2026-08-24"'),
+      excludeErased: z.boolean().optional().describe("Filter out erased clients; default: false"),
     },
   },
-  async ({ limit, offset }) => {
-    const result = await client.request({ method: "GET", path: "/customers", query: { limit, offset } });
+  async ({ updatedSince, excludeErased }) => {
+    const updatedSinceMs = updatedSince ? dateOnlyToEpochMs(updatedSince, instanceTimeZone) : undefined;
+    const result = await client.request({
+      method: "GET",
+      path: "/customers",
+      query: { updatedSince: updatedSinceMs, excludeErased },
+    });
     return formatResult(result);
   }
 );

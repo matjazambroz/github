@@ -4,19 +4,23 @@ MCP (Model Context Protocol) strežnik za dostop do XTRF API-ja (npr. `xtrf.amid
 
 ## Stanje
 
-Amidas uporablja **XTRF Home API**, dokumentiran na `https://xtrf.amidas.si/api-doc#/home-api/`.
+Amidas uporablja **XTRF Home API**. Od uporabnika smo dobili polno OpenAPI (Swagger) specifikacijo instance (server URL `https://xtrf.amidas.si/home-api`, avtentikacija `X-AUTH-ACCESS-TOKEN`) — skrajšan povzetek je v [`docs/openapi.json`](docs/openapi.json) (`_endpoints_used_by_mcp_xtrf`), poln spec pa je vedno na voljo na `https://xtrf.amidas.si/home-api/openapi.json`.
 
 **Preverjeno proti pravi instanci** (dejansko poklicano, vrnilo pravi zapis):
 
 - `GET /home-api/projects/{id}`, npr. `GET https://xtrf.amidas.si/home-api/projects/86652`
 - `GET /home-api/customers/{id}`, npr. `GET https://xtrf.amidas.si/home-api/customers/7` — **pomembno:** "stranka"/"client" je v XTRF Home API imenovan **`customer`**, ne `client` (`/clients/{id}` vrne 404). `xtrf_get_client`/`xtrf_list_clients` zato interno kličeta `/customers`.
+- `GET /home-api/projects/ids?updatedSince=...`
 
-Skupne ugotovitve:
+Ugotovitve iz OpenAPI specifikacije:
 - Bazna pot: `/home-api` — brez `/v2` v poti.
 - Avtentikacija: header `X-AUTH-ACCESS-TOKEN` (apiKey), surov token brez predpone (npr. brez `Bearer `).
-- `Accept` header mora biti verzionirani vendor media type, ne navaden `application/json` — `application/vnd.xtrf-v1+json;charset=UTF-8` (`XTRF_ACCEPT_HEADER`). Isti media type se uporabi tudi kot `Content-Type` pri POST/PUT/PATCH.
+- `Accept` header za odgovore mora biti verzionirani vendor media type, ne navaden `application/json` — `application/vnd.xtrf-v1+json;charset=UTF-8` (`XTRF_ACCEPT_HEADER`).
+- `Content-Type` za telo pri POST/PUT/PATCH je navaden `application/json;charset=UTF-8` (`XTRF_CONTENT_TYPE_HEADER`) — **ni** enak `Accept` headerju.
+- **`GET /projects` (seznam vseh projektov) ne obstaja** — `/projects` podpira samo `POST` (ustvarjanje). Za seznam projektov uporabi `xtrf_list_project_ids` + `xtrf_get_project` za vsak ID, ali `/browser` endpoint (potrebuje shranjen `viewId` v XTRF-ju, ni implementirano kot posebno orodje).
+- **Splošen `GET /jobs` (seznam vseh jobov) prav tako ne obstaja.** Na voljo sta le `GET /jobs/{jobId}` (posamezen Classic job) in `GET /v2/projects/{projectId}/jobs` (vsi jobi znotraj enega Smart projekta).
 
-To je zdaj privzeta nastavitev (glej `.env.example`). Poti za `xtrf_list_projects` in `xtrf_list_jobs` (`/projects`, `/jobs`) so še vedno neverificirane predpostavke — preveri jih v `/api-doc#/home-api/`, preden jih zaupaš. Če se razlikujejo, uporabi generično orodje `xtrf_request`, ki sprejme poljubno pot/metodo — ni ti treba čakati, da popravim kodo.
+To je zdaj privzeta nastavitev (glej `.env.example`).
 
 Načina `classic_login` (prijava z uporabniškim imenom/geslom) in `oauth2` sta v kodi ohranjena kot alternativi, če bi jih kdaj potreboval kak drug XTRF endpoint.
 
@@ -41,11 +45,12 @@ Podprti so trije načini, nastavljivi z `XTRF_AUTH_MODE`:
 ## Orodja (MCP tools)
 
 - `xtrf_request` — generičen klic na poljuben endpoint (`method`, `path`, `query`, `body`). Uporabi to, če specifično orodje ne obstaja ali če pot ne ustreza.
-- `xtrf_list_projects` — `GET /projects`
 - `xtrf_list_project_ids` — `GET /projects/ids` (preverjeno; sprejme `updatedSince` kot datum `YYYY-MM-DD`, ki se pretvori v epoch ms za polnoč tega dne v časovnem pasu `XTRF_TIMEZONE`, privzeto `Europe/Ljubljana`)
 - `xtrf_get_project` — `GET /projects/{projectId}` (preverjeno)
-- `xtrf_list_jobs` — `GET /jobs` ali `GET /projects/{projectId}/jobs`
-- `xtrf_list_clients` — `GET /customers` (preverjeno)
+- `xtrf_search_projects` — poišče projekte po stranki (`customerId`) in/ali statusu (`status`), npr. "odprti projekti za stranko X". API nima neposrednega iskalnega endpointa, zato orodje najprej pridobi ID-je (`GET /projects/ids`, po možnosti omejeno z `updatedSince`) in nato vsakega posebej preveri (`GET /projects/{id}`), filtrirano na strani odjemalca. Za hitrost in popolnost rezultatov vedno navedi `updatedSince`, kadar je mogoče.
+- `xtrf_get_job` — `GET /jobs/{jobId}` (posamezen Classic job)
+- `xtrf_list_project_jobs` — `GET /v2/projects/{projectId}/jobs` (vsi jobi enega Smart projekta — edini "seznam jobov" endpoint, ki obstaja)
+- `xtrf_list_clients` — `GET /customers` (preverjeno; sprejme `updatedSince`, `excludeErased`)
 - `xtrf_get_client` — `GET /customers/{clientId}` (preverjeno)
 
 ## Povezava s Claude Code

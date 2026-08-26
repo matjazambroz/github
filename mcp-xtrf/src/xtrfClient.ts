@@ -4,9 +4,12 @@ interface XtrfConfig {
   baseUrl: string;
   basePath: string;
   authMode: XtrfAuthMode;
-  // XTRF Home API uses a versioned media type, e.g.
+  // XTRF Home API responses use a versioned media type, e.g.
   // "application/vnd.xtrf-v1+json;charset=UTF-8", instead of application/json.
   acceptHeader: string;
+  // Per the OpenAPI spec, request bodies (POST/PUT/PATCH) use plain JSON,
+  // not the versioned Accept media type.
+  contentTypeHeader: string;
   // apikey mode
   apiKey?: string;
   apiKeyHeader: string;
@@ -44,6 +47,7 @@ function loadConfig(): XtrfConfig {
     basePath,
     authMode,
     acceptHeader: process.env.XTRF_ACCEPT_HEADER ?? "application/vnd.xtrf-v1+json;charset=UTF-8",
+    contentTypeHeader: process.env.XTRF_CONTENT_TYPE_HEADER ?? "application/json;charset=UTF-8",
     apiKey: process.env.XTRF_API_KEY,
     apiKeyHeader: process.env.XTRF_API_KEY_HEADER ?? "X-AUTH-ACCESS-TOKEN",
     apiKeyPrefix: process.env.XTRF_API_KEY_PREFIX ?? "",
@@ -208,7 +212,7 @@ export class XtrfClient {
 
     let body: string | undefined;
     if (options.body !== undefined) {
-      headers["Content-Type"] = this.config.acceptHeader;
+      headers["Content-Type"] = this.config.contentTypeHeader;
       body = JSON.stringify(options.body);
     }
 
