@@ -54,6 +54,10 @@ Podprti so trije načini, nastavljivi z `XTRF_AUTH_MODE`:
 - `xtrf_get_client` — `GET /customers/{clientId}` (preverjeno)
 - `xtrf_list_currencies` — `GET /dictionaries/currency/active` ali `/all`. Namenskega `/currencies` endpointa ni, zato uporablja generični slovarski (`dictionaries`) endpoint iz OpenAPI speca.
 - `xtrf_get_currency` — `GET /dictionaries/currency/{id}`, za razrešitev polja `currencyId` (npr. na projektu/stranki) v ISO kodo/simbol.
+- `xtrf_list_invoice_ids` — `GET /accounting/customers/invoices/ids` (sprejme `updatedSince`)
+- `xtrf_get_invoice` — `GET /accounting/customers/invoices/{invoiceId}` (status, zneski, `currencyId`, datumi)
+- `xtrf_get_invoice_payments` — `GET /accounting/customers/invoices/{invoiceId}/payments` (znesek, `paymentDate`, `paymentMethodId` na plačilo)
+- `xtrf_search_paid_invoices` — poišče plačila računov na določen dan (npr. "kaj je bilo plačano danes"). API nima endpointa za "plačila po datumu", zato orodje najprej pridobi kandidate (`GET /accounting/customers/invoices/ids?updatedSince=<dan>`), nato za vsakega preveri `.../payments` in obdrži samo tiste s `paymentDate` na ta dan; za zadetke še pridobi `GET .../{invoiceId}` za `currencyId`.
 
 ## Povezava s Claude Code
 

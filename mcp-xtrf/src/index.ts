@@ -303,5 +303,164 @@ server.registerTool(
   }
 );
 
+server.registerTool(
+  "xtrf_list_invoice_ids",
+  {
+    title: "List XTRF client invoice IDs",
+    description:
+      "List client invoice IDs, optionally only those modified since (midnight of) a given date. " +
+      "Wraps GET /accounting/customers/invoices/ids. Note updatedSince matches on last-modified " +
+      "time (e.g. a new payment recorded against the invoice), not the invoice's original issue date.",
+    inputSchema: {
+      updatedSince: z
+        .string()
+        .date()
+        .optional()
+        .describe('Only return invoices modified since midnight of this date, e.g. "2026-08-24"'),
+    },
+  },
+  async ({ updatedSince }) => {
+    const updatedSinceMs = updatedSince ? dateOnlyToEpochMs(updatedSince, instanceTimeZone) : undefined;
+    const result = await client.request({
+      method: "GET",
+      path: "/accounting/customers/invoices/ids",
+      query: { updatedSince: updatedSinceMs },
+    });
+    return formatResult(result);
+  }
+);
+
+server.registerTool(
+  "xtrf_get_invoice",
+  {
+    title: "Get XTRF client invoice",
+    description:
+      "Get a single client invoice by ID, including status, totals, currencyId and dates. " +
+      "Wraps GET /accounting/customers/invoices/{invoiceId}.",
+    inputSchema: {
+      invoiceId: z.union([z.string(), z.number()]).describe("Invoice ID"),
+    },
+  },
+  async ({ invoiceId }) => {
+    const result = await client.request({ method: "GET", path: `/accounting/customers/invoices/${invoiceId}` });
+    return formatResult(result);
+  }
+);
+
+server.registerTool(
+  "xtrf_get_invoice_payments",
+  {
+    title: "List payments on an XTRF client invoice",
+    description:
+      "List all payments recorded against a client invoice (amount, paymentDate, paymentMethodId). " +
+      "Wraps GET /accounting/customers/invoices/{invoiceId}/payments.",
+    inputSchema: {
+      invoiceId: z.union([z.string(), z.number()]).describe("Invoice ID"),
+    },
+  },
+  async ({ invoiceId }) => {
+    const result = await client.request({
+      method: "GET",
+      path: `/accounting/customers/invoices/${invoiceId}/payments`,
+    });
+    return formatResult(result);
+  }
+);
+
+server.registerTool(
+  "xtrf_search_paid_invoices",
+  {
+    title: "Find invoice payments recorded on a given date",
+    description:
+      "Finds client-invoice payments whose paymentDate falls on a given day, for questions like " +
+      "'what got paid today'. The XTRF API has no direct 'payments by date' endpoint, so this " +
+      "fetches candidate invoice IDs modified since that day via GET /accounting/customers/invoices/ids " +
+      "(a new payment updates the invoice's modified date), then checks each candidate's " +
+      "GET .../payments, filtering client-side to payments actually dated that day, and fetches " +
+      "GET .../{invoiceId} (for currencyId and totals) only for candidates with a matching payment. " +
+      "ALWAYS pass date as the day you care about. Note an invoice can be modified for reasons " +
+      "other than a payment (status change, etc.), so candidates without a matching payment are " +
+      "silently skipped - this is expected, not an error.",
+    inputSchema: {
+      date: z.string().date().describe('The day to check, e.g. "2026-08-27"'),
+      maxCandidates: z
+        .number()
+        .int()
+        .positive()
+        .max(1000)
+        .optional()
+        .describe("Max number of invoice IDs to check, newest first (default 200)"),
+    },
+  },
+  async ({ date, maxCandidates }) => {
+    const dayStartMs = dateOnlyToEpochMs(date, instanceTimeZone);
+    const dayEndMs = dayStartMs + 24 * 60 * 60 * 1000;
+
+    const idsResult = await client.request({
+      method: "GET",
+      path: "/accounting/customers/invoices/ids",
+      query: { updatedSince: dayStartMs },
+    });
+
+    if (!idsResult.ok) {
+      return formatResult(idsResult);
+    }
+
+    const allIds = Array.isArray(idsResult.body) ? (idsResult.body as number[]) : [];
+    const cap = maxCandidates ?? 200;
+    const candidateIds = [...allIds].sort((a, b) => b - a).slice(0, cap);
+
+    const matches: unknown[] = [];
+    for (const id of candidateIds) {
+      const paymentsResult = await client.request({
+        method: "GET",
+        path: `/accounting/customers/invoices/${id}/payments`,
+      });
+      if (!paymentsResult.ok) {
+        continue;
+      }
+
+      const payments = Array.isArray(paymentsResult.body)
+        ? (paymentsResult.body as Array<Record<string, unknown>>)
+        : [];
+      const dayPayments = payments.filter((p) => {
+        const dateField = p.paymentDate as { time?: number } | undefined;
+        const t = dateField?.time;
+        return typeof t === "number" && t >= dayStartMs && t < dayEndMs;
+      });
+      if (dayPayments.length === 0) {
+        continue;
+      }
+
+      const invoiceResult = await client.request({
+        method: "GET",
+        path: `/accounting/customers/invoices/${id}`,
+      });
+      const invoice = invoiceResult.ok ? invoiceResult.body : { id };
+      matches.push({ invoice, payments: dayPayments });
+    }
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify(
+            {
+              totalCandidateIds: allIds.length,
+              checkedCandidates: candidateIds.length,
+              truncated: allIds.length > candidateIds.length,
+              matchCount: matches.length,
+              matches,
+            },
+            null,
+            2
+          ),
+        },
+      ],
+      isError: false,
+    };
+  }
+);
+
 const transport = new StdioServerTransport();
 await server.connect(transport);
