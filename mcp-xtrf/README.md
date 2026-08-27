@@ -2,6 +2,18 @@
 
 MCP (Model Context Protocol) strežnik za dostop do XTRF API-ja (npr. `xtrf.amidas.si`) iz Claude Code / Claude Desktop.
 
+## Kaj počne
+
+Strežnik se prijavi v XTRF Home API in Claude-u izpostavi njegove endpointe kot orodja (glej [Orodja](#orodja-mcp-tools)), tako da lahko Claude v pogovoru neposredno bere podatke iz XTRF-ja, namesto da bi uporabnik podatke ročno iskal po XTRF vmesniku. S tem je mogoče npr.:
+
+- pregledovati projekte (posamezne, po ID-ju, po stranki/statusu ali tiste, spremenjene od danega datuma) in njihove joborodje,
+- pregledovati stranke ("customers" v XTRF terminologiji),
+- razreševati `currencyId` v berljivo valuto (EUR, USD, ...),
+- pregledovati račune in plačila nanje — npr. "kateri računi so bili danes plačani" ali "kolikšen je dogovorjeni promet za danes",
+- ali klicati poljuben drug XTRF endpoint prek generičnega `xtrf_request` orodja, če za njega (še) ni namenskega orodja.
+
+Ni spletna aplikacija ali API strežnik za zunanje uporabnike — je lokalni proces (stdio), ki ga zažene Claude Code/Desktop in komunicira izključno z enim XTRF instance, konfiguriranim prek okoljskih spremenljivk.
+
 ## Stanje
 
 Amidas uporablja **XTRF Home API**. Od uporabnika smo dobili polno OpenAPI (Swagger) specifikacijo instance (server URL `https://xtrf.amidas.si/home-api`, avtentikacija `X-AUTH-ACCESS-TOKEN`) — skrajšan povzetek je v [`docs/openapi.json`](docs/openapi.json) (`_endpoints_used_by_mcp_xtrf`), poln spec pa je vedno na voljo na `https://xtrf.amidas.si/home-api/openapi.json`.
@@ -52,6 +64,12 @@ Podprti so trije načini, nastavljivi z `XTRF_AUTH_MODE`:
 - `xtrf_list_project_jobs` — `GET /v2/projects/{projectId}/jobs` (vsi jobi enega Smart projekta — edini "seznam jobov" endpoint, ki obstaja)
 - `xtrf_list_clients` — `GET /customers` (preverjeno; sprejme `updatedSince`, `excludeErased`)
 - `xtrf_get_client` — `GET /customers/{clientId}` (preverjeno)
+- `xtrf_list_currencies` — `GET /dictionaries/currency/active` ali `/all`. Namenskega `/currencies` endpointa ni, zato uporablja generični slovarski (`dictionaries`) endpoint iz OpenAPI speca.
+- `xtrf_get_currency` — `GET /dictionaries/currency/{id}`, za razrešitev polja `currencyId` (npr. na projektu/stranki) v ISO kodo/simbol.
+- `xtrf_list_invoice_ids` — `GET /accounting/customers/invoices/ids` (sprejme `updatedSince`)
+- `xtrf_get_invoice` — `GET /accounting/customers/invoices/{invoiceId}` (status, zneski, `currencyId`, datumi)
+- `xtrf_get_invoice_payments` — `GET /accounting/customers/invoices/{invoiceId}/payments` (znesek, `paymentDate`, `paymentMethodId` na plačilo)
+- `xtrf_search_paid_invoices` — poišče plačila računov na določen dan (npr. "kaj je bilo plačano danes"). API nima endpointa za "plačila po datumu", zato orodje najprej pridobi kandidate (`GET /accounting/customers/invoices/ids?updatedSince=<dan>`), nato za vsakega preveri `.../payments` in obdrži samo tiste s `paymentDate` na ta dan; za zadetke še pridobi `GET .../{invoiceId}` za `currencyId`.
 
 ## Povezava s Claude Code
 
