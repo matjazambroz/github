@@ -1,0 +1,38 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "XTRF Home Portal API",
+    "description" : "XTRF Home Portal API enables you to perform operations on Projects, Quotes, Customers, Vendors etc. as a XTRF Home Portal user. <br>The documentation is generated from OpenAPI specification 3.0 available <a href=\"/home-api/openapi.json\">here</a> <br>\n  The API client/consumer code may be easily generated in 60+ programming languages using an open source code generator available at the time of writing this documentation at <a href='https://editor.swagger.io/'>https://editor.swagger.io/</a> Thank you for using XTRF Application Programming interface (XTRF API). By using the API you agree to the terms below. If you disagree with any of these terms, XTRF does not grant you a license to use the XTRF API. XTRF reserves the right to update and change these terms from time to time without a prior notice of API users. You can always find the most recent version of these terms here: ",
+    "termsOfService" : "https://legal.xtrf.eu/2017/products/GeneralTermsAndConditions.pdf",
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "2.0"
+  },
+  "servers" : [ {
+    "url" : "https://xtrf.amidas.si/home-api"
+  } ],
+  "security" : [ {
+    "X-AUTH-ACCESS-TOKEN" : [ ]
+  } ],
+  "components" : {
+    "securitySchemes" : {
+      "X-AUTH-ACCESS-TOKEN" : {
+        "type" : "apiKey",
+        "name" : "X-AUTH-ACCESS-TOKEN",
+        "in" : "header"
+      }
+    }
+  },
+  "_note" : "Full spec (all paths + component schemas) pasted by the user in chat on 2026-08-26 was too large to store verbatim here without risking transcription errors. This trimmed copy keeps servers/security (both verified against the live instance) plus a hand-curated summary of the endpoints actually used by mcp-xtrf below. Re-fetch the full spec from https://xtrf.amidas.si/home-api/openapi.json if you need the complete schema.",
+  "_endpoints_used_by_mcp_xtrf" : {
+    "GET /projects/{projectId}" : "Classic project details. VERIFIED (project 86652).",
+    "GET /projects/ids" : "Project IDs, optional updatedSince (epoch ms). VERIFIED.",
+    "GET /customers" : "List of simple client representations. params: updatedSince, excludeErased. VERIFIED shape via GET /customers/{id}.",
+    "GET /customers/{customerId}" : "Client details. VERIFIED (customer 7).",
+    "GET /jobs/{jobId}" : "Classic job details by jobId (string).",
+    "GET /v2/projects/{projectId}/jobs" : "List of jobs in a Smart project - the only 'list jobs' endpoint that exists.",
+    "NOTE" : "There is NO 'GET /projects' (list all projects) endpoint - /projects only supports POST (create). There is NO generic 'GET /jobs' (list all jobs) endpoint either. Use /projects/ids + per-ID GET /projects/{id}, or the /browser search endpoint (requires a saved viewId), to enumerate projects."
+  }
+}
