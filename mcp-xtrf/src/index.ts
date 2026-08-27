@@ -262,5 +262,46 @@ server.registerTool(
   }
 );
 
+server.registerTool(
+  "xtrf_list_currencies",
+  {
+    title: "List XTRF currencies",
+    description:
+      'Look up currency codes/names by ID (e.g. to resolve a "currencyId" field seen on a ' +
+      "project's or client's finance data into a readable ISO code like \"EUR\"). There is no " +
+      'dedicated /currencies endpoint - this wraps the generic dictionary endpoint ' +
+      "GET /dictionaries/currency/active or GET /dictionaries/currency/all.",
+    inputSchema: {
+      activeOnly: z
+        .boolean()
+        .optional()
+        .describe("Only return active currencies (default true). Set false to include inactive ones."),
+      nameEquals: z.string().optional().describe("Filter to the exact localized name of one currency"),
+    },
+  },
+  async ({ activeOnly, nameEquals }) => {
+    const path = activeOnly === false ? "/dictionaries/currency/all" : "/dictionaries/currency/active";
+    const result = await client.request({ method: "GET", path, query: { nameEquals } });
+    return formatResult(result);
+  }
+);
+
+server.registerTool(
+  "xtrf_get_currency",
+  {
+    title: "Get XTRF currency by ID",
+    description:
+      'Resolve a single currency dictionary ID (as seen in a "currencyId" field) to its details ' +
+      "(name, ISO code, symbol). Wraps GET /dictionaries/currency/{id}.",
+    inputSchema: {
+      currencyId: z.union([z.string(), z.number()]).describe("Currency dictionary ID"),
+    },
+  },
+  async ({ currencyId }) => {
+    const result = await client.request({ method: "GET", path: `/dictionaries/currency/${currencyId}` });
+    return formatResult(result);
+  }
+);
+
 const transport = new StdioServerTransport();
 await server.connect(transport);

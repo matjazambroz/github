@@ -52,6 +52,8 @@ Podprti so trije načini, nastavljivi z `XTRF_AUTH_MODE`:
 - `xtrf_list_project_jobs` — `GET /v2/projects/{projectId}/jobs` (vsi jobi enega Smart projekta — edini "seznam jobov" endpoint, ki obstaja)
 - `xtrf_list_clients` — `GET /customers` (preverjeno; sprejme `updatedSince`, `excludeErased`)
 - `xtrf_get_client` — `GET /customers/{clientId}` (preverjeno)
+- `xtrf_list_currencies` — `GET /dictionaries/currency/active` ali `/all`. Namenskega `/currencies` endpointa ni, zato uporablja generični slovarski (`dictionaries`) endpoint iz OpenAPI speca.
+- `xtrf_get_currency` — `GET /dictionaries/currency/{id}`, za razrešitev polja `currencyId` (npr. na projektu/stranki) v ISO kodo/simbol.
 
 ## Povezava s Claude Code
 
