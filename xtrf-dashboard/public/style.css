@@ -1,0 +1,155 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #0b0d10;
+  color: #f2f2f0;
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2vh 4vw;
+}
+
+.clock {
+  position: absolute;
+  top: 2.5vh;
+  right: 5vw;
+  font-size: 2vw;
+  font-weight: 500;
+  color: #9a9da2;
+  font-variant-numeric: tabular-nums;
+}
+
+.logo {
+  width: 15vw;
+  max-width: 220px;
+  height: auto;
+  margin-bottom: 1vh;
+}
+
+.title {
+  font-size: 1.9vw;
+  font-weight: 500;
+  color: #9a9da2;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.8vh;
+  text-align: center;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3vw;
+  width: 100%;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2vh;
+}
+
+.section-label {
+  font-size: 1.4vw;
+  color: #6b6e73;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rates-note {
+  font-size: 1vw;
+  color: #565a60;
+  text-align: center;
+}
+
+.card-row {
+  display: flex;
+  gap: 2vw;
+}
+
+.card {
+  background: #16191d;
+  border: 1px solid #23262b;
+  border-radius: 20px;
+  padding: 2.2vh 3.5vw;
+  min-width: 18vw;
+  text-align: center;
+}
+
+.card .currency {
+  font-size: 1.3vw;
+  color: #7c8087;
+  margin-bottom: 0.8vh;
+  letter-spacing: 0.05em;
+}
+
+.card .value {
+  font-size: 4.6vw;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #f2f2f0;
+}
+
+.card .count {
+  font-size: 1.2vw;
+  color: #6b6e73;
+  margin-top: 0.9vh;
+}
+
+.card .compare {
+  font-size: 1.1vw;
+  color: #7c8087;
+  margin-top: 0.4vh;
+}
+
+.card .compare.delta-up {
+  color: #7bc47f;
+}
+
+.card .compare.delta-down {
+  color: #e0817e;
+}
+
+.footer {
+  position: absolute;
+  bottom: 1.5vh;
+  font-size: 1.1vw;
+  color: #565a60;
+  text-align: center;
+}
+
+.error-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #4a1313;
+  color: #f7c1c1;
+  text-align: center;
+  padding: 1.5vh;
+  font-size: 1.6vw;
+  display: none;
+}
+
+.error-banner.visible {
+  display: block;
+}
+
+.empty {
+  color: #565a60;
+  font-size: 1.6vw;
+}

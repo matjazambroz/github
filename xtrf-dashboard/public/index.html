@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8" />
+  <title>XTRF Dashboard</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="error-banner" id="error-banner"></div>
+  <div class="clock" id="clock"></div>
+  <img class="logo" src="/amidas-logo.svg" alt="Amidas" />
+  <div class="title" id="date"></div>
+
+  <div class="cards">
+    <div class="section">
+      <div class="section-label">Promet danes</div>
+      <div class="card-row" id="agreed-cards"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Promet ta teden</div>
+      <div class="card-row" id="agreed-week-cards"></div>
+      <div class="rates-note" id="week-rates-note"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Pla&#269;ani ra&#269;uni danes</div>
+      <div class="card-row" id="paid-cards"></div>
+      <div class="rates-note" id="rates-note"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">Pla&#269;ani ra&#269;uni ta teden</div>
+      <div class="card-row" id="paid-week-cards"></div>
+      <div class="rates-note" id="paid-week-rates-note"></div>
+    </div>
+    <div class="section">
+      <div class="section-label" id="ytd-label">YTD</div>
+      <div class="card-row" id="ytd-cards-1"></div>
+      <div class="card-row" id="ytd-cards-2"></div>
+    </div>
+  </div>
+
+  <div class="footer" id="footer"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

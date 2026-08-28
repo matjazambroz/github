@@ -1,0 +1,14 @@
+{
+  "name": "xtrf-dashboard",
+  "version": "0.1.0",
+  "description": "Standalone dashboard showing today's XTRF turnover (Total Agreed) and paid invoices, refreshed every 15 minutes. Calls the XTRF API directly, no MCP involved.",
+  "type": "module",
+  "private": true,
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node --env-file=.env src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
