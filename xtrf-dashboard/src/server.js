@@ -102,7 +102,12 @@ const server = http.createServer(async (req, res) => {
   try {
     const content = await fs.readFile(filePath);
     const ext = path.extname(filePath);
-    res.writeHead(200, { "Content-Type": MIME[ext] ?? "application/octet-stream" });
+    res.writeHead(200, {
+      "Content-Type": MIME[ext] ?? "application/octet-stream",
+      // This dashboard evolves and stays open in a browser for a long time
+      // (office TV) - never let stale HTML/JS/CSS get stuck in cache.
+      "Cache-Control": "no-store",
+    });
     res.end(content);
   } catch {
     res.writeHead(404);

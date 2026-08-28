@@ -14,44 +14,56 @@ html, body {
 
 body {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 2vh 4vw;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Fixed-size design surface (1600px wide reference layout) that gets
+   transform-scaled by app.js to fit whatever screen/window it's shown on,
+   so nothing is ever clipped regardless of resolution or aspect ratio. */
+.stage {
+  width: 1600px;
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
 .clock {
   position: absolute;
-  top: 2.5vh;
-  right: 5vw;
-  font-size: 2vw;
+  top: 24px;
+  right: 48px;
+  font-size: 26px;
   font-weight: 500;
   color: #9a9da2;
   font-variant-numeric: tabular-nums;
 }
 
 .logo {
-  width: 15vw;
-  max-width: 220px;
+  width: 200px;
   height: auto;
-  margin-bottom: 1vh;
+  margin-bottom: 12px;
 }
 
 .title {
-  font-size: 1.9vw;
+  font-size: 24px;
   font-weight: 500;
   color: #9a9da2;
   letter-spacing: 0.02em;
-  margin-bottom: 1.8vh;
+  margin-bottom: 20px;
   text-align: center;
 }
 
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 3vw;
+/* Strict 2-column grid - always exactly 2 sections/cards per row,
+   deterministic regardless of viewport (unlike flex-wrap, which can fit a
+   different number of items per row depending on available width). */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 40px;
   width: 100%;
 }
 
@@ -59,45 +71,54 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2vh;
+  justify-content: center;
+  gap: 14px;
 }
 
 .section-label {
-  font-size: 1.4vw;
+  font-size: 17px;
   color: #6b6e73;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
+.ytd-label {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 8px;
+}
+
 .rates-note {
-  font-size: 1vw;
+  font-size: 13px;
   color: #565a60;
   text-align: center;
 }
 
 .card-row {
   display: flex;
-  gap: 2vw;
+  gap: 24px;
+  width: 100%;
 }
 
 .card {
   background: #16191d;
   border: 1px solid #23262b;
   border-radius: 20px;
-  padding: 2.2vh 3.5vw;
-  min-width: 18vw;
+  padding: 26px 42px;
+  min-width: 220px;
+  flex: 1;
   text-align: center;
 }
 
 .card .currency {
-  font-size: 1.3vw;
+  font-size: 15px;
   color: #7c8087;
-  margin-bottom: 0.8vh;
+  margin-bottom: 8px;
   letter-spacing: 0.05em;
 }
 
 .card .value {
-  font-size: 4.6vw;
+  font-size: 56px;
   font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -105,15 +126,15 @@ body {
 }
 
 .card .count {
-  font-size: 1.2vw;
+  font-size: 14px;
   color: #6b6e73;
-  margin-top: 0.9vh;
+  margin-top: 10px;
 }
 
 .card .compare {
-  font-size: 1.1vw;
+  font-size: 13px;
   color: #7c8087;
-  margin-top: 0.4vh;
+  margin-top: 4px;
 }
 
 .card .compare.delta-up {
@@ -125,9 +146,8 @@ body {
 }
 
 .footer {
-  position: absolute;
-  bottom: 1.5vh;
-  font-size: 1.1vw;
+  margin-top: 24px;
+  font-size: 13px;
   color: #565a60;
   text-align: center;
 }
@@ -137,11 +157,12 @@ body {
   top: 0;
   left: 0;
   right: 0;
+  z-index: 10;
   background: #4a1313;
   color: #f7c1c1;
   text-align: center;
-  padding: 1.5vh;
-  font-size: 1.6vw;
+  padding: 14px;
+  font-size: 16px;
   display: none;
 }
 
@@ -151,5 +172,5 @@ body {
 
 .empty {
   color: #565a60;
-  font-size: 1.6vw;
+  font-size: 16px;
 }

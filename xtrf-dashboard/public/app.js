@@ -1,4 +1,11 @@
 const SYMBOLS = { EUR: "€", USD: "$", GBP: "£" };
+const STAGE_WIDTH = 1600;
+
+function fitStage() {
+  const stage = document.getElementById("stage");
+  const scale = Math.min(window.innerWidth / STAGE_WIDTH, window.innerHeight / stage.scrollHeight);
+  stage.style.transform = `scale(${scale})`;
+}
 
 function formatAmount(amount) {
   return new Intl.NumberFormat("sl-SI", {
@@ -53,17 +60,15 @@ function renderRatesNote(elementId, rates) {
 
 function renderYtd(ytd) {
   const label = document.getElementById("ytd-label");
-  const row1 = document.getElementById("ytd-cards-1");
-  const row2 = document.getElementById("ytd-cards-2");
-  row1.innerHTML = "";
-  row2.innerHTML = "";
+  const cells = [1, 2, 3, 4].map((n) => document.getElementById(`ytd-cell-${n}`));
+  cells.forEach((c) => (c.innerHTML = ""));
 
   if (!ytd || ytd.status === "loading") {
-    row1.innerHTML = '<div class="empty">Se nalaga...</div>';
+    cells[0].innerHTML = '<div class="empty">Se nalaga...</div>';
     return;
   }
   if (ytd.status === "error" || !ytd.data) {
-    row1.innerHTML = '<div class="empty">Ni na voljo</div>';
+    cells[0].innerHTML = '<div class="empty">Ni na voljo</div>';
     return;
   }
 
@@ -92,13 +97,13 @@ function renderYtd(ytd) {
     return card;
   };
 
-  row1.appendChild(makeCard("Promet", turnover, priorTurnover, "računov"));
-  row1.appendChild(makeCard("Stroški", costs, priorCosts, "računov"));
+  cells[0].appendChild(makeCard("Promet", turnover, priorTurnover, "računov"));
+  cells[1].appendChild(makeCard("Stroški", costs, priorCosts, "računov"));
   if (paidTurnover) {
-    row2.appendChild(makeCard("Plačani računi", paidTurnover, null, "računov"));
+    cells[2].appendChild(makeCard("Plačani računi", paidTurnover, null, "računov"));
   }
   if (paidCosts) {
-    row2.appendChild(makeCard("Plačani stroški", paidCosts, null, "računov"));
+    cells[3].appendChild(makeCard("Plačani stroški", paidCosts, null, "računov"));
   }
 }
 
@@ -157,7 +162,12 @@ async function refresh() {
   }
 }
 
+const stageResizeObserver = new ResizeObserver(fitStage);
+stageResizeObserver.observe(document.getElementById("stage"));
+window.addEventListener("resize", fitStage);
+
 updateClock();
 refresh();
+fitStage();
 setInterval(updateClock, 1000);
 setInterval(refresh, 1000 * 60);
