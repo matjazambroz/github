@@ -131,6 +131,26 @@ body {
   margin-top: 10px;
 }
 
+.card .margin {
+  font-size: 15px;
+  color: #9a9da2;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.card .margin-value {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.card .margin-value.margin-good {
+  color: #7bc47f;
+}
+
+.card .margin-value.margin-bad {
+  color: #e0817e;
+}
+
 .card .compare {
   font-size: 13px;
   color: #7c8087;

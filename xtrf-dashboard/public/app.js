@@ -75,7 +75,7 @@ function renderYtd(ytd) {
   const { turnover, costs, paidTurnover, paidCosts, priorTurnover, priorCosts } = ytd.data;
   label.textContent = `YTD ${turnover.year} (vs. ${priorTurnover?.year ?? turnover.year - 1} do istega dne)`;
 
-  const makeCard = (title, data, prior, unit) => {
+  const makeCard = (title, data, prior, unit, extraHtml = "") => {
     const card = document.createElement("div");
     card.className = "card";
     let compareHtml = "";
@@ -92,12 +92,20 @@ function renderYtd(ytd) {
       <div class="currency">${title} &middot; neto</div>
       <div class="value">&euro;${formatAmount(data.amount)}</div>
       <div class="count">${data.count} ${unit}</div>
+      ${extraHtml}
       ${compareHtml}
     `;
     return card;
   };
 
-  cells[0].appendChild(makeCard("Promet", turnover, priorTurnover, "računov"));
+  let marginHtml = "";
+  if (turnover.amount > 0) {
+    const marginPct = ((turnover.amount - costs.amount) / turnover.amount) * 100;
+    const cls = marginPct >= 37 ? "margin-good" : "margin-bad";
+    marginHtml = `<div class="margin">marža <span class="margin-value ${cls}">${formatAmount(marginPct)}%</span></div>`;
+  }
+
+  cells[0].appendChild(makeCard("Promet", turnover, priorTurnover, "računov", marginHtml));
   cells[1].appendChild(makeCard("Stroški", costs, priorCosts, "računov"));
   if (paidTurnover) {
     cells[2].appendChild(makeCard("Plačani računi", paidTurnover, null, "računov"));
