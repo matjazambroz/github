@@ -250,6 +250,19 @@ function currentYtdRange() {
   };
 }
 
+// Jan 1 through Dec 31 of the current year - used for the project-based
+// Promet/Stroški cards, which should reflect the whole year's project
+// pipeline (including projects already scheduled/started later this year),
+// not be cut off at today like the invoice-based YTD cards.
+function currentYearFullRange() {
+  const { year } = todayParts();
+  return {
+    year,
+    startMs: dateOnlyToEpochMs(`${year}-01-01`, timeZone),
+    endMs: dateOnlyToEpochMs(`${year}-12-31`, timeZone) + 24 * 60 * 60 * 1000,
+  };
+}
+
 // Same period last year: Jan 1 through the same calendar day, one year back
 // - a fair YoY comparison against currentYtdRange().
 function priorYtdRange() {
@@ -469,7 +482,7 @@ export async function computePriorYtdCosts() {
 // cached permanently; an OPENED project is still moving, so it's always
 // refetched fresh.
 export async function computeProjectYtdSummary() {
-  const { year, startMs, endMs } = currentYtdRange();
+  const { year, startMs, endMs } = currentYearFullRange();
   const projectIds = await xtrfRequest("GET", "/projects/ids", { updatedSince: startMs });
 
   await projectCache.load();
