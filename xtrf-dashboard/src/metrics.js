@@ -291,6 +291,8 @@ async function computeCostsForRange({ year, startMs, endMs }) {
     startMs,
     endMs,
     label: `Stroški ${year}`,
+    // "Bill Received" in the XTRF UI = BILL_CREATED in the API.
+    requireStatus: "BILL_CREATED",
   });
   return { year, amount: combined.amount, count: combined.count, rates: combined.rates };
 }
@@ -398,14 +400,21 @@ export async function computeYtdPaidCosts() {
   const counts = {};
   for (const id of invoiceIds) {
     let entry = vendorInvoiceCache.get(id);
-    if (!entry || entry.paymentStatus !== "FULLY_PAID") {
+    // Require `status` to be cached too (not just paymentStatus) so this
+    // doesn't depend on computeYtdCosts() having already populated it in
+    // the same run - both read/write this cache concurrently via
+    // Promise.all, so each must be self-sufficient to avoid a race where
+    // one reads the other's incomplete, not-yet-updated entry.
+    if (!entry || entry.paymentStatus !== "FULLY_PAID" || entry.status === undefined) {
       const invoice = await xtrfRequest("GET", `/accounting/providers/invoices/${id}`);
       fetched++;
       entry = {
+        ...entry,
         currencyId: invoice?.currencyId,
         totalNetto: invoice?.totalNetto,
         totalGross: invoice?.totalGross,
         dateMs: invoice?.dates?.finalDate?.time ?? null,
+        status: invoice?.status,
         paymentStatus: invoice?.paymentStatus,
       };
       vendorInvoiceCache.set(id, entry);
@@ -413,8 +422,13 @@ export async function computeYtdPaidCosts() {
       cacheHits++;
     }
 
-    const { currencyId, totalNetto, dateMs, paymentStatus } = entry;
+    const { currencyId, totalNetto, dateMs, status, paymentStatus } = entry;
     if (currencyId === undefined || typeof totalNetto !== "number") {
+      continue;
+    }
+    // "Bill Received" in the XTRF UI = BILL_CREATED in the API - only count
+    // costs that have actually been recorded as a real vendor bill.
+    if (status !== "BILL_CREATED") {
       continue;
     }
     if (typeof dateMs !== "number" || dateMs < startMs || dateMs >= endMs) {
