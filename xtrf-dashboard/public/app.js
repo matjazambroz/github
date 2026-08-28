@@ -105,8 +105,8 @@ function renderYtd(ytd) {
     marginHtml = `<div class="margin">marža <span class="margin-value ${cls}">${formatAmount(marginPct)}%</span></div>`;
   }
 
-  cells[0].appendChild(makeCard("Promet", turnover, priorTurnover, "računov", marginHtml));
-  cells[1].appendChild(makeCard("Stroški", costs, priorCosts, "računov"));
+  cells[0].appendChild(makeCard("Izdani računi", turnover, priorTurnover, "računov", marginHtml));
+  cells[1].appendChild(makeCard("Prejeti računi", costs, priorCosts, "računov"));
   if (paidTurnover) {
     cells[2].appendChild(makeCard("Plačani računi", paidTurnover, null, "računov"));
   }
