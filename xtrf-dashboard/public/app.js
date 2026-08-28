@@ -60,7 +60,7 @@ function renderRatesNote(elementId, rates) {
 
 function renderYtd(ytd) {
   const label = document.getElementById("ytd-label");
-  const cells = [1, 2, 3, 4].map((n) => document.getElementById(`ytd-cell-${n}`));
+  const cells = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => document.getElementById(`ytd-cell-${n}`));
   cells.forEach((c) => (c.innerHTML = ""));
 
   if (!ytd || ytd.status === "loading") {
@@ -72,7 +72,7 @@ function renderYtd(ytd) {
     return;
   }
 
-  const { turnover, costs, paidTurnover, paidCosts, priorTurnover, priorCosts } = ytd.data;
+  const { turnover, costs, paidTurnover, paidCosts, priorTurnover, priorCosts, projectSummary } = ytd.data;
   label.textContent = `YTD ${turnover.year} (vs. ${priorTurnover?.year ?? turnover.year - 1} do istega dne)`;
 
   const makeCard = (title, data, prior, unit, extraHtml = "") => {
@@ -113,6 +113,52 @@ function renderYtd(ytd) {
   if (paidCosts) {
     cells[3].appendChild(makeCard("Plačani stroški", paidCosts, null, "računov"));
   }
+
+  if (projectSummary) {
+    const { revenueClosed, revenueOpen, costClosed, costOpen } = projectSummary;
+
+    const makeProjectCard = (title, closed, open, extraHtml = "") => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="currency">${title}</div>
+        <div class="value">&euro;${formatAmount(closed.amount)}</div>
+        <div class="count">${closed.count} projektov &middot; zaprti</div>
+        <div class="secondary">+ odprti: &euro;${formatAmount(open.amount)} (${open.count})</div>
+        ${extraHtml}
+      `;
+      return card;
+    };
+
+    let projectMarginHtml = "";
+    if (revenueClosed.amount > 0) {
+      const projectMarginPct = ((revenueClosed.amount - costClosed.amount) / revenueClosed.amount) * 100;
+      const cls = projectMarginPct >= 37 ? "margin-good" : "margin-bad";
+      projectMarginHtml = `<div class="margin">marža <span class="margin-value ${cls}">${formatAmount(projectMarginPct)}%</span></div>`;
+    }
+
+    cells[4].appendChild(makeProjectCard("Promet YTD", revenueClosed, revenueOpen, projectMarginHtml));
+    cells[5].appendChild(makeProjectCard("Stroški YTD", costClosed, costOpen));
+  }
+
+  // Unpaid amount = all issued/received invoices minus the fully-paid
+  // subset - pure arithmetic on numbers already computed above, no extra
+  // API calls needed.
+  const makeUnpaidCard = (title, total, paid) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    const unpaidAmount = total.amount - (paid?.amount ?? 0);
+    const unpaidCount = total.count - (paid?.count ?? 0);
+    card.innerHTML = `
+      <div class="currency">${title}</div>
+      <div class="value">&euro;${formatAmount(unpaidAmount)}</div>
+      <div class="count">${unpaidCount} računov &middot; neplačano</div>
+    `;
+    return card;
+  };
+
+  cells[6].appendChild(makeUnpaidCard("Razlika Izdani računi YTD", turnover, paidTurnover));
+  cells[7].appendChild(makeUnpaidCard("Razlika Prejeti računi YTD", costs, paidCosts));
 }
 
 function updateClock() {

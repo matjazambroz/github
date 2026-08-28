@@ -131,6 +131,12 @@ body {
   margin-top: 10px;
 }
 
+.card .secondary {
+  font-size: 14px;
+  color: #7c8087;
+  margin-top: 6px;
+}
+
 .card .margin {
   font-size: 15px;
   color: #9a9da2;

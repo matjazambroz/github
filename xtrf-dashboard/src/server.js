@@ -10,6 +10,7 @@ import {
   computeYtdPaidCosts,
   computePriorYtdTurnover,
   computePriorYtdCosts,
+  computeProjectYtdSummary,
 } from "./metrics.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -55,17 +56,18 @@ async function refresh() {
 // the main 15-minute "today" refresh.
 async function refreshYtd() {
   try {
-    const [turnover, costs, paidTurnover, paidCosts, priorTurnover, priorCosts] = await Promise.all([
+    const [turnover, costs, paidTurnover, paidCosts, priorTurnover, priorCosts, projectSummary] = await Promise.all([
       computeYtdTurnover(),
       computeYtdCosts(),
       computeYtdPaidTurnover(),
       computeYtdPaidCosts(),
       computePriorYtdTurnover(),
       computePriorYtdCosts(),
+      computeProjectYtdSummary(),
     ]);
     ytdState = {
       status: "ok",
-      data: { turnover, costs, paidTurnover, paidCosts, priorTurnover, priorCosts },
+      data: { turnover, costs, paidTurnover, paidCosts, priorTurnover, priorCosts, projectSummary },
       error: null,
       lastUpdated: new Date().toISOString(),
     };

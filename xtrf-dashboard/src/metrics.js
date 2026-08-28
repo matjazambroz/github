@@ -6,6 +6,7 @@ const timeZone = process.env.XTRF_TIMEZONE ?? "Europe/Ljubljana";
 
 const clientInvoiceCache = createInvoiceCache("invoice-cache.json");
 const vendorInvoiceCache = createInvoiceCache("vendor-invoice-cache.json");
+const projectCache = createInvoiceCache("project-cache.json");
 
 const currencyCache = new Map();
 const exchangeRateCache = new Map();
@@ -455,6 +456,96 @@ export async function computePriorYtdTurnover() {
 
 export async function computePriorYtdCosts() {
   return computeCostsForRange(priorYtdRange());
+}
+
+// Project-based YTD revenue/cost, split by project status - a different
+// view than the invoice-based Izdani/Prejeti računi cards above (those
+// reflect what's actually been billed; this reflects the underlying
+// project pipeline: work already finished (CLOSED) vs still in flight
+// (OPENED)). Candidates are fetched via updatedSince=start-of-year, then
+// filtered to actualStartDate (falling back to startDate) within this
+// year, matching the same "today/this week" project convention used
+// elsewhere. A CLOSED project's financials are treated as final and
+// cached permanently; an OPENED project is still moving, so it's always
+// refetched fresh.
+export async function computeProjectYtdSummary() {
+  const { year, startMs, endMs } = currentYtdRange();
+  const projectIds = await xtrfRequest("GET", "/projects/ids", { updatedSince: startMs });
+
+  await projectCache.load();
+  let cacheHits = 0;
+
+  const revenueClosed = {};
+  const revenueClosedCounts = {};
+  const revenueOpen = {};
+  const revenueOpenCounts = {};
+  const costClosed = {};
+  const costClosedCounts = {};
+  const costOpen = {};
+  const costOpenCounts = {};
+
+  for (const id of projectIds) {
+    let entry = projectCache.get(id);
+    if (!entry || entry.status !== "CLOSED") {
+      const project = await xtrfRequest("GET", `/projects/${id}`);
+      entry = {
+        currencyId: project?.finance?.currencyId,
+        totalAgreed: project?.finance?.totalAgreed,
+        totalCost: project?.finance?.totalCost,
+        status: project?.status,
+        startedMs: project?.dates?.actualStartDate?.time ?? project?.dates?.startDate?.time ?? null,
+      };
+      projectCache.set(id, entry);
+    } else {
+      cacheHits++;
+    }
+
+    const { currencyId, totalAgreed, totalCost, status, startedMs } = entry;
+    if (currencyId === undefined) {
+      continue;
+    }
+    if (typeof startedMs !== "number" || startedMs < startMs || startedMs >= endMs) {
+      continue;
+    }
+
+    if (status === "CLOSED") {
+      if (typeof totalAgreed === "number") {
+        addToTotals(revenueClosed, currencyId, totalAgreed);
+        revenueClosedCounts[currencyId] = (revenueClosedCounts[currencyId] ?? 0) + 1;
+      }
+      if (typeof totalCost === "number") {
+        addToTotals(costClosed, currencyId, totalCost);
+        costClosedCounts[currencyId] = (costClosedCounts[currencyId] ?? 0) + 1;
+      }
+    } else if (status === "OPENED") {
+      if (typeof totalAgreed === "number") {
+        addToTotals(revenueOpen, currencyId, totalAgreed);
+        revenueOpenCounts[currencyId] = (revenueOpenCounts[currencyId] ?? 0) + 1;
+      }
+      if (typeof totalCost === "number") {
+        addToTotals(costOpen, currencyId, totalCost);
+        costOpenCounts[currencyId] = (costOpenCounts[currencyId] ?? 0) + 1;
+      }
+    }
+  }
+
+  await projectCache.saveIfDirty();
+  console.log(`Projekti ${year}: ${projectIds.length} kandidatov, ${cacheHits} zaprtih iz cache.`);
+
+  const [revClosed, revOpen, cClosed, cOpen] = await Promise.all([
+    combineIntoEur(revenueClosed, revenueClosedCounts),
+    combineIntoEur(revenueOpen, revenueOpenCounts),
+    combineIntoEur(costClosed, costClosedCounts),
+    combineIntoEur(costOpen, costOpenCounts),
+  ]);
+
+  return {
+    year,
+    revenueClosed: { amount: revClosed.amount, count: revClosed.count },
+    revenueOpen: { amount: revOpen.amount, count: revOpen.count },
+    costClosed: { amount: cClosed.amount, count: cClosed.count },
+    costOpen: { amount: cOpen.amount, count: cOpen.count },
+  };
 }
 
 export async function computeAll() {
