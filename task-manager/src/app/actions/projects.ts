@@ -60,7 +60,7 @@ export async function updateProject(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("projects")
     .update({
       name,
@@ -68,10 +68,14 @@ export async function updateProject(
       status,
       due_date: dueDate || null,
     })
-    .eq("id", projectId);
+    .eq("id", projectId)
+    .select("id");
 
   if (error) {
     return { error: error.message };
+  }
+  if (!data || data.length === 0) {
+    return { error: "You don't have permission to edit this project." };
   }
 
   revalidatePath("/");
@@ -79,9 +83,25 @@ export async function updateProject(
   return { error: null };
 }
 
-export async function deleteProject(projectId: string) {
+export interface DeleteProjectResult {
+  error: string | null;
+}
+
+export async function deleteProject(projectId: string): Promise<DeleteProjectResult> {
   const supabase = await createClient();
-  await supabase.from("projects").delete().eq("id", projectId);
+  const { data, error } = await supabase
+    .from("projects")
+    .delete()
+    .eq("id", projectId)
+    .select("id");
+
+  if (error) {
+    return { error: error.message };
+  }
+  if (!data || data.length === 0) {
+    return { error: "You don't have permission to delete this project." };
+  }
+
   revalidatePath("/");
   redirect("/");
 }

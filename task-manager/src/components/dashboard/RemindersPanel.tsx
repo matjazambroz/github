@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDueUrgency } from "@/lib/due-date";
+import { formatDueDate, getDueUrgency } from "@/lib/due-date";
 import type { Task } from "@/types/task";
 
 export interface ReminderTask extends Omit<Task, "due_date"> {
@@ -21,13 +21,6 @@ const URGENCY_LABELS = {
   overdue: "Overdue",
   due_soon: "Due soon",
 };
-
-function formatDueDate(dueDate: string) {
-  return new Date(dueDate).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-  });
-}
 
 export function RemindersPanel({ tasks }: { tasks: ReminderTask[] }) {
   if (tasks.length === 0) return null;

@@ -1,18 +1,12 @@
 import Link from "next/link";
 import { StatusBadge } from "@/components/dashboard/StatusBadge";
+import { formatDueDate } from "@/lib/due-date";
 import type { Project } from "@/types/project";
 
-function formatDueDate(dueDate: string | null) {
-  if (!dueDate) return null;
-  return new Date(dueDate).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
 export function ProjectCard({ project }: { project: Project }) {
-  const dueDate = formatDueDate(project.due_date);
+  const dueDate = project.due_date
+    ? formatDueDate(project.due_date, { includeYear: true })
+    : null;
 
   return (
     <Link

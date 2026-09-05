@@ -2,17 +2,9 @@ import { AssigneeSelect } from "@/components/project/AssigneeSelect";
 import { DeleteTaskButton } from "@/components/project/DeleteTaskButton";
 import { EditTaskButton } from "@/components/project/EditTaskButton";
 import { TaskStatusSelect } from "@/components/project/TaskStatusSelect";
-import { getDueUrgency } from "@/lib/due-date";
+import { formatDueDate, getDueUrgency } from "@/lib/due-date";
 import type { Profile } from "@/types/profile";
 import type { Task } from "@/types/task";
-
-function formatDueDate(dueDate: string | null) {
-  if (!dueDate) return null;
-  return new Date(dueDate).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-  });
-}
 
 const DUE_DATE_STYLES = {
   overdue: "text-red-600 dark:text-red-400",
@@ -47,7 +39,7 @@ export function TaskList({
   return (
     <ul className="divide-y divide-black/10 rounded-xl border border-black/10 bg-white dark:divide-white/10 dark:border-white/10 dark:bg-white/[0.03]">
       {tasks.map((task) => {
-        const dueDate = formatDueDate(task.due_date);
+        const dueDate = task.due_date ? formatDueDate(task.due_date) : null;
         const urgency = getDueUrgency(task.due_date, task.status);
         return (
           <li key={task.id} className="flex items-center justify-between gap-4 p-4">

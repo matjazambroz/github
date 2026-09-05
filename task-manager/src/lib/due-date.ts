@@ -4,20 +4,30 @@ export type DueUrgency = "overdue" | "due_soon" | null;
 
 const DUE_SOON_WINDOW_DAYS = 3;
 
-function startOfToday() {
+function startOfTodayUTC() {
   const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  return now;
+  return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
 }
 
 export function getDueUrgency(dueDate: string | null, status: TaskStatus): DueUrgency {
   if (!dueDate || status === "done") return null;
 
-  const due = new Date(dueDate);
-  const today = startOfToday();
-  const daysUntilDue = Math.round((due.getTime() - today.getTime()) / 86_400_000);
+  // Date-only strings (e.g. "2026-09-05") parse as UTC midnight, so compare
+  // against a UTC "today" rather than the server's local midnight.
+  const due = new Date(dueDate).getTime();
+  const today = startOfTodayUTC();
+  const daysUntilDue = Math.round((due - today) / 86_400_000);
 
   if (daysUntilDue < 0) return "overdue";
   if (daysUntilDue <= DUE_SOON_WINDOW_DAYS) return "due_soon";
   return null;
+}
+
+export function formatDueDate(dueDate: string, options?: { includeYear?: boolean }): string {
+  return new Date(dueDate).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: options?.includeYear ? "numeric" : undefined,
+    timeZone: "UTC",
+  });
 }
