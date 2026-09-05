@@ -1,5 +1,6 @@
 import { AssigneeSelect } from "@/components/project/AssigneeSelect";
 import { TaskStatusSelect } from "@/components/project/TaskStatusSelect";
+import { getDueUrgency } from "@/lib/due-date";
 import type { Profile } from "@/types/profile";
 import type { Task } from "@/types/task";
 
@@ -10,6 +11,17 @@ function formatDueDate(dueDate: string | null) {
     day: "numeric",
   });
 }
+
+const DUE_DATE_STYLES = {
+  overdue: "text-red-600 dark:text-red-400",
+  due_soon: "text-amber-600 dark:text-amber-400",
+  none: "text-black/40 dark:text-white/40",
+};
+
+const DUE_DATE_LABELS = {
+  overdue: "Overdue",
+  due_soon: "Due soon",
+};
 
 export function TaskList({
   tasks,
@@ -34,6 +46,7 @@ export function TaskList({
     <ul className="divide-y divide-black/10 rounded-xl border border-black/10 bg-white dark:divide-white/10 dark:border-white/10 dark:bg-white/[0.03]">
       {tasks.map((task) => {
         const dueDate = formatDueDate(task.due_date);
+        const urgency = getDueUrgency(task.due_date, task.status);
         return (
           <li key={task.id} className="flex items-center justify-between gap-4 p-4">
             <div className="min-w-0">
@@ -44,8 +57,9 @@ export function TaskList({
                 </p>
               )}
               {dueDate && (
-                <p className="mt-0.5 text-xs text-black/40 dark:text-white/40">
+                <p className={`mt-0.5 text-xs ${DUE_DATE_STYLES[urgency ?? "none"]}`}>
                   Due {dueDate}
+                  {urgency && ` · ${DUE_DATE_LABELS[urgency]}`}
                 </p>
               )}
             </div>
