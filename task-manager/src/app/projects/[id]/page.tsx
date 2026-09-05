@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/dashboard/Header";
 import { StatusBadge } from "@/components/dashboard/StatusBadge";
+import { DeleteProjectButton } from "@/components/project/DeleteProjectButton";
+import { EditProjectButton } from "@/components/project/EditProjectButton";
 import { NewTaskButton } from "@/components/project/NewTaskButton";
 import { TaskList } from "@/components/project/TaskList";
 import { createClient } from "@/lib/supabase/server";
@@ -68,7 +70,11 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[id]
               </p>
             )}
           </div>
-          <NewTaskButton projectId={project.id} members={members} />
+          <div className="flex shrink-0 items-center gap-2">
+            <EditProjectButton project={project} />
+            <DeleteProjectButton projectId={project.id} projectName={project.name} />
+            <NewTaskButton projectId={project.id} members={members} />
+          </div>
         </div>
 
         <TaskList tasks={tasks} projectId={project.id} members={members} />
