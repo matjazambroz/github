@@ -77,7 +77,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[id]
           </div>
         </div>
 
-        <TaskList tasks={tasks} projectId={project.id} members={members} />
+        <TaskList tasks={tasks} members={members} />
       </main>
     </div>
   );

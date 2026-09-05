@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AssigneeSelect } from "@/components/project/AssigneeSelect";
 import { DeleteTaskButton } from "@/components/project/DeleteTaskButton";
 import { EditTaskButton } from "@/components/project/EditTaskButton";
@@ -19,19 +20,17 @@ const DUE_DATE_LABELS = {
 
 export function TaskList({
   tasks,
-  projectId,
   members,
+  emptyMessage = "No tasks yet. Add the first task for this project.",
 }: {
-  tasks: Task[];
-  projectId: string;
+  tasks: (Task & { project_name?: string })[];
   members: Profile[];
+  emptyMessage?: string;
 }) {
   if (tasks.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-black/15 p-10 text-center dark:border-white/15">
-        <p className="text-sm text-black/60 dark:text-white/60">
-          No tasks yet. Add the first task for this project.
-        </p>
+        <p className="text-sm text-black/60 dark:text-white/60">{emptyMessage}</p>
       </div>
     );
   }
@@ -45,6 +44,14 @@ export function TaskList({
           <li key={task.id} className="flex items-center justify-between gap-4 p-4">
             <div className="min-w-0">
               <p className="truncate font-medium">{task.title}</p>
+              {task.project_name && (
+                <Link
+                  href={`/projects/${task.project_id}`}
+                  className="text-sm text-black/60 hover:underline dark:text-white/60"
+                >
+                  {task.project_name}
+                </Link>
+              )}
               {task.description && (
                 <p className="mt-0.5 truncate text-sm text-black/60 dark:text-white/60">
                   {task.description}
@@ -60,16 +67,20 @@ export function TaskList({
             <div className="flex shrink-0 items-center gap-3">
               <AssigneeSelect
                 taskId={task.id}
-                projectId={projectId}
+                projectId={task.project_id}
                 assigneeId={task.assignee_id}
                 members={members}
               />
-              <TaskStatusSelect taskId={task.id} projectId={projectId} status={task.status} />
+              <TaskStatusSelect
+                taskId={task.id}
+                projectId={task.project_id}
+                status={task.status}
+              />
               <div className="flex items-center gap-2 border-l border-black/10 pl-3 dark:border-white/10">
-                <EditTaskButton task={task} projectId={projectId} />
+                <EditTaskButton task={task} projectId={task.project_id} />
                 <DeleteTaskButton
                   taskId={task.id}
-                  projectId={projectId}
+                  projectId={task.project_id}
                   taskTitle={task.title}
                 />
               </div>
