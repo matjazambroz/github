@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { StatusBadge } from "@/components/dashboard/StatusBadge";
 import type { Project } from "@/types/project";
 
@@ -14,7 +15,10 @@ export function ProjectCard({ project }: { project: Project }) {
   const dueDate = formatDueDate(project.due_date);
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-black/10 bg-white p-5 transition-shadow hover:shadow-sm dark:border-white/10 dark:bg-white/[0.03]">
+    <Link
+      href={`/projects/${project.id}`}
+      className="flex flex-col gap-3 rounded-xl border border-black/10 bg-white p-5 transition-shadow hover:shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
+    >
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-medium">{project.name}</h3>
         <StatusBadge status={project.status} />
@@ -29,6 +33,6 @@ export function ProjectCard({ project }: { project: Project }) {
       {dueDate && (
         <p className="text-xs text-black/40 dark:text-white/40">Due {dueDate}</p>
       )}
-    </div>
+    </Link>
   );
 }
