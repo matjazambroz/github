@@ -1,4 +1,5 @@
 import { Header } from "@/components/dashboard/Header";
+import { InviteMemberButton } from "@/components/dashboard/InviteMemberButton";
 import { NewProjectButton } from "@/components/dashboard/NewProjectButton";
 import { ProjectList } from "@/components/dashboard/ProjectList";
 import { RemindersPanel, type ReminderTask } from "@/components/dashboard/RemindersPanel";
@@ -68,7 +69,10 @@ export default async function DashboardPage() {
               An overview of every project and its current status.
             </p>
           </div>
-          <NewProjectButton />
+          <div className="flex items-center gap-2">
+            <InviteMemberButton />
+            <NewProjectButton />
+          </div>
         </div>
 
         {!isSupabaseConfigured && (

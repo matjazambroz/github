@@ -2,14 +2,12 @@
 
 A task management application built with Next.js, Tailwind CSS, and Supabase.
 
-## Planned features
+## Features
 
-- Project and task creation
-- Assigning tasks to users
-- Due date reminders
-- Dashboard overview
-
-The dashboard (header, project list, and "new project" flow) is implemented first; auth, task creation/assignment, and reminders are built on top of it next.
+- Dashboard overview with project status and due date reminders
+- Project and task creation, editing, and deletion
+- Assigning tasks to users, with an "Invite member" flow to add new users
+- Email/password auth, with every route protected behind login
 
 ## Getting started
 
@@ -19,7 +17,7 @@ The dashboard (header, project list, and "new project" flow) is implemented firs
    npm install
    ```
 
-2. Create a Supabase project at [supabase.com](https://supabase.com), then copy `.env.example` to `.env.local` and fill in your project's URL and anon key:
+2. Create a Supabase project at [supabase.com](https://supabase.com), then copy `.env.example` to `.env.local` and fill in your project's URL, anon key, and service role key (the last one is only needed for the "Invite member" flow, from Settings > API in your Supabase project — keep it server-only, never commit it):
 
    ```bash
    cp .env.example .env.local
