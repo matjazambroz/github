@@ -2,8 +2,15 @@
 
 import { useRef, useState, useTransition } from "react";
 import { createTask } from "@/app/actions/tasks";
+import type { Profile } from "@/types/profile";
 
-export function NewTaskButton({ projectId }: { projectId: string }) {
+export function NewTaskButton({
+  projectId,
+  members,
+}: {
+  projectId: string;
+  members: Profile[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -74,16 +81,37 @@ export function NewTaskButton({ projectId }: { projectId: string }) {
                 />
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label htmlFor="due_date" className="text-sm font-medium">
-                  Due date
-                </label>
-                <input
-                  id="due_date"
-                  name="due_date"
-                  type="date"
-                  className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="due_date" className="text-sm font-medium">
+                    Due date
+                  </label>
+                  <input
+                    id="due_date"
+                    name="due_date"
+                    type="date"
+                    className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="assignee_id" className="text-sm font-medium">
+                    Assignee
+                  </label>
+                  <select
+                    id="assignee_id"
+                    name="assignee_id"
+                    defaultValue=""
+                    className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+                  >
+                    <option value="">Unassigned</option>
+                    {members.map((member) => (
+                      <option key={member.id} value={member.id}>
+                        {member.email}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}

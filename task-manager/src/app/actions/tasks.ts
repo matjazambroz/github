@@ -15,6 +15,7 @@ export async function createTask(
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const dueDate = String(formData.get("due_date") ?? "").trim();
+  const assigneeId = String(formData.get("assignee_id") ?? "").trim();
 
   if (!title) {
     return { error: "Task title is required." };
@@ -26,6 +27,7 @@ export async function createTask(
     title,
     description: description || null,
     due_date: dueDate || null,
+    assignee_id: assigneeId || null,
   });
 
   if (error) {
@@ -43,5 +45,15 @@ export async function updateTaskStatus(
 ) {
   const supabase = await createClient();
   await supabase.from("tasks").update({ status }).eq("id", taskId);
+  revalidatePath(`/projects/${projectId}`);
+}
+
+export async function updateTaskAssignee(
+  taskId: string,
+  projectId: string,
+  assigneeId: string | null,
+) {
+  const supabase = await createClient();
+  await supabase.from("tasks").update({ assignee_id: assigneeId }).eq("id", taskId);
   revalidatePath(`/projects/${projectId}`);
 }

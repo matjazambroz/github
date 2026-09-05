@@ -5,6 +5,7 @@ import { StatusBadge } from "@/components/dashboard/StatusBadge";
 import { NewTaskButton } from "@/components/project/NewTaskButton";
 import { TaskList } from "@/components/project/TaskList";
 import { createClient } from "@/lib/supabase/server";
+import type { Profile } from "@/types/profile";
 import type { Task } from "@/types/task";
 
 const isSupabaseConfigured =
@@ -24,6 +25,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[id]
     },
     { data: project },
     { data: tasksData },
+    { data: profilesData },
   ] = await Promise.all([
     supabase.auth.getUser(),
     supabase.from("projects").select("*").eq("id", id).maybeSingle(),
@@ -32,6 +34,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[id]
       .select("*")
       .eq("project_id", id)
       .order("created_at", { ascending: false }),
+    supabase.from("profiles").select("id, email").order("email"),
   ]);
 
   if (!project) {
@@ -39,6 +42,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[id]
   }
 
   const tasks = (tasksData ?? []) as Task[];
+  const members = (profilesData ?? []) as Profile[];
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black">
@@ -64,10 +68,10 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[id]
               </p>
             )}
           </div>
-          <NewTaskButton projectId={project.id} />
+          <NewTaskButton projectId={project.id} members={members} />
         </div>
 
-        <TaskList tasks={tasks} projectId={project.id} />
+        <TaskList tasks={tasks} projectId={project.id} members={members} />
       </main>
     </div>
   );

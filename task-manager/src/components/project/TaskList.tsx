@@ -1,4 +1,6 @@
+import { AssigneeSelect } from "@/components/project/AssigneeSelect";
 import { TaskStatusSelect } from "@/components/project/TaskStatusSelect";
+import type { Profile } from "@/types/profile";
 import type { Task } from "@/types/task";
 
 function formatDueDate(dueDate: string | null) {
@@ -9,7 +11,15 @@ function formatDueDate(dueDate: string | null) {
   });
 }
 
-export function TaskList({ tasks, projectId }: { tasks: Task[]; projectId: string }) {
+export function TaskList({
+  tasks,
+  projectId,
+  members,
+}: {
+  tasks: Task[];
+  projectId: string;
+  members: Profile[];
+}) {
   if (tasks.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-black/15 p-10 text-center dark:border-white/15">
@@ -39,7 +49,15 @@ export function TaskList({ tasks, projectId }: { tasks: Task[]; projectId: strin
                 </p>
               )}
             </div>
-            <TaskStatusSelect taskId={task.id} projectId={projectId} status={task.status} />
+            <div className="flex shrink-0 items-center gap-2">
+              <AssigneeSelect
+                taskId={task.id}
+                projectId={projectId}
+                assigneeId={task.assignee_id}
+                members={members}
+              />
+              <TaskStatusSelect taskId={task.id} projectId={projectId} status={task.status} />
+            </div>
           </li>
         );
       })}
