@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { signOut } from "@/app/actions/auth";
 
 const NAV_LINKS = [
   { href: "/", label: "Dashboard" },
@@ -6,7 +7,7 @@ const NAV_LINKS = [
   { href: "/tasks", label: "Tasks" },
 ];
 
-export function Header() {
+export function Header({ userEmail }: { userEmail?: string | null }) {
   return (
     <header className="border-b border-black/10 bg-white dark:border-white/10 dark:bg-black">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -26,9 +27,31 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 text-xs font-medium dark:bg-white/10">
-          U
-        </div>
+        {userEmail ? (
+          <div className="flex items-center gap-3">
+            <div
+              title={userEmail}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 text-xs font-medium dark:bg-white/10"
+            >
+              {userEmail.charAt(0).toUpperCase()}
+            </div>
+            <form action={signOut}>
+              <button
+                type="submit"
+                className="text-sm font-medium text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white"
+              >
+                Sign out
+              </button>
+            </form>
+          </div>
+        ) : (
+          <Link
+            href="/login"
+            className="text-sm font-medium text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white"
+          >
+            Log in
+          </Link>
+        )}
       </div>
     </header>
   );

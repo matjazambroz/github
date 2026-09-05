@@ -7,30 +7,35 @@ import type { Project } from "@/types/project";
 const isSupabaseConfigured =
   !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-async function getProjects(): Promise<{ projects: Project[]; error: string | null }> {
+async function getDashboardData(): Promise<{
+  projects: Project[];
+  error: string | null;
+  userEmail: string | null;
+}> {
   if (!isSupabaseConfigured) {
-    return { projects: [], error: null };
+    return { projects: [], error: null, userEmail: null };
   }
 
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .order("created_at", { ascending: false });
 
-  if (error) {
-    return { projects: [], error: error.message };
-  }
+  const [{ data: userData }, { data: projectsData, error }] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase.from("projects").select("*").order("created_at", { ascending: false }),
+  ]);
 
-  return { projects: data ?? [], error: null };
+  return {
+    projects: projectsData ?? [],
+    error: error?.message ?? null,
+    userEmail: userData.user?.email ?? null,
+  };
 }
 
 export default async function DashboardPage() {
-  const { projects, error } = await getProjects();
+  const { projects, error, userEmail } = await getDashboardData();
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black">
-      <Header />
+      <Header userEmail={userEmail} />
 
       <main className="mx-auto max-w-6xl px-6 py-10">
         <div className="mb-8 flex items-center justify-between">
