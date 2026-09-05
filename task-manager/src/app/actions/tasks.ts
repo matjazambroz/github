@@ -57,3 +57,44 @@ export async function updateTaskAssignee(
   await supabase.from("tasks").update({ assignee_id: assigneeId }).eq("id", taskId);
   revalidatePath(`/projects/${projectId}`);
 }
+
+export interface UpdateTaskResult {
+  error: string | null;
+}
+
+export async function updateTask(
+  taskId: string,
+  projectId: string,
+  formData: FormData,
+): Promise<UpdateTaskResult> {
+  const title = String(formData.get("title") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim();
+  const dueDate = String(formData.get("due_date") ?? "").trim();
+
+  if (!title) {
+    return { error: "Task title is required." };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("tasks")
+    .update({
+      title,
+      description: description || null,
+      due_date: dueDate || null,
+    })
+    .eq("id", taskId);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath(`/projects/${projectId}`);
+  return { error: null };
+}
+
+export async function deleteTask(taskId: string, projectId: string) {
+  const supabase = await createClient();
+  await supabase.from("tasks").delete().eq("id", taskId);
+  revalidatePath(`/projects/${projectId}`);
+}

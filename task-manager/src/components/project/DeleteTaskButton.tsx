@@ -1,0 +1,32 @@
+"use client";
+
+import { useTransition } from "react";
+import { deleteTask } from "@/app/actions/tasks";
+
+export function DeleteTaskButton({
+  taskId,
+  projectId,
+  taskTitle,
+}: {
+  taskId: string;
+  projectId: string;
+  taskTitle: string;
+}) {
+  const [isPending, startTransition] = useTransition();
+
+  return (
+    <button
+      type="button"
+      disabled={isPending}
+      onClick={() => {
+        if (!window.confirm(`Delete "${taskTitle}"? This can't be undone.`)) return;
+        startTransition(() => {
+          deleteTask(taskId, projectId);
+        });
+      }}
+      className="text-xs font-medium text-red-600 hover:text-red-700 disabled:opacity-50 dark:text-red-400 dark:hover:text-red-300"
+    >
+      Delete
+    </button>
+  );
+}

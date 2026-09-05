@@ -1,4 +1,6 @@
 import { AssigneeSelect } from "@/components/project/AssigneeSelect";
+import { DeleteTaskButton } from "@/components/project/DeleteTaskButton";
+import { EditTaskButton } from "@/components/project/EditTaskButton";
 import { TaskStatusSelect } from "@/components/project/TaskStatusSelect";
 import { getDueUrgency } from "@/lib/due-date";
 import type { Profile } from "@/types/profile";
@@ -63,7 +65,7 @@ export function TaskList({
                 </p>
               )}
             </div>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center gap-3">
               <AssigneeSelect
                 taskId={task.id}
                 projectId={projectId}
@@ -71,6 +73,14 @@ export function TaskList({
                 members={members}
               />
               <TaskStatusSelect taskId={task.id} projectId={projectId} status={task.status} />
+              <div className="flex items-center gap-2 border-l border-black/10 pl-3 dark:border-white/10">
+                <EditTaskButton task={task} projectId={projectId} />
+                <DeleteTaskButton
+                  taskId={task.id}
+                  projectId={projectId}
+                  taskTitle={task.title}
+                />
+              </div>
             </div>
           </li>
         );
