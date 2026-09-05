@@ -30,7 +30,7 @@ export function AssigneeSelect({
           }
         });
       }}
-      className="rounded-lg border border-black/15 bg-white px-2 py-1 text-xs font-medium outline-none focus:border-black/40 disabled:opacity-50 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+      className="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs font-medium outline-none focus:border-blue-900 disabled:opacity-50"
     >
       <option value="">Unassigned</option>
       {members.map((member) => (

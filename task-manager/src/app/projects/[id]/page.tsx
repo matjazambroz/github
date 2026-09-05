@@ -47,13 +47,13 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[id]
   const members = (profilesData ?? []) as Profile[];
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black">
+    <div className="min-h-screen bg-slate-50">
       <Header userEmail={user?.email} />
 
       <main className="mx-auto max-w-6xl px-6 py-10">
         <Link
           href="/"
-          className="text-sm font-medium text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white"
+          className="text-sm font-medium text-slate-500 hover:text-slate-900"
         >
           ← All projects
         </Link>
@@ -65,7 +65,7 @@ export default async function ProjectDetailPage(props: PageProps<"/projects/[id]
               <StatusBadge status={project.status} />
             </div>
             {project.description && (
-              <p className="mt-1 text-sm text-black/60 dark:text-white/60">
+              <p className="mt-1 text-sm text-slate-500">
                 {project.description}
               </p>
             )}

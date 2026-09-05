@@ -8,9 +8,9 @@ import type { Profile } from "@/types/profile";
 import type { Task } from "@/types/task";
 
 const DUE_DATE_STYLES = {
-  overdue: "text-red-600 dark:text-red-400",
-  due_soon: "text-amber-600 dark:text-amber-400",
-  none: "text-black/40 dark:text-white/40",
+  overdue: "text-red-600",
+  due_soon: "text-amber-600",
+  none: "text-slate-400",
 };
 
 const DUE_DATE_LABELS = {
@@ -29,14 +29,14 @@ export function TaskList({
 }) {
   if (tasks.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-black/15 p-10 text-center dark:border-white/15">
-        <p className="text-sm text-black/60 dark:text-white/60">{emptyMessage}</p>
+      <div className="rounded-xl border border-dashed border-slate-200 p-10 text-center">
+        <p className="text-sm text-slate-500">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
-    <ul className="divide-y divide-black/10 rounded-xl border border-black/10 bg-white dark:divide-white/10 dark:border-white/10 dark:bg-white/[0.03]">
+    <ul className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
       {tasks.map((task) => {
         const dueDate = task.due_date ? formatDueDate(task.due_date) : null;
         const urgency = getDueUrgency(task.due_date, task.status);
@@ -47,13 +47,13 @@ export function TaskList({
               {task.project_name && (
                 <Link
                   href={`/projects/${task.project_id}`}
-                  className="text-sm text-black/60 hover:underline dark:text-white/60"
+                  className="text-sm text-slate-500 hover:underline"
                 >
                   {task.project_name}
                 </Link>
               )}
               {task.description && (
-                <p className="mt-0.5 truncate text-sm text-black/60 dark:text-white/60">
+                <p className="mt-0.5 truncate text-sm text-slate-500">
                   {task.description}
                 </p>
               )}
@@ -76,7 +76,7 @@ export function TaskList({
                 projectId={task.project_id}
                 status={task.status}
               />
-              <div className="flex items-center gap-2 border-l border-black/10 pl-3 dark:border-white/10">
+              <div className="flex items-center gap-2 border-l border-slate-200 pl-3">
                 <EditTaskButton task={task} projectId={task.project_id} />
                 <DeleteTaskButton
                   taskId={task.id}

@@ -22,11 +22,11 @@ export function AuthForm() {
   }
 
   return (
-    <div className="w-full max-w-sm rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]">
+    <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-6">
       <h1 className="text-lg font-semibold">
         {mode === "login" ? "Log in" : "Create an account"}
       </h1>
-      <p className="mt-1 text-sm text-black/60 dark:text-white/60">
+      <p className="mt-1 text-sm text-slate-500">
         {mode === "login"
           ? "Welcome back to TaskFlow."
           : "Start managing your projects with TaskFlow."}
@@ -43,7 +43,7 @@ export function AuthForm() {
             type="email"
             required
             autoComplete="email"
-            className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-900"
             placeholder="you@example.com"
           />
         </div>
@@ -59,17 +59,17 @@ export function AuthForm() {
             required
             minLength={6}
             autoComplete={mode === "login" ? "current-password" : "new-password"}
-            className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-900"
             placeholder="••••••••"
           />
         </div>
 
-        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+        {error && <p className="text-sm text-red-600">{error}</p>}
 
         <button
           type="submit"
           disabled={isPending}
-          className="mt-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-black"
+          className="mt-2 rounded-lg bg-blue-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-800 disabled:opacity-50"
         >
           {isPending ? "Please wait…" : mode === "login" ? "Log in" : "Sign up"}
         </button>
@@ -81,7 +81,7 @@ export function AuthForm() {
           setError(null);
           setMode(mode === "login" ? "signup" : "login");
         }}
-        className="mt-4 text-sm text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white"
+        className="mt-4 text-sm text-slate-500 hover:text-slate-900"
       >
         {mode === "login"
           ? "Don't have an account? Sign up"

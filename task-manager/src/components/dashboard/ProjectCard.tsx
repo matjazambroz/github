@@ -11,22 +11,18 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       href={`/projects/${project.id}`}
-      className="flex flex-col gap-3 rounded-xl border border-black/10 bg-white p-5 transition-shadow hover:shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
+      className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-5 transition-shadow hover:shadow-sm hover:border-blue-200"
     >
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-medium">{project.name}</h3>
+        <h3 className="font-medium text-slate-900">{project.name}</h3>
         <StatusBadge status={project.status} />
       </div>
 
       {project.description && (
-        <p className="line-clamp-2 text-sm text-black/60 dark:text-white/60">
-          {project.description}
-        </p>
+        <p className="line-clamp-2 text-sm text-slate-500">{project.description}</p>
       )}
 
-      {dueDate && (
-        <p className="text-xs text-black/40 dark:text-white/40">Due {dueDate}</p>
-      )}
+      {dueDate && <p className="text-xs text-slate-400">Due {dueDate}</p>}
     </Link>
   );
 }

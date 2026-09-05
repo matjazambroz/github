@@ -39,7 +39,7 @@ export function NewTaskButton({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
+        className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-800"
       >
         New task
       </button>
@@ -54,7 +54,7 @@ export function NewTaskButton({
               id="title"
               name="title"
               required
-              className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-900"
               placeholder="Write the launch announcement"
             />
           </div>
@@ -67,7 +67,7 @@ export function NewTaskButton({
               id="description"
               name="description"
               rows={3}
-              className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-900"
               placeholder="Any extra detail for this task"
             />
           </div>
@@ -81,7 +81,7 @@ export function NewTaskButton({
                 id="due_date"
                 name="due_date"
                 type="date"
-                className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-900"
               />
             </div>
 
@@ -93,7 +93,7 @@ export function NewTaskButton({
                 id="assignee_id"
                 name="assignee_id"
                 defaultValue=""
-                className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-900"
               >
                 <option value="">Unassigned</option>
                 {members.map((member) => (
@@ -105,20 +105,20 @@ export function NewTaskButton({
             </div>
           </div>
 
-          {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+          {error && <p className="text-sm text-red-600">{error}</p>}
 
           <div className="mt-2 flex justify-end gap-2">
             <button
               type="button"
               onClick={close}
-              className="rounded-lg px-4 py-2 text-sm font-medium text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-900"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-black"
+              className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-800 disabled:opacity-50"
             >
               {isPending ? "Creating…" : "Create task"}
             </button>

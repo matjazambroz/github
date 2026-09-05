@@ -10,10 +10,10 @@ const isSupabaseConfigured =
 export default async function AllTasksPage() {
   if (!isSupabaseConfigured) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-black">
+      <div className="min-h-screen bg-slate-50">
         <Header />
         <main className="mx-auto max-w-6xl px-6 py-10">
-          <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
+          <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-800">
             Supabase isn&apos;t configured yet. Set{" "}
             <code className="font-mono">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
             <code className="font-mono">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> in{" "}
@@ -51,13 +51,13 @@ export default async function AllTasksPage() {
   const members = (profilesData ?? []) as Profile[];
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black">
+    <div className="min-h-screen bg-slate-50">
       <Header userEmail={user?.email} />
 
       <main className="mx-auto max-w-6xl px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold tracking-tight">Tasks</h1>
-          <p className="mt-1 text-sm text-black/60 dark:text-white/60">
+          <p className="mt-1 text-sm text-slate-500">
             Every task across all of your projects.
           </p>
         </div>
