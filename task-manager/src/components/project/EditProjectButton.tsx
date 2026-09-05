@@ -1,24 +1,23 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import { createProject } from "@/app/actions/projects";
+import { useState, useTransition } from "react";
+import { updateProject } from "@/app/actions/projects";
 import { Modal } from "@/components/ui/Modal";
+import type { Project } from "@/types/project";
 
-export function NewProjectButton() {
+export function EditProjectButton({ project }: { project: Project }) {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const formRef = useRef<HTMLFormElement>(null);
 
   function close() {
     setIsOpen(false);
     setError(null);
-    formRef.current?.reset();
   }
 
   function handleSubmit(formData: FormData) {
     startTransition(async () => {
-      const result = await createProject(formData);
+      const result = await updateProject(project.id, formData);
       if (result.error) {
         setError(result.error);
         return;
@@ -32,48 +31,48 @@ export function NewProjectButton() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
+        className="rounded-lg border border-black/15 px-4 py-2 text-sm font-medium hover:bg-black/5 dark:border-white/15 dark:hover:bg-white/10"
       >
-        New project
+        Edit
       </button>
 
-      <Modal open={isOpen} onClose={close} title="New project">
-        <form ref={formRef} action={handleSubmit} className="mt-4 flex flex-col gap-4">
+      <Modal open={isOpen} onClose={close} title="Edit project">
+        <form action={handleSubmit} className="mt-4 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label htmlFor="name" className="text-sm font-medium">
+            <label htmlFor="edit-project-name" className="text-sm font-medium">
               Name
             </label>
             <input
-              id="name"
+              id="edit-project-name"
               name="name"
               required
+              defaultValue={project.name}
               className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
-              placeholder="Website redesign"
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="description" className="text-sm font-medium">
+            <label htmlFor="edit-project-description" className="text-sm font-medium">
               Description
             </label>
             <textarea
-              id="description"
+              id="edit-project-description"
               name="description"
               rows={3}
+              defaultValue={project.description ?? ""}
               className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
-              placeholder="What is this project about?"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
-              <label htmlFor="status" className="text-sm font-medium">
+              <label htmlFor="edit-project-status" className="text-sm font-medium">
                 Status
               </label>
               <select
-                id="status"
+                id="edit-project-status"
                 name="status"
-                defaultValue="not_started"
+                defaultValue={project.status}
                 className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
               >
                 <option value="not_started">Not started</option>
@@ -84,13 +83,14 @@ export function NewProjectButton() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="due_date" className="text-sm font-medium">
+              <label htmlFor="edit-project-due_date" className="text-sm font-medium">
                 Due date
               </label>
               <input
-                id="due_date"
+                id="edit-project-due_date"
                 name="due_date"
                 type="date"
+                defaultValue={project.due_date ?? ""}
                 className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
               />
             </div>
@@ -111,7 +111,7 @@ export function NewProjectButton() {
               disabled={isPending}
               className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-black"
             >
-              {isPending ? "Creating…" : "Create project"}
+              {isPending ? "Saving…" : "Save changes"}
             </button>
           </div>
         </form>

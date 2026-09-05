@@ -1,10 +1,17 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { createProject } from "@/app/actions/projects";
+import { createTask } from "@/app/actions/tasks";
 import { Modal } from "@/components/ui/Modal";
+import type { Profile } from "@/types/profile";
 
-export function NewProjectButton() {
+export function NewTaskButton({
+  projectId,
+  members,
+}: {
+  projectId: string;
+  members: Profile[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -18,7 +25,7 @@ export function NewProjectButton() {
 
   function handleSubmit(formData: FormData) {
     startTransition(async () => {
-      const result = await createProject(formData);
+      const result = await createTask(projectId, formData);
       if (result.error) {
         setError(result.error);
         return;
@@ -34,21 +41,21 @@ export function NewProjectButton() {
         onClick={() => setIsOpen(true)}
         className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
       >
-        New project
+        New task
       </button>
 
-      <Modal open={isOpen} onClose={close} title="New project">
+      <Modal open={isOpen} onClose={close} title="New task">
         <form ref={formRef} action={handleSubmit} className="mt-4 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label htmlFor="name" className="text-sm font-medium">
-              Name
+            <label htmlFor="title" className="text-sm font-medium">
+              Title
             </label>
             <input
-              id="name"
-              name="name"
+              id="title"
+              name="title"
               required
               className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
-              placeholder="Website redesign"
+              placeholder="Write the launch announcement"
             />
           </div>
 
@@ -61,28 +68,11 @@ export function NewProjectButton() {
               name="description"
               rows={3}
               className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
-              placeholder="What is this project about?"
+              placeholder="Any extra detail for this task"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1">
-              <label htmlFor="status" className="text-sm font-medium">
-                Status
-              </label>
-              <select
-                id="status"
-                name="status"
-                defaultValue="not_started"
-                className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
-              >
-                <option value="not_started">Not started</option>
-                <option value="in_progress">In progress</option>
-                <option value="on_hold">On hold</option>
-                <option value="completed">Completed</option>
-              </select>
-            </div>
-
             <div className="flex flex-col gap-1">
               <label htmlFor="due_date" className="text-sm font-medium">
                 Due date
@@ -93,6 +83,25 @@ export function NewProjectButton() {
                 type="date"
                 className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
               />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="assignee_id" className="text-sm font-medium">
+                Assignee
+              </label>
+              <select
+                id="assignee_id"
+                name="assignee_id"
+                defaultValue=""
+                className="rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-black/40 dark:border-white/15 dark:bg-transparent dark:focus:border-white/40"
+              >
+                <option value="">Unassigned</option>
+                {members.map((member) => (
+                  <option key={member.id} value={member.id}>
+                    {member.email}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -111,7 +120,7 @@ export function NewProjectButton() {
               disabled={isPending}
               className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-black"
             >
-              {isPending ? "Creating…" : "Create project"}
+              {isPending ? "Creating…" : "Create task"}
             </button>
           </div>
         </form>
