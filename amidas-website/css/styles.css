@@ -402,6 +402,80 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 .cta-note { margin-top: 18px; font-size: 14px; }
 .cta-note a { color: var(--accent-ink); font-weight: 600; }
 
+/* ---------- Service detail pages ---------- */
+.detail-section { padding: 96px 0; }
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px;
+  align-items: start;
+}
+.detail-copy p { font-size: 16px; }
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.feature-list li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.feature-check {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ok-bg);
+  color: var(--ok);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  margin-top: 1px;
+}
+.detail-visual { display: flex; justify-content: center; }
+.service-crumb a { color: inherit; }
+.service-crumb a:hover { text-decoration: underline; }
+
+/* ---------- FAQ ---------- */
+.faq { padding: 96px 0; background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.faq h2 { max-width: 700px; margin-left: auto; margin-right: auto; font-size: clamp(1.6rem, 3vw, 2.1rem); }
+.faq-list { max-width: 760px; margin: 44px auto 0; display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  padding: 4px 22px;
+}
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 28px 18px 0;
+  font-weight: 700;
+  font-size: 15.5px;
+  position: relative;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 16px;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--accent-ink);
+  transition: transform .15s ease;
+}
+.faq-item[open] summary::after { content: "−"; }
+.faq-item p { padding-bottom: 18px; margin: -6px 0 0; font-size: 14.5px; }
+
 /* ---------- Page hero (subpages) ---------- */
 .page-hero {
   position: relative;
