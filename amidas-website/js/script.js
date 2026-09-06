@@ -18,9 +18,11 @@ nav.addEventListener("click", (event) => {
 const ctaForm = document.getElementById("ctaForm");
 const ctaNote = document.getElementById("ctaNote");
 
-ctaForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const name = ctaForm.elements.name.value.trim();
-  ctaNote.textContent = `Thanks${name ? ", " + name : ""} — we'll be in touch shortly. You can also reach us at hello@amidas.si.`;
-  ctaForm.reset();
-});
+if (ctaForm) {
+  ctaForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = ctaForm.elements.name.value.trim();
+    ctaNote.textContent = `Thanks${name ? ", " + name : ""} — we'll be in touch shortly. You can also reach us at hello@amidas.si.`;
+    ctaForm.reset();
+  });
+}
