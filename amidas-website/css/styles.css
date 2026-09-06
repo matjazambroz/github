@@ -403,7 +403,8 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   color: var(--ink);
 }
 .cta-form input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-.cta-form input[name="company"] { grid-column: 1 / -1; }
+.cta-form input[name="company"],
+.cta-form input[name="languages"] { grid-column: 1 / -1; }
 .cta-form button { grid-column: 1 / -1; margin-top: 4px; }
 .cta-note { margin-top: 18px; font-size: 14px; }
 .cta-note a { color: var(--accent-ink); font-weight: 600; }
@@ -451,5 +452,6 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   .problem-grid { grid-template-columns: 1fr; }
   .solutions-grid { grid-template-columns: 1fr; }
   .cta-form { grid-template-columns: 1fr; }
-  .cta-form input[name="company"] { grid-column: auto; }
+  .cta-form input[name="company"],
+  .cta-form input[name="languages"] { grid-column: auto; }
 }
