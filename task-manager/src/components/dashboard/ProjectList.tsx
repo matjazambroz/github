@@ -4,8 +4,8 @@ import type { Project } from "@/types/project";
 export function ProjectList({ projects }: { projects: Project[] }) {
   if (projects.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-black/15 p-12 text-center dark:border-white/15">
-        <p className="text-sm text-black/60 dark:text-white/60">
+      <div className="rounded-xl border border-dashed border-slate-200 p-12 text-center">
+        <p className="text-sm text-slate-500">
           No projects yet. Create your first project to get started.
         </p>
       </div>
