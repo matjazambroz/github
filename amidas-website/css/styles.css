@@ -135,6 +135,32 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 }
 .nav a:hover { color: var(--ink); }
 .header-actions { display: flex; align-items: center; gap: 10px; }
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-alt);
+}
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lang-btn .flag { font-size: 14px; line-height: 1; }
+.lang-btn.is-active { background: var(--navy); color: #fff; }
+.lang-btn:not(.is-active):hover { color: var(--ink); }
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -580,4 +606,10 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   .cta-form { grid-template-columns: 1fr; }
   .cta-form input[name="company"],
   .cta-form input[name="languages"] { grid-column: auto; }
+}
+
+@media (max-width: 480px) {
+  .lang-label { display: none; }
+  .lang-btn { padding: 6px 8px; }
+  .header-actions { gap: 6px; }
 }

@@ -19,14 +19,18 @@
       <img class="brand-logo" src="assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </a>
     <nav class="nav" id="nav">
-      <a href="services.html">Services</a>
-      <a href="how-it-works.html" class="is-active" aria-current="page">How it works</a>
-      <a href="why-amidas.html">Why Amidas</a>
-      <a href="contact.html">Contact</a>
+      <a href="services.html" data-i18n="common.nav.services">Services</a>
+      <a href="how-it-works.html" class="is-active" aria-current="page" data-i18n="common.nav.how">How it works</a>
+      <a href="why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-ghost" href="contact.html">Contact us</a>
-      <a class="btn btn-primary" href="contact.html">Get a quote</a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="true"><span class="flag" aria-hidden="true">🇬🇧</span><span class="lang-label">EN</span></button>
+        <button type="button" class="lang-btn" data-lang="sl" aria-pressed="false"><span class="flag" aria-hidden="true">🇸🇮</span><span class="lang-label">SI</span></button>
+      </div>
+      <a class="btn btn-ghost" href="contact.html" data-i18n="common.btn.contactUs">Contact us</a>
+      <a class="btn btn-primary" href="contact.html" data-i18n="common.btn.quote">Get a quote</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -38,9 +42,9 @@
 
   <section class="page-hero">
     <div class="wrap page-hero-inner">
-      <p class="eyebrow">How it works</p>
-      <h1>From source text to finished translation, in three steps.</h1>
-      <p class="hero-lead">
+      <p class="eyebrow" data-i18n="how.hero.eyebrow">How it works</p>
+      <h1 data-i18n="how.hero.h1">From source text to finished translation, in three steps.</h1>
+      <p class="hero-lead" data-i18n="how.hero.lead">
         No lengthy onboarding, no black box — just a clear process with a human checkpoint at
         every stage that matters.
       </p>
@@ -52,18 +56,18 @@
       <div class="how-steps">
         <div class="how-step">
           <div class="how-number">01</div>
-          <h3>Share your content</h3>
-          <p>Send us your files, context, and any style guides or terminology you already use. We'll confirm scope, languages, and timeline before anything starts.</p>
+          <h3 data-i18n="how.step1.title">Share your content</h3>
+          <p data-i18n="how.step1.desc">Send us your files, context, and any style guides or terminology you already use. We'll confirm scope, languages, and timeline before anything starts.</p>
         </div>
         <div class="how-step">
           <div class="how-number">02</div>
-          <h3>Human + AI collaboration</h3>
-          <p>Native-speaking linguists translate and review your content, using AI-assisted tools and translation memory to work faster without cutting corners.</p>
+          <h3 data-i18n="how.step2.title">Human + AI collaboration</h3>
+          <p data-i18n="how.step2.desc">Native-speaking linguists translate and review your content, using AI-assisted tools and translation memory to work faster without cutting corners.</p>
         </div>
         <div class="how-step">
           <div class="how-number">03</div>
-          <h3>Review &amp; deliver</h3>
-          <p>A final quality and terminology check before you receive a polished, ready-to-use translation — plus a dedicated contact for any follow-up.</p>
+          <h3 data-i18n="how.step3.title">Review &amp; deliver</h3>
+          <p data-i18n="how.step3.desc">A final quality and terminology check before you receive a polished, ready-to-use translation — plus a dedicated contact for any follow-up.</p>
         </div>
       </div>
     </div>
@@ -72,21 +76,21 @@
   <section class="why-visual-standalone">
     <div class="wrap">
       <div class="why-card">
-        <div class="why-card-row"><span>Source review</span><span class="pill pill-ok">Complete</span></div>
-        <div class="why-card-row"><span>Human translation</span><span class="pill pill-ok">Complete</span></div>
-        <div class="why-card-row"><span>Terminology check</span><span class="pill pill-ok">Complete</span></div>
-        <div class="why-card-row"><span>Final approval</span><span class="pill pill-warn">Awaiting your review</span></div>
+        <div class="why-card-row"><span data-i18n="how.status.sourceReview">Source review</span><span class="pill pill-ok" data-i18n="how.status.complete">Complete</span></div>
+        <div class="why-card-row"><span data-i18n="how.status.humanTranslation">Human translation</span><span class="pill pill-ok" data-i18n="how.status.complete">Complete</span></div>
+        <div class="why-card-row"><span data-i18n="how.status.termCheck">Terminology check</span><span class="pill pill-ok" data-i18n="how.status.complete">Complete</span></div>
+        <div class="why-card-row"><span data-i18n="how.status.finalApproval">Final approval</span><span class="pill pill-warn" data-i18n="how.status.awaiting">Awaiting your review</span></div>
       </div>
     </div>
   </section>
 
   <section class="subcta">
     <div class="wrap">
-      <h2>Ready to start a project?</h2>
-      <p>Share your content and deadline, and we'll walk you through timeline and pricing.</p>
+      <h2 data-i18n="how.cta.h2">Ready to start a project?</h2>
+      <p data-i18n="how.cta.lead">Share your content and deadline, and we'll walk you through timeline and pricing.</p>
       <div class="subcta-actions">
-        <a class="btn btn-primary btn-lg" href="contact.html">Request a quote</a>
-        <a class="btn btn-outline btn-lg" href="services.html">See our services</a>
+        <a class="btn btn-primary btn-lg" href="contact.html" data-i18n="how.cta.btn1">Request a quote</a>
+        <a class="btn btn-outline btn-lg" href="services.html" data-i18n="how.cta.btn2">See our services</a>
       </div>
     </div>
   </section>
@@ -99,15 +103,17 @@
       <img class="brand-logo" src="assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </div>
     <nav class="footer-nav">
-      <a href="services.html">Services</a>
-      <a href="how-it-works.html">How it works</a>
-      <a href="why-amidas.html">Why Amidas</a>
-      <a href="contact.html">Contact</a>
+      <a href="services.html" data-i18n="common.nav.services">Services</a>
+      <a href="how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
-    <p class="footer-copy">&copy; <span id="year"></span> Amidas. All rights reserved.</p>
+    <p class="footer-copy">&copy; <span id="year"></span> Amidas. <span data-i18n="common.footer.rights">All rights reserved.</span></p>
   </div>
 </footer>
 
 <script src="js/script.js"></script>
+<script src="js/translations.js"></script>
+<script src="js/i18n.js"></script>
 </body>
 </html>

@@ -22,7 +22,20 @@ if (ctaForm) {
   ctaForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const name = ctaForm.elements.name.value.trim();
-    ctaNote.textContent = `Thanks${name ? ", " + name : ""} — we'll be in touch shortly. You can also reach us at hello@amidas.si.`;
+
+    let lang = "en";
+    try {
+      lang = localStorage.getItem("amidas-lang") || "en";
+    } catch (e) {
+      /* ignore */
+    }
+    const dict = (window.AMIDAS_I18N && window.AMIDAS_I18N[lang]) || {};
+    const prefix = dict["contact.form.thanksPrefix"] || "Thanks";
+    const body =
+      dict["contact.form.thanksBody"] ||
+      " — we'll be in touch shortly. You can also reach us at hello@amidas.si.";
+
+    ctaNote.textContent = `${prefix}${name ? ", " + name : ""}${body}`;
     ctaForm.reset();
   });
 }

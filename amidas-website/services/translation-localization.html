@@ -19,14 +19,18 @@
       <img class="brand-logo" src="../assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </a>
     <nav class="nav" id="nav">
-      <a href="../services.html" class="is-active" aria-current="page">Services</a>
-      <a href="../how-it-works.html">How it works</a>
-      <a href="../why-amidas.html">Why Amidas</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../services.html" class="is-active" aria-current="page" data-i18n="common.nav.services">Services</a>
+      <a href="../how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="../why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="../contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-ghost" href="../contact.html">Contact us</a>
-      <a class="btn btn-primary" href="../contact.html">Get a quote</a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="true"><span class="flag" aria-hidden="true">🇬🇧</span><span class="lang-label">EN</span></button>
+        <button type="button" class="lang-btn" data-lang="sl" aria-pressed="false"><span class="flag" aria-hidden="true">🇸🇮</span><span class="lang-label">SI</span></button>
+      </div>
+      <a class="btn btn-ghost" href="../contact.html" data-i18n="common.btn.contactUs">Contact us</a>
+      <a class="btn btn-primary" href="../contact.html" data-i18n="common.btn.quote">Get a quote</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -38,9 +42,9 @@
 
   <section class="page-hero">
     <div class="wrap page-hero-inner">
-      <p class="eyebrow service-crumb"><a href="../services.html">Services</a> / Translation &amp; Localization</p>
-      <h1>Translation &amp; localization that reads like it was written for your market.</h1>
-      <p class="hero-lead">
+      <p class="eyebrow service-crumb"><a href="../services.html" data-i18n="common.nav.services">Services</a> <span data-i18n="svcTranslation.crumb">/ Translation &amp; Localization</span></p>
+      <h1 data-i18n="svcTranslation.h1">Translation &amp; localization that reads like it was written for your market.</h1>
+      <p class="hero-lead" data-i18n="svcTranslation.lead">
         We adapt documents, websites, software, and marketing content for each target market —
         not just translating words, but making sure tone, formatting, and cultural context land
         correctly.
@@ -51,52 +55,52 @@
   <section class="detail-section">
     <div class="wrap detail-grid">
       <div class="detail-copy">
-        <p>
+        <p data-i18n="svcTranslation.p1">
           Every project starts with understanding what the source content is trying to do — inform,
           persuade, instruct — and matching that intent in the target language, not just its
           words. A native-speaking linguist translates and reviews each document, so idioms,
           tone, and register carry over naturally instead of reading like a translation.
         </p>
-        <p>
+        <p data-i18n="svcTranslation.p2">
           Localization goes further than translation: dates, currency, units, and formatting are
           adapted to local conventions, software and app strings are translated in context, and
           print-ready documents keep their original layout after translation.
         </p>
         <ul class="feature-list">
-          <li><span class="feature-check" aria-hidden="true">✓</span> Native-speaking translators for every language pair</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Formatting and layout preserved across documents, websites, and apps</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Cultural and regional adaptation, not just word-for-word translation</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Consistent terminology across all translated content</li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcTranslation.f1">Native-speaking translators for every language pair</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcTranslation.f2">Formatting and layout preserved across documents, websites, and apps</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcTranslation.f3">Cultural and regional adaptation, not just word-for-word translation</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcTranslation.f4">Consistent terminology across all translated content</span></li>
         </ul>
       </div>
       <div class="detail-visual" aria-hidden="true">
         <div class="mock-window">
           <div class="mock-titlebar">
             <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-            <span class="mock-title">Amidas — Localization project</span>
+            <span class="mock-title" data-i18n="svcTranslation.mock.title">Amidas — Localization project</span>
           </div>
           <div class="mock-body">
             <div class="mock-row">
-              <span class="mock-label">Source language</span>
+              <span class="mock-label" data-i18n="svcTranslation.mock.sourceLang">Source language</span>
               <span class="mock-value">EN</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">Target languages</span>
+              <span class="mock-label" data-i18n="svcTranslation.mock.targetLangs">Target languages</span>
               <span class="mock-value">DE, FR, IT +2</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">Content type</span>
-              <span class="mock-value">Web &amp; app strings</span>
+              <span class="mock-label" data-i18n="svcTranslation.mock.contentType">Content type</span>
+              <span class="mock-value" data-i18n="svcTranslation.mock.contentTypeValue">Web &amp; app strings</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">Status</span>
-              <span class="mock-value mock-flag">In review</span>
+              <span class="mock-label" data-i18n="svcTranslation.mock.status">Status</span>
+              <span class="mock-value mock-flag" data-i18n="svcTranslation.mock.statusValue">In review</span>
             </div>
             <div class="mock-divider"></div>
-            <div class="mock-note">
+            <div class="mock-note" data-i18n="svcTranslation.mock.note">
               "All target languages reviewed against your style guide — ready for final sign-off."
             </div>
-            <div class="mock-tag">Project #4821 · Updated today</div>
+            <div class="mock-tag" data-i18n="svcTranslation.mock.tag">Project #4821 · Updated today</div>
           </div>
         </div>
       </div>
@@ -105,11 +109,11 @@
 
   <section class="subcta">
     <div class="wrap">
-      <h2>Have content that needs to travel?</h2>
-      <p>Share your files and target markets, and we'll scope the project and quote a timeline.</p>
+      <h2 data-i18n="svcTranslation.cta.h2">Have content that needs to travel?</h2>
+      <p data-i18n="svcTranslation.cta.lead">Share your files and target markets, and we'll scope the project and quote a timeline.</p>
       <div class="subcta-actions">
-        <a class="btn btn-primary btn-lg" href="../contact.html">Request a quote</a>
-        <a class="btn btn-outline btn-lg" href="../services.html">See all services</a>
+        <a class="btn btn-primary btn-lg" href="../contact.html" data-i18n="svcTranslation.cta.btn1">Request a quote</a>
+        <a class="btn btn-outline btn-lg" href="../services.html" data-i18n="svcTranslation.cta.btn2">See all services</a>
       </div>
     </div>
   </section>
@@ -122,15 +126,17 @@
       <img class="brand-logo" src="../assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </div>
     <nav class="footer-nav">
-      <a href="../services.html">Services</a>
-      <a href="../how-it-works.html">How it works</a>
-      <a href="../why-amidas.html">Why Amidas</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../services.html" data-i18n="common.nav.services">Services</a>
+      <a href="../how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="../why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="../contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
-    <p class="footer-copy">&copy; <span id="year"></span> Amidas. All rights reserved.</p>
+    <p class="footer-copy">&copy; <span id="year"></span> Amidas. <span data-i18n="common.footer.rights">All rights reserved.</span></p>
   </div>
 </footer>
 
 <script src="../js/script.js"></script>
+<script src="../js/translations.js"></script>
+<script src="../js/i18n.js"></script>
 </body>
 </html>

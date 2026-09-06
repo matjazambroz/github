@@ -19,14 +19,18 @@
       <img class="brand-logo" src="../assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </a>
     <nav class="nav" id="nav">
-      <a href="../services.html" class="is-active" aria-current="page">Services</a>
-      <a href="../how-it-works.html">How it works</a>
-      <a href="../why-amidas.html">Why Amidas</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../services.html" class="is-active" aria-current="page" data-i18n="common.nav.services">Services</a>
+      <a href="../how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="../why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="../contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-ghost" href="../contact.html">Contact us</a>
-      <a class="btn btn-primary" href="../contact.html">Get a quote</a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="true"><span class="flag" aria-hidden="true">🇬🇧</span><span class="lang-label">EN</span></button>
+        <button type="button" class="lang-btn" data-lang="sl" aria-pressed="false"><span class="flag" aria-hidden="true">🇸🇮</span><span class="lang-label">SI</span></button>
+      </div>
+      <a class="btn btn-ghost" href="../contact.html" data-i18n="common.btn.contactUs">Contact us</a>
+      <a class="btn btn-primary" href="../contact.html" data-i18n="common.btn.quote">Get a quote</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -38,9 +42,9 @@
 
   <section class="page-hero">
     <div class="wrap page-hero-inner">
-      <p class="eyebrow service-crumb"><a href="../services.html">Services</a> / AI-Assisted Translation &amp; QA</p>
-      <h1>AI-assisted translation &amp; QA, with a human always in the loop.</h1>
-      <p class="hero-lead">
+      <p class="eyebrow service-crumb"><a href="../services.html" data-i18n="common.nav.services">Services</a> <span data-i18n="svcAiQa.crumb">/ AI-Assisted Translation &amp; QA</span></p>
+      <h1 data-i18n="svcAiQa.h1">AI-assisted translation &amp; QA, with a human always in the loop.</h1>
+      <p class="hero-lead" data-i18n="svcAiQa.lead">
         Translation memory and AI tools speed up first drafts and catch inconsistencies early —
         but every translation is reviewed and approved by a native-speaking linguist before it
         reaches you.
@@ -51,52 +55,52 @@
   <section class="detail-section">
     <div class="wrap detail-grid">
       <div class="detail-copy">
-        <p>
+        <p data-i18n="svcAiQa.p1">
           AI tools draft a first pass quickly by reusing your translation memory and applying your
           approved terminology, which shortens turnaround on large or recurring projects.
           Automated checks flag inconsistent terms, missed placeholders, and formatting issues
           before a linguist ever looks at the text.
         </p>
-        <p>
+        <p data-i18n="svcAiQa.p2">
           That draft is only a starting point. A native-speaking linguist reviews and edits every
           segment for meaning, tone, and context — the parts AI still gets wrong — so the final
           translation reads naturally and holds up under scrutiny.
         </p>
         <ul class="feature-list">
-          <li><span class="feature-check" aria-hidden="true">✓</span> AI-assisted first drafts for faster turnaround</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Automated terminology and consistency checks</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Every output reviewed and finalized by a human linguist</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Translation memory reused across projects to cut costs over time</li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcAiQa.f1">AI-assisted first drafts for faster turnaround</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcAiQa.f2">Automated terminology and consistency checks</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcAiQa.f3">Every output reviewed and finalized by a human linguist</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcAiQa.f4">Translation memory reused across projects to cut costs over time</span></li>
         </ul>
       </div>
       <div class="detail-visual" aria-hidden="true">
         <div class="mock-window">
           <div class="mock-titlebar">
             <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-            <span class="mock-title">Amidas — Translation in progress</span>
+            <span class="mock-title" data-i18n="svcAiQa.mock.title">Amidas — Translation in progress</span>
           </div>
           <div class="mock-body">
             <div class="mock-row">
-              <span class="mock-label">Language pair</span>
+              <span class="mock-label" data-i18n="svcAiQa.mock.langPair">Language pair</span>
               <span class="mock-value">EN → DE</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">AI first draft</span>
-              <span class="mock-value">Complete</span>
+              <span class="mock-label" data-i18n="svcAiQa.mock.aiDraft">AI first draft</span>
+              <span class="mock-value" data-i18n="svcAiQa.mock.aiDraftValue">Complete</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">Terminology check</span>
-              <span class="mock-value">Passed</span>
+              <span class="mock-label" data-i18n="svcAiQa.mock.termCheck">Terminology check</span>
+              <span class="mock-value" data-i18n="svcAiQa.mock.termCheckValue">Passed</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">Human review</span>
-              <span class="mock-value mock-flag">In progress</span>
+              <span class="mock-label" data-i18n="svcAiQa.mock.humanReview">Human review</span>
+              <span class="mock-value mock-flag" data-i18n="svcAiQa.mock.humanReviewValue">In progress</span>
             </div>
             <div class="mock-divider"></div>
-            <div class="mock-note">
+            <div class="mock-note" data-i18n="svcAiQa.mock.note">
               "Terminology is consistent with your style guide — ready for final approval."
             </div>
-            <div class="mock-tag">Your language partner · Today</div>
+            <div class="mock-tag" data-i18n="svcAiQa.mock.tag">Your language partner · Today</div>
           </div>
         </div>
       </div>
@@ -105,11 +109,11 @@
 
   <section class="subcta">
     <div class="wrap">
-      <h2>Have a large or recurring translation workload?</h2>
-      <p>Tell us your volume and deadlines, and we'll show you where AI-assisted delivery helps most.</p>
+      <h2 data-i18n="svcAiQa.cta.h2">Have a large or recurring translation workload?</h2>
+      <p data-i18n="svcAiQa.cta.lead">Tell us your volume and deadlines, and we'll show you where AI-assisted delivery helps most.</p>
       <div class="subcta-actions">
-        <a class="btn btn-primary btn-lg" href="../contact.html">Request a quote</a>
-        <a class="btn btn-outline btn-lg" href="../services.html">See all services</a>
+        <a class="btn btn-primary btn-lg" href="../contact.html" data-i18n="svcAiQa.cta.btn1">Request a quote</a>
+        <a class="btn btn-outline btn-lg" href="../services.html" data-i18n="svcAiQa.cta.btn2">See all services</a>
       </div>
     </div>
   </section>
@@ -122,15 +126,17 @@
       <img class="brand-logo" src="../assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </div>
     <nav class="footer-nav">
-      <a href="../services.html">Services</a>
-      <a href="../how-it-works.html">How it works</a>
-      <a href="../why-amidas.html">Why Amidas</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../services.html" data-i18n="common.nav.services">Services</a>
+      <a href="../how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="../why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="../contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
-    <p class="footer-copy">&copy; <span id="year"></span> Amidas. All rights reserved.</p>
+    <p class="footer-copy">&copy; <span id="year"></span> Amidas. <span data-i18n="common.footer.rights">All rights reserved.</span></p>
   </div>
 </footer>
 
 <script src="../js/script.js"></script>
+<script src="../js/translations.js"></script>
+<script src="../js/i18n.js"></script>
 </body>
 </html>

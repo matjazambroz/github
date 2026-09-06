@@ -19,14 +19,18 @@
       <img class="brand-logo" src="../assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </a>
     <nav class="nav" id="nav">
-      <a href="../services.html" class="is-active" aria-current="page">Services</a>
-      <a href="../how-it-works.html">How it works</a>
-      <a href="../why-amidas.html">Why Amidas</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../services.html" class="is-active" aria-current="page" data-i18n="common.nav.services">Services</a>
+      <a href="../how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="../why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="../contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-ghost" href="../contact.html">Contact us</a>
-      <a class="btn btn-primary" href="../contact.html">Get a quote</a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="true"><span class="flag" aria-hidden="true">🇬🇧</span><span class="lang-label">EN</span></button>
+        <button type="button" class="lang-btn" data-lang="sl" aria-pressed="false"><span class="flag" aria-hidden="true">🇸🇮</span><span class="lang-label">SI</span></button>
+      </div>
+      <a class="btn btn-ghost" href="../contact.html" data-i18n="common.btn.contactUs">Contact us</a>
+      <a class="btn btn-primary" href="../contact.html" data-i18n="common.btn.quote">Get a quote</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -38,9 +42,9 @@
 
   <section class="page-hero">
     <div class="wrap page-hero-inner">
-      <p class="eyebrow service-crumb"><a href="../services.html">Services</a> / Terminology &amp; Style Management</p>
-      <h1>Terminology &amp; style management that keeps every project consistent.</h1>
-      <p class="hero-lead">
+      <p class="eyebrow service-crumb"><a href="../services.html" data-i18n="common.nav.services">Services</a> <span data-i18n="svcTerminology.crumb">/ Terminology &amp; Style Management</span></p>
+      <h1 data-i18n="svcTerminology.h1">Terminology &amp; style management that keeps every project consistent.</h1>
+      <p class="hero-lead" data-i18n="svcTerminology.lead">
         Shared glossaries and style guides make sure your brand voice and technical terms stay
         consistent — across languages, projects, and translators.
       </p>
@@ -50,48 +54,48 @@
   <section class="detail-section">
     <div class="wrap detail-grid">
       <div class="detail-copy">
-        <p>
+        <p data-i18n="svcTerminology.p1">
           We build your glossary from the content you already have — past translations, product
           documentation, and any preferred terms you provide — then confirm it with you before
           it's applied to new work. A style guide captures tone, formatting conventions, and terms
           to avoid, so every translator works from the same playbook.
         </p>
-        <p>
+        <p data-i18n="svcTerminology.p2">
           Both are living documents. As your product, market, or terminology evolves, we update
           the glossary and style guide and roll the changes into future projects, so consistency
           doesn't decay over time or across translators.
         </p>
         <ul class="feature-list">
-          <li><span class="feature-check" aria-hidden="true">✓</span> Custom glossary built from your existing content and preferences</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Style guide covering tone, formatting, and terminology</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Applied consistently across every translator and project</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Reviewed and updated as your business evolves</li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcTerminology.f1">Custom glossary built from your existing content and preferences</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcTerminology.f2">Style guide covering tone, formatting, and terminology</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcTerminology.f3">Applied consistently across every translator and project</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcTerminology.f4">Reviewed and updated as your business evolves</span></li>
         </ul>
       </div>
       <div class="detail-visual" aria-hidden="true">
         <div class="mock-window">
           <div class="mock-titlebar">
             <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-            <span class="mock-title">Amidas — Glossary · EN → DE</span>
+            <span class="mock-title" data-i18n="svcTerminology.mock.title">Amidas — Glossary · EN → DE</span>
           </div>
           <div class="mock-body">
             <div class="mock-row">
               <span class="mock-label">"onboarding" → "Einarbeitung"</span>
-              <span class="mock-value">Approved</span>
+              <span class="mock-value" data-i18n="svcTerminology.mock.approved1">Approved</span>
             </div>
             <div class="mock-row">
               <span class="mock-label">"dashboard" → "Dashboard"</span>
-              <span class="mock-value">Approved</span>
+              <span class="mock-value" data-i18n="svcTerminology.mock.approved2">Approved</span>
             </div>
             <div class="mock-row">
               <span class="mock-label">"customer" → "Kunde"</span>
-              <span class="mock-value mock-flag">Under review</span>
+              <span class="mock-value mock-flag" data-i18n="svcTerminology.mock.underReview">Under review</span>
             </div>
             <div class="mock-divider"></div>
-            <div class="mock-note">
+            <div class="mock-note" data-i18n="svcTerminology.mock.note">
               "3 new terms added this week — pending your approval."
             </div>
-            <div class="mock-tag">Glossary · Updated today</div>
+            <div class="mock-tag" data-i18n="svcTerminology.mock.tag">Glossary · Updated today</div>
           </div>
         </div>
       </div>
@@ -100,11 +104,11 @@
 
   <section class="subcta">
     <div class="wrap">
-      <h2>Already have a glossary or style guide?</h2>
-      <p>Send us what you have and we'll fold it straight into your project setup.</p>
+      <h2 data-i18n="svcTerminology.cta.h2">Already have a glossary or style guide?</h2>
+      <p data-i18n="svcTerminology.cta.lead">Send us what you have and we'll fold it straight into your project setup.</p>
       <div class="subcta-actions">
-        <a class="btn btn-primary btn-lg" href="../contact.html">Request a quote</a>
-        <a class="btn btn-outline btn-lg" href="../services.html">See all services</a>
+        <a class="btn btn-primary btn-lg" href="../contact.html" data-i18n="svcTerminology.cta.btn1">Request a quote</a>
+        <a class="btn btn-outline btn-lg" href="../services.html" data-i18n="svcTerminology.cta.btn2">See all services</a>
       </div>
     </div>
   </section>
@@ -117,15 +121,17 @@
       <img class="brand-logo" src="../assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </div>
     <nav class="footer-nav">
-      <a href="../services.html">Services</a>
-      <a href="../how-it-works.html">How it works</a>
-      <a href="../why-amidas.html">Why Amidas</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../services.html" data-i18n="common.nav.services">Services</a>
+      <a href="../how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="../why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="../contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
-    <p class="footer-copy">&copy; <span id="year"></span> Amidas. All rights reserved.</p>
+    <p class="footer-copy">&copy; <span id="year"></span> Amidas. <span data-i18n="common.footer.rights">All rights reserved.</span></p>
   </div>
 </footer>
 
 <script src="../js/script.js"></script>
+<script src="../js/translations.js"></script>
+<script src="../js/i18n.js"></script>
 </body>
 </html>

@@ -19,14 +19,18 @@
       <img class="brand-logo" src="../assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </a>
     <nav class="nav" id="nav">
-      <a href="../services.html" class="is-active" aria-current="page">Services</a>
-      <a href="../how-it-works.html">How it works</a>
-      <a href="../why-amidas.html">Why Amidas</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../services.html" class="is-active" aria-current="page" data-i18n="common.nav.services">Services</a>
+      <a href="../how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="../why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="../contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-ghost" href="../contact.html">Contact us</a>
-      <a class="btn btn-primary" href="../contact.html">Get a quote</a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="true"><span class="flag" aria-hidden="true">🇬🇧</span><span class="lang-label">EN</span></button>
+        <button type="button" class="lang-btn" data-lang="sl" aria-pressed="false"><span class="flag" aria-hidden="true">🇸🇮</span><span class="lang-label">SI</span></button>
+      </div>
+      <a class="btn btn-ghost" href="../contact.html" data-i18n="common.btn.contactUs">Contact us</a>
+      <a class="btn btn-primary" href="../contact.html" data-i18n="common.btn.quote">Get a quote</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -38,9 +42,9 @@
 
   <section class="page-hero">
     <div class="wrap page-hero-inner">
-      <p class="eyebrow service-crumb"><a href="../services.html">Services</a> / Dedicated Language Partner</p>
-      <h1>A dedicated language partner, not a rotating cast of freelancers.</h1>
-      <p class="hero-lead">
+      <p class="eyebrow service-crumb"><a href="../services.html" data-i18n="common.nav.services">Services</a> <span data-i18n="svcPartner.crumb">/ Dedicated Language Partner</span></p>
+      <h1 data-i18n="svcPartner.h1">A dedicated language partner, not a rotating cast of freelancers.</h1>
+      <p class="hero-lead" data-i18n="svcPartner.lead">
         One point of contact learns your business, terminology, and deadlines — so every project
         starts from context, not from scratch.
       </p>
@@ -50,52 +54,52 @@
   <section class="detail-section">
     <div class="wrap detail-grid">
       <div class="detail-copy">
-        <p>
+        <p data-i18n="svcPartner.p1">
           Instead of re-explaining your business to a different freelancer every time, you work
           with one contact who already knows your glossary, your style guide, and how your
           projects usually run. That continuity means faster scoping, fewer clarifying questions,
           and translations that fit your context from the first draft.
         </p>
-        <p>
+        <p data-i18n="svcPartner.p2">
           Your dedicated contact coordinates the linguists and interpreters behind the scenes,
           keeps recurring and urgent work moving, and gives you one place to go for status
           updates, invoicing, and planning — instead of juggling several vendors.
         </p>
         <ul class="feature-list">
-          <li><span class="feature-check" aria-hidden="true">✓</span> One dedicated contact for all your projects</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Faster turnaround thanks to established context and glossaries</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Priority scheduling for recurring and urgent work</li>
-          <li><span class="feature-check" aria-hidden="true">✓</span> Simple, consolidated communication and invoicing</li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcPartner.f1">One dedicated contact for all your projects</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcPartner.f2">Faster turnaround thanks to established context and glossaries</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcPartner.f3">Priority scheduling for recurring and urgent work</span></li>
+          <li><span class="feature-check" aria-hidden="true">✓</span> <span data-i18n="svcPartner.f4">Simple, consolidated communication and invoicing</span></li>
         </ul>
       </div>
       <div class="detail-visual" aria-hidden="true">
         <div class="mock-window">
           <div class="mock-titlebar">
             <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-            <span class="mock-title">Amidas — Your account</span>
+            <span class="mock-title" data-i18n="svcPartner.mock.title">Amidas — Your account</span>
           </div>
           <div class="mock-body">
             <div class="mock-row">
-              <span class="mock-label">Dedicated contact</span>
-              <span class="mock-value">Assigned</span>
+              <span class="mock-label" data-i18n="svcPartner.mock.contact">Dedicated contact</span>
+              <span class="mock-value" data-i18n="svcPartner.mock.contactValue">Assigned</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">Active projects</span>
+              <span class="mock-label" data-i18n="svcPartner.mock.activeProjects">Active projects</span>
               <span class="mock-value">4</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">Avg. response time</span>
-              <span class="mock-value">Same day</span>
+              <span class="mock-label" data-i18n="svcPartner.mock.responseTime">Avg. response time</span>
+              <span class="mock-value" data-i18n="svcPartner.mock.responseTimeValue">Same day</span>
             </div>
             <div class="mock-row">
-              <span class="mock-label">Next check-in</span>
-              <span class="mock-value mock-flag">This Friday</span>
+              <span class="mock-label" data-i18n="svcPartner.mock.nextCheckin">Next check-in</span>
+              <span class="mock-value mock-flag" data-i18n="svcPartner.mock.nextCheckinValue">This Friday</span>
             </div>
             <div class="mock-divider"></div>
-            <div class="mock-note">
+            <div class="mock-note" data-i18n="svcPartner.mock.note">
               "Quarterly review scheduled — we'll share updated turnaround times."
             </div>
-            <div class="mock-tag">Your account · Amidas</div>
+            <div class="mock-tag" data-i18n="svcPartner.mock.tag">Your account · Amidas</div>
           </div>
         </div>
       </div>
@@ -104,11 +108,11 @@
 
   <section class="subcta">
     <div class="wrap">
-      <h2>Tired of re-briefing a new freelancer every time?</h2>
-      <p>Tell us about your ongoing language needs and we'll set up a dedicated point of contact.</p>
+      <h2 data-i18n="svcPartner.cta.h2">Tired of re-briefing a new freelancer every time?</h2>
+      <p data-i18n="svcPartner.cta.lead">Tell us about your ongoing language needs and we'll set up a dedicated point of contact.</p>
       <div class="subcta-actions">
-        <a class="btn btn-primary btn-lg" href="../contact.html">Request a quote</a>
-        <a class="btn btn-outline btn-lg" href="../services.html">See all services</a>
+        <a class="btn btn-primary btn-lg" href="../contact.html" data-i18n="svcPartner.cta.btn1">Request a quote</a>
+        <a class="btn btn-outline btn-lg" href="../services.html" data-i18n="svcPartner.cta.btn2">See all services</a>
       </div>
     </div>
   </section>
@@ -121,15 +125,17 @@
       <img class="brand-logo" src="../assets/amidas-logo.svg" alt="Amidas" width="510" height="129">
     </div>
     <nav class="footer-nav">
-      <a href="../services.html">Services</a>
-      <a href="../how-it-works.html">How it works</a>
-      <a href="../why-amidas.html">Why Amidas</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../services.html" data-i18n="common.nav.services">Services</a>
+      <a href="../how-it-works.html" data-i18n="common.nav.how">How it works</a>
+      <a href="../why-amidas.html" data-i18n="common.nav.why">Why Amidas</a>
+      <a href="../contact.html" data-i18n="common.nav.contact">Contact</a>
     </nav>
-    <p class="footer-copy">&copy; <span id="year"></span> Amidas. All rights reserved.</p>
+    <p class="footer-copy">&copy; <span id="year"></span> Amidas. <span data-i18n="common.footer.rights">All rights reserved.</span></p>
   </div>
 </footer>
 
 <script src="../js/script.js"></script>
+<script src="../js/translations.js"></script>
+<script src="../js/i18n.js"></script>
 </body>
 </html>
