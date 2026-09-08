@@ -1,0 +1,448 @@
+{
+  "common": {
+    "nav": {
+      "services": "Storitve",
+      "how": "Kako deluje",
+      "why": "Zakaj Amidas",
+      "contact": "Kontakt"
+    },
+    "btn": {
+      "contactUs": "Kontaktirajte nas",
+      "quote": "Povprašite po ponudbi"
+    },
+    "footer": {
+      "rights": "Vse pravice pridržane."
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Človeški jezikoslovci. Hitrost umetne inteligence.",
+      "h1": "Vaš partner za jezikovno komunikacijo.",
+      "lead": "Amidas združuje izkušene prevajalce in tolmače z orodji, podprtimi z umetno inteligenco, da lahko jasno, natančno in pravočasno komunicirate v katerem koli jeziku, s katerim koli občinstvom.",
+      "cta1": "Povprašite po ponudbi",
+      "cta2": "Oglejte si naše storitve",
+      "trust1": "Jezikoslovci, ki jim je jezik materni",
+      "trust2": "Vedno pregleda človek",
+      "trust3": "Ena namenska kontaktna oseba"
+    },
+    "mock": {
+      "title": "Amidas — Prevod v teku",
+      "langPair": {
+        "label": "Jezikovni par"
+      },
+      "termCheck": {
+        "label": "Preverjanje terminologije",
+        "value": "Uspešno"
+      },
+      "humanReview": {
+        "label": "Človeški pregled",
+        "value": "V teku"
+      },
+      "note": "»Terminologija je skladna z vašim slogovnim priročnikom — pripravljeno za končno odobritev.«",
+      "tag": "Vaš jezikovni partner · Danes"
+    },
+    "problem": {
+      "h2": "Jezikovne ovire stanejo več kot le čas.",
+      "card1": {
+        "title": "Izgubljeno v prevodu",
+        "desc": "Subtilni pomen in ton se izgubita, če je vsebina prevedena dobesedno namesto prilagojena občinstvu."
+      },
+      "card2": {
+        "title": "Roki, ki ne počakajo",
+        "desc": "Globalne predstavitve, pogodbe in kampanje obstanejo, medtem ko prevodi čakajo v vrsti."
+      },
+      "card3": {
+        "title": "Neskladna terminologija",
+        "desc": "Različni prevajalci izbirajo različne besede — glas vaše blagovne znamke pa se med trgi razlikuje."
+      },
+      "card4": {
+        "title": "Brez ene same kontaktne osebe",
+        "desc": "Usklajevanje menjajočih se samostojnih prevajalcev ali agencij namesto enega namenskega partnerja."
+      }
+    },
+    "services": {
+      "eyebrow": "Kaj počnemo",
+      "h2": "Celostni jezikovni partner, ki mu pri delu pomaga umetna inteligenca.",
+      "lead": "Vsak projekt vodijo jezikoslovci, ki jim je ciljni jezik materni, podprti z orodji UI za hitrost, doslednost in preverjanje kakovosti — nikoli kot nadomestilo za človeško presojo.",
+      "card1": {
+        "title": "Prevajanje in lokalizacija",
+        "desc": "Dokumenti, spletne strani, programska oprema in tržna vsebina, prilagojeni vašim ciljnim trgom.",
+        "link": "Preberite več →"
+      },
+      "card2": {
+        "title": "Tolmačenje",
+        "desc": "Tolmači na kraju samem in na daljavo za sestanke, konference in dogodke v živo.",
+        "link": "Preberite več →"
+      },
+      "card3": {
+        "title": "S sistemi UI podprto prevajanje in nadzor kakovosti",
+        "desc": "Hitrejši prvi osnutki in preverjanje doslednosti — vsak izdelek pregleda človeški jezikoslovec.",
+        "link": "Preberite več →"
+      }
+    },
+    "how": {
+      "eyebrow": "Kako deluje",
+      "h2": "Od izvirnega besedila do končnega prevoda v treh korakih.",
+      "lead": "Delite svojo vsebino, prepustite delo jezikoslovcem in orodjem UI, nato pa pregledajte in potrdite rezultat.",
+      "cta": "Oglejte si celoten postopek"
+    },
+    "why": {
+      "eyebrow": "Zakaj Amidas",
+      "h2": "Komunikacijski partner, ne le ponudnik storitev.",
+      "lead": "Materni strokovnjaki, UI uporabljena tam, kjer resnično pomaga, in ena namenska kontaktna oseba, ki pozna vaše poslovanje — ne menjajoča se ekipa samostojnih prevajalcev.",
+      "cta": "Zakaj ekipe izberejo Amidas"
+    },
+    "faq": {
+      "eyebrow": "Pogosta vprašanja",
+      "h2": "Odgovori na vprašanja.",
+      "q1": "S katerimi jeziki delate?",
+      "a1": "Pokrivamo širok nabor jezikovnih parov za prevajanje in tolmačenje. Sporočite nam izvorni in ciljni jezik, mi pa potrdimo pokritost in vam poiščemo ustrezne jezikoslovce, ki jim je ciljni jezik materni.",
+      "q2": "Kako se UI dejansko uporablja pri mojem prevodu?",
+      "a2": "Orodja s podporo UI pospešijo izdelavo prvih osnutkov, ponovno uporabijo prevajalski pomnilnik in zgodaj opozorijo na terminološka ali neskladna mesta. Vsak prevod pred dostavo še vedno pregleda in dokončno potrdi jezikoslovec, ki mu je ciljni jezik materni — UI nikoli nima zadnje besede.",
+      "q3": "Kako hitro lahko izvedete projekt?",
+      "a3": "Odvisno je od dolžine, jezikovnega para in zahtevnosti besedila. Delite svojo vsebino in rok prek kontaktnega obrazca, mi pa pred začetkom dela potrdimo realen časovni okvir.",
+      "q4": "Ali lahko uporabite našo obstoječo terminologijo in slogovni priročnik?",
+      "a4": "Da. Iz vašega obstoječega gradiva in želja pripravimo glosar in slogovni priročnik ter ju dosledno uporabljamo pri vseh prevajalcih in projektih — podrobnosti najdete pri storitvi upravljanja terminologije in sloga.",
+      "q5": "Ali ponujate tolmačenje za dogodke v živo?",
+      "a5": "Da, tako na kraju samem kot na daljavo (video ali telefon), simultano ali konsekutivno. Sporočite nam datum, obliko dogodka in jezikovne pare, mi pa potrdimo razpoložljivost tolmača.",
+      "q6": "Kako pridobim ponudbo?",
+      "a6": "Uporabite kontaktni obrazec z navedbo jezikov, vsebine in roka, ali nam pišite neposredno na <a href=\"mailto:hello{'@'}amidas.si\">hello{'@'}amidas.si</a>. Odgovorili vam bomo z obsegom dela in ponudbo."
+    },
+    "cta": {
+      "h2": "Pripravljeni na komunikacijo brez ovir?",
+      "lead": "Povejte nam več o svojem projektu — jezikih, vsebini in roku — mi pa se vam oglasimo z načrtom in ponudbo.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Pišite nam neposredno"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Kaj počnemo",
+      "h1": "Celostni jezikovni partner, ki mu pri delu pomaga umetna inteligenca.",
+      "lead": "Vsak projekt vodijo jezikoslovci, ki jim je ciljni jezik materni, podprti z orodji UI za hitrost, doslednost in preverjanje kakovosti — nikoli kot nadomestilo za človeško presojo."
+    },
+    "card1": {
+      "title": "Prevajanje in lokalizacija",
+      "desc": "Dokumenti, spletne strani, programska oprema in tržna vsebina, prilagojeni vašim ciljnim trgom — ne le dobesedno prevedeni.",
+      "link": "Preberite več →"
+    },
+    "card2": {
+      "title": "Tolmačenje",
+      "desc": "Tolmači na kraju samem in na daljavo za sestanke, konference in dogodke v živo, v jezikovnih parih, ki jih potrebujete.",
+      "link": "Preberite več →"
+    },
+    "card3": {
+      "title": "S sistemi UI podprto prevajanje in nadzor kakovosti",
+      "desc": "Prevajalski pomnilnik in orodja UI pospešijo pripravo prvih osnutkov in odkrijejo neskladja — vsak izdelek pregleda človeški jezikoslovec.",
+      "link": "Preberite več →"
+    },
+    "card4": {
+      "title": "Upravljanje terminologije in sloga",
+      "desc": "Glosarji in slogovni priročniki, ki ostajajo dosledni pri vseh projektih, jezikih in prevajalcih.",
+      "link": "Preberite več →"
+    },
+    "card5": {
+      "title": "Ustvarjanje večjezične vsebine",
+      "desc": "Copywriting in transkreacija, ki se v vsakem ciljnem jeziku bereta naravno, ne le natančno.",
+      "link": "Preberite več →"
+    },
+    "card6": {
+      "title": "Namenski jezikovni partner",
+      "desc": "Ena kontaktna oseba, ki pozna vaše poslovanje, terminologijo in roke.",
+      "link": "Preberite več →"
+    },
+    "cta": {
+      "h2": "Niste prepričani, katero storitev potrebujete?",
+      "lead": "Povejte nam več o svoji vsebini in jezikih, mi pa vam predlagamo pravi pristop.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si, kako deluje"
+    }
+  },
+  "how": {
+    "hero": {
+      "eyebrow": "Kako deluje",
+      "h1": "Od izvirnega besedila do končnega prevoda v treh korakih.",
+      "lead": "Brez dolgotrajnega uvajanja, brez črne skrinjice — le jasen postopek s človeško kontrolno točko na vsaki pomembni stopnji."
+    },
+    "step1": {
+      "title": "Delite svojo vsebino",
+      "desc": "Pošljite nam svoje datoteke, kontekst ter morebitne slogovne priročnike ali terminologijo, ki jo že uporabljate. Pred začetkom dela potrdimo obseg, jezike in časovnico."
+    },
+    "step2": {
+      "title": "Sodelovanje človeka in UI",
+      "desc": "Jezikoslovci, ki jim je ciljni jezik materni, prevedejo in pregledajo vašo vsebino, pri čemer z orodji UI in prevajalskim pomnilnikom delajo hitreje, ne da bi žrtvovali kakovost."
+    },
+    "step3": {
+      "title": "Pregled in dostava",
+      "desc": "Zadnje preverjanje kakovosti in terminologije, preden prejmete dodelan, takoj uporaben prevod — poleg tega imate na voljo namensko kontaktno osebo za morebitna vprašanja."
+    },
+    "status": {
+      "sourceReview": "Pregled izvirnika",
+      "humanTranslation": "Človeški prevod",
+      "termCheck": "Preverjanje terminologije",
+      "finalApproval": "Končna potrditev",
+      "complete": "Zaključeno",
+      "awaiting": "Čaka na vaš pregled"
+    },
+    "cta": {
+      "h2": "Ste pripravljeni začeti projekt?",
+      "lead": "Delite svojo vsebino in rok, mi pa vas popeljemo skozi časovnico in ceno.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si naše storitve"
+    }
+  },
+  "why": {
+    "hero": {
+      "eyebrow": "Zakaj Amidas",
+      "h1": "Komunikacijski partner, ne le ponudnik storitev.",
+      "lead": "Leta smo del vsakdana izvajanja jezikovnih storitev — vodenja projektov, terminologije, zagotavljanja kakovosti — in svoj proces zgradili okoli tega, kar prevode dejansko ohranja natančne in pravočasne."
+    },
+    "list": {
+      "item1": "<strong>Materno znanje.</strong> Vsak prevod izdela in pregleda jezikoslovec, ki mu je ciljni jezik materni.",
+      "item2": "<strong>UI tam, kjer pomaga.</strong> Prevajalski pomnilnik in priprava osnutkov s pomočjo UI pospešita dostavo — zadnjo besedo pa vedno ima človeška presoja.",
+      "item3": "<strong>Dosledna kakovost.</strong> Skupni glosarji in slogovni priročniki ohranjajo doslednost terminologije in tona pri vsakem projektu.",
+      "item4": "<strong>Ena namenska kontaktna oseba.</strong> Ena sama kontaktna oseba, ki pozna vaše poslovanje, ne menjajoča se ekipa samostojnih prevajalcev."
+    },
+    "cta": {
+      "h2": "Preverite v praksi",
+      "lead": "Najboljši način za presojo jezikovnega partnerja je pravi projekt. Povejte nam, kaj potrebujete prevedeno.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si naše storitve"
+    }
+  },
+  "contact": {
+    "header": {
+      "email": "Pišite nam"
+    },
+    "hero": {
+      "eyebrow": "Kontakt",
+      "h1": "Pripravljeni na komunikacijo brez ovir?",
+      "lead": "Povejte nam več o svojem projektu — jezikih, vsebini in roku — mi pa se vam oglasimo z načrtom in ponudbo."
+    },
+    "form": {
+      "name": "Vaše ime",
+      "email": "Poslovni e-naslov",
+      "company": "Podjetje",
+      "languages": "Potrebni jezikovni par(i) (npr. EN → DE)",
+      "submit": "Povprašite po ponudbi",
+      "note": "Ali nas kontaktirajte neposredno na <a href=\"mailto:hello{'@'}amidas.si\">hello{'@'}amidas.si</a>.",
+      "thanksPrefix": "Hvala",
+      "thanksBody": " — kmalu se vam oglasimo. Kontaktirate nas lahko tudi na hello{'@'}amidas.si."
+    }
+  },
+  "svcTranslation": {
+    "crumb": "/ Prevajanje in lokalizacija",
+    "h1": "Prevajanje in lokalizacija, ki se bereta, kot bi bila napisana za vaš trg.",
+    "lead": "Dokumente, spletne strani, programsko opremo in tržno vsebino prilagodimo vsakemu ciljnemu trgu — ne prevajamo le besed, temveč poskrbimo, da ton, oblikovanje in kulturni kontekst pravilno pridejo do izraza.",
+    "p1": "Vsak projekt se začne z razumevanjem namena izvirne vsebine — informirati, prepričati, poučiti — in prenosom tega namena v ciljni jezik, ne le njegovih besed. Jezikoslovec, ki mu je ciljni jezik materni, prevede in pregleda vsak dokument, tako da se idiomi, ton in slog prenesejo naravno, ne kot prevod.",
+    "p2": "Lokalizacija gre dlje od prevajanja: datumi, valuta, merske enote in oblikovanje se prilagodijo lokalnim običajem, nizi v programski opremi in aplikacijah so prevedeni v kontekstu, dokumenti za tisk pa po prevodu ohranijo izvirno postavitev.",
+    "f1": "Prevajalci, ki jim je jezik materni, za vsak jezikovni par",
+    "f2": "Ohranjeno oblikovanje in postavitev pri dokumentih, spletnih straneh in aplikacijah",
+    "f3": "Kulturna in regionalna prilagoditev, ne le dobeseden prevod",
+    "f4": "Dosledna terminologija v vsej prevedeni vsebini",
+    "mock": {
+      "title": "Amidas — Lokalizacijski projekt",
+      "sourceLang": "Izvorni jezik",
+      "targetLangs": "Ciljni jeziki",
+      "contentType": "Vrsta vsebine",
+      "contentTypeValue": "Nizi za splet in aplikacije",
+      "status": "Stanje",
+      "statusValue": "V pregledu",
+      "note": "»Vsi ciljni jeziki so pregledani skladno z vašim slogovnim priročnikom — pripravljeno za končno potrditev.«",
+      "tag": "Projekt #4821 · Posodobljeno danes"
+    },
+    "cta": {
+      "h2": "Imate vsebino, ki mora doseči nove jezike?",
+      "lead": "Delite svoje datoteke in ciljne trge, mi pa pripravimo obseg projekta in časovnico.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si vse storitve"
+    }
+  },
+  "svcInterpretation": {
+    "crumb": "/ Tolmačenje",
+    "h1": "Tolmačenje za sestanke, konference in dogodke v živo.",
+    "lead": "Tolmači na kraju samem in na daljavo vam pomagajo samozavestno komunicirati v realnem času, v jezikovnih parih in obliki, ki jo vaš dogodek potrebuje.",
+    "p1": "Simultano tolmačenje ohranja tekoč potek dogodka v živo v realnem času, idealno za konference, spletne seminarje in večjezične okrogle mize. Konsekutivno tolmačenje je primernejše za manjše sestanke, pogajanja in oglede na terenu, kjer tolmač govori po vsakem delu pogovora.",
+    "p2": "Tolmači se lahko pridružijo na kraju samem ali na daljavo prek videa ali telefona, vsako naročilo pa dodelimo tolmaču z izkušnjami na vašem strokovnem področju — pravnem, tehničnem, medicinskem ali poslovnem — tako da se pri najpomembnejših trenutkih nič ne izgubi v prevodu.",
+    "f1": "Simultano in konsekutivno tolmačenje",
+    "f2": "Možnosti na kraju samem in na daljavo (video in telefon)",
+    "f3": "Tolmači, prilagojeni vašemu strokovnemu področju",
+    "f4": "Usklajevanje opreme za večje dogodke",
+    "mock": {
+      "title": "Amidas — Dogodek v živo",
+      "event": "Dogodek",
+      "eventValue": "Spletni seminar ob predstavitvi izdelka",
+      "langPair": "Jezikovni par",
+      "mode": "Način",
+      "modeValue": "Simultano",
+      "status": "Stanje",
+      "statusValue": "V živo",
+      "note": "»Tolmač je povezan in pripravljen — preverjanje zvoka je zaključeno.«",
+      "tag": "Dogodek #212 · Danes, 10.00"
+    },
+    "cta": {
+      "h2": "Načrtujete večjezični dogodek?",
+      "lead": "Sporočite nam datum, obliko in jezikovne pare, mi pa potrdimo razpoložljivost tolmača.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si vse storitve"
+    }
+  },
+  "svcAiQa": {
+    "crumb": "/ S sistemi UI podprto prevajanje in nadzor kakovosti",
+    "h1": "S sistemi UI podprto prevajanje in nadzor kakovosti — vedno s človekom v postopku.",
+    "lead": "Prevajalski pomnilnik in orodja UI pospešijo pripravo prvih osnutkov in zgodaj odkrijejo neskladja — vsak prevod pa pred dostavo pregleda in potrdi jezikoslovec, ki mu je ciljni jezik materni.",
+    "p1": "Orodja UI hitro pripravijo prvi osnutek s ponovno uporabo vašega prevajalskega pomnilnika in uporabo potrjene terminologije, kar skrajša čas izvedbe pri obsežnih ali ponavljajočih se projektih. Samodejna preverjanja opozorijo na neskladne izraze, manjkajoče nadomestne oznake in težave z obliko, še preden besedilo pregleda jezikoslovec.",
+    "p2": "Ta osnutek je le izhodišče. Jezikoslovec, ki mu je ciljni jezik materni, pregleda in uredi vsak segment glede pomena, tona in konteksta — torej dele, pri katerih UI še vedno dela napake — tako da je končni prevod naravno berljiv in vzdrži natančen pregled.",
+    "f1": "S pomočjo UI pripravljeni prvi osnutki za hitrejšo izvedbo",
+    "f2": "Samodejno preverjanje terminologije in doslednosti",
+    "f3": "Vsak izdelek pregleda in dokončno potrdi človeški jezikoslovec",
+    "f4": "Prevajalski pomnilnik, ponovno uporabljen pri projektih za nižje stroške sčasoma",
+    "mock": {
+      "title": "Amidas — Prevod v teku",
+      "langPair": "Jezikovni par",
+      "aiDraft": "Prvi osnutek UI",
+      "aiDraftValue": "Zaključeno",
+      "termCheck": "Preverjanje terminologije",
+      "termCheckValue": "Uspešno",
+      "humanReview": "Človeški pregled",
+      "humanReviewValue": "V teku",
+      "note": "»Terminologija je skladna z vašim slogovnim priročnikom — pripravljeno za končno odobritev.«",
+      "tag": "Vaš jezikovni partner · Danes"
+    },
+    "cta": {
+      "h2": "Imate obsežno ali ponavljajočo se količino prevodov?",
+      "lead": "Povejte nam obseg in roke, mi pa vam pokažemo, kje s pomočjo UI podprta dostava najbolj pomaga.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si vse storitve"
+    }
+  },
+  "svcTerminology": {
+    "crumb": "/ Upravljanje terminologije in sloga",
+    "h1": "Upravljanje terminologije in sloga, ki ohranja doslednost vsakega projekta.",
+    "lead": "Skupni glosarji in slogovni priročniki poskrbijo, da glas vaše blagovne znamke in strokovni izrazi ostanejo dosledni — pri jezikih, projektih in prevajalcih.",
+    "p1": "Vaš glosar pripravimo iz gradiva, ki ga že imate — preteklih prevodov, dokumentacije izdelkov in morebitnih prednostnih izrazov, ki nam jih posredujete — nato pa ga potrdimo z vami, preden ga uporabimo pri novem delu. Slogovni priročnik zajema ton, oblikovne dogovore in izraze, ki se jim je treba izogniti, tako da vsi prevajalci delajo po istih pravilih.",
+    "p2": "Oba dokumenta se sproti dopolnjujeta. Ko se vaš izdelek, trg ali terminologija spreminjajo, posodobimo glosar in slogovni priročnik ter spremembe vključimo v prihodnje projekte, tako da doslednost ne peša s časom ali med prevajalci.",
+    "f1": "Prilagojen glosar, pripravljen iz vaše obstoječe vsebine in želja",
+    "f2": "Slogovni priročnik, ki zajema ton, oblikovanje in terminologijo",
+    "f3": "Dosledno uporabljen pri vseh prevajalcih in projektih",
+    "f4": "Pregledan in posodobljen skladno z razvojem vašega poslovanja",
+    "mock": {
+      "title": "Amidas — Glosar · EN → DE",
+      "approved1": "Potrjeno",
+      "approved2": "Potrjeno",
+      "underReview": "V pregledu",
+      "note": "»Ta teden so bili dodani 3 novi izrazi — čakajo na vašo potrditev.«",
+      "tag": "Glosar · Posodobljeno danes"
+    },
+    "cta": {
+      "h2": "Že imate glosar ali slogovni priročnik?",
+      "lead": "Pošljite nam, kar imate, mi pa ga vključimo neposredno v pripravo projekta.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si vse storitve"
+    }
+  },
+  "svcContent": {
+    "crumb": "/ Ustvarjanje večjezične vsebine",
+    "h1": "Ustvarjanje večjezične vsebine, ki se v vsakem jeziku bere naravno.",
+    "lead": "Od tržnih besedil do opisov izdelkov — naši avtorji in jezikoslovci ustvarjajo vsebino, ki nagovori v vsakem ciljnem jeziku — ne prevod, ki se kot tak tudi bere.",
+    "p1": "Transkreacija izhaja iz vašega sporočila in ciljev, ne iz dobesednega besedila — jezikoslovec na novo zgradi naslove, slogane in pozive k dejanju, tako da v ciljnem jeziku delujejo tako, kot ste nameravali, vključno z idiomi in kulturnimi referencami.",
+    "p2": "Delamo na podlagi kreativnega brifinga, obstoječih smernic blagovne znamke ali izvirne vsebine, ki jo že imate, in ohranjamo dosleden glas v vseh jezikih in kanalih — od besedil na spletni strani, oglasov, objav na družbenih omrežjih do opisov izdelkov.",
+    "f1": "Copywriting in transkreacija, ne dobeseden prevod",
+    "f2": "Vsebina, prilagojena lokalnemu tonu, idiomom in kulturnemu kontekstu",
+    "f3": "Dosleden glas v vseh jezikih in kanalih",
+    "f4": "Delo na podlagi brifinga, obstoječe vsebine ali smernic blagovne znamke",
+    "mock": {
+      "title": "Amidas — Vsebinski brif",
+      "market": "Nov trg",
+      "marketValue": "Nemčija",
+      "tone": "Ton",
+      "toneValue": "Prijazen, profesionalen",
+      "languages": "Jeziki",
+      "status": "Stanje",
+      "statusValue": "Osnutek pripravljen",
+      "note": "»Možnosti naslovov so pripravljene za pregled — različice tona so priložene.«",
+      "tag": "Brif #77 · Posodobljeno danes"
+    },
+    "cta": {
+      "h2": "Vstopate na nov trg?",
+      "lead": "Delite svoj brif ali smernice blagovne znamke, mi pa vam pokažemo, kako se vsebina prilagodi.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si vse storitve"
+    }
+  },
+  "svcPartner": {
+    "crumb": "/ Namenski jezikovni partner",
+    "h1": "Namenski jezikovni partner, ne menjajoča se ekipa samostojnih prevajalcev.",
+    "lead": "Ena kontaktna oseba spozna vaše poslovanje, terminologijo in roke — tako da vsak projekt izhaja iz konteksta, ne začenja se znova.",
+    "p1": "Namesto da bi vsakič znova razlagali svoje poslovanje drugemu samostojnemu prevajalcu, delate z eno kontaktno osebo, ki že pozna vaš glosar, slogovni priročnik in običajen potek vaših projektov. Ta kontinuiteta pomeni hitrejšo pripravo obsega, manj dodatnih vprašanj in prevode, ki ustrezajo vašemu kontekstu že od prvega osnutka.",
+    "p2": "Vaša namenska kontaktna oseba v ozadju usklajuje jezikoslovce in tolmače, skrbi za nemoten potek ponavljajočega se in nujnega dela ter vam nudi eno samo mesto za posodobitve stanja, izdajanje računov in načrtovanje — namesto usklajevanja več ponudnikov.",
+    "f1": "Ena namenska kontaktna oseba za vse vaše projekte",
+    "f2": "Hitrejša izvedba zaradi vzpostavljenega konteksta in glosarjev",
+    "f3": "Prednostno razporejanje ponavljajočega se in nujnega dela",
+    "f4": "Preprosta, poenotena komunikacija in izdajanje računov",
+    "mock": {
+      "title": "Amidas — Vaš račun",
+      "contact": "Namenska kontaktna oseba",
+      "contactValue": "Dodeljena",
+      "activeProjects": "Aktivni projekti",
+      "responseTime": "Povp. odzivni čas",
+      "responseTimeValue": "Isti delovni dan",
+      "nextCheckin": "Naslednji pogovor",
+      "nextCheckinValue": "Ta petek",
+      "note": "»Načrtovan je četrtletni pregled — delili bomo posodobljene čase izvedbe.«",
+      "tag": "Vaš račun · Amidas"
+    },
+    "cta": {
+      "h2": "Vas je naveličalo vsakič znova uvajati novega samostojnega prevajalca?",
+      "lead": "Povejte nam o svojih stalnih jezikovnih potrebah, mi pa vam dodelimo namensko kontaktno osebo.",
+      "btn1": "Povprašite po ponudbi",
+      "btn2": "Oglejte si vse storitve"
+    }
+  },
+  "meta": {
+    "home": {
+      "title": "Amidas — Vaš partner za jezikovno komunikacijo",
+      "description": "Amidas združuje izkušene prevajalce in tolmače z orodji, podprtimi z umetno inteligenco, da lahko jasno, natančno in pravočasno komunicirate v katerem koli jeziku."
+    },
+    "services": {
+      "title": "Storitve — Amidas",
+      "description": "Prevajanje, lokalizacija, tolmačenje in z UI podprte jezikovne storitve podjetja Amidas — vsak projekt pregleda jezikoslovec, ki mu je ciljni jezik materni."
+    },
+    "how": {
+      "title": "Kako deluje — Amidas",
+      "description": "Kako Amidas vašo izvirno vsebino spremeni v končni prevod: delite vsebino, sodelovanje človeka in UI, pregled in dostava."
+    },
+    "why": {
+      "title": "Zakaj Amidas — Amidas",
+      "description": "Zakaj ekipe izberejo Amidas za svojega jezikovnega komunikacijskega partnerja: materno znanje, UI uporabljena tam, kjer pomaga, in ena namenska kontaktna oseba."
+    },
+    "contact": {
+      "title": "Kontakt — Amidas",
+      "description": "Kontaktirajte Amidas za ponudbo za prevajanje, lokalizacijo ali tolmačenje."
+    },
+    "svcTranslation": {
+      "title": "Prevajanje in lokalizacija — Amidas",
+      "description": "Dokumenti, spletne strani, programska oprema in tržna vsebina, prilagojeni vašim ciljnim trgom s strani jezikoslovcev, ki jim je jezik materni."
+    },
+    "svcInterpretation": {
+      "title": "Tolmačenje — Amidas",
+      "description": "Tolmači na kraju samem in na daljavo za sestanke, konference in dogodke v živo, v jezikovnih parih, ki jih potrebujete."
+    },
+    "svcAiQa": {
+      "title": "S sistemi UI podprto prevajanje in nadzor kakovosti — Amidas",
+      "description": "Prevajalski pomnilnik in orodja UI pospešijo pripravo prvih osnutkov in odkrijejo neskladja — vsak izdelek pregleda človeški jezikoslovec."
+    },
+    "svcTerminology": {
+      "title": "Upravljanje terminologije in sloga — Amidas",
+      "description": "Glosarji in slogovni priročniki, ki ostajajo dosledni pri vseh projektih, jezikih in prevajalcih."
+    },
+    "svcContent": {
+      "title": "Ustvarjanje večjezične vsebine — Amidas",
+      "description": "Copywriting in transkreacija, ki se v vsakem ciljnem jeziku bereta naravno, ne le natančno."
+    },
+    "svcPartner": {
+      "title": "Namenski jezikovni partner — Amidas",
+      "description": "Ena kontaktna oseba, ki pozna vaše poslovanje, terminologijo in roke."
+    }
+  }
+}

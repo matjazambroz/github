@@ -1,0 +1,448 @@
+{
+  "common": {
+    "nav": {
+      "services": "Services",
+      "how": "How it works",
+      "why": "Why Amidas",
+      "contact": "Contact"
+    },
+    "btn": {
+      "contactUs": "Contact us",
+      "quote": "Get a quote"
+    },
+    "footer": {
+      "rights": "All rights reserved."
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Human linguists. AI-powered speed.",
+      "h1": "Your language communication partner.",
+      "lead": "Amidas pairs expert translators and interpreters with AI-assisted tools to help you communicate clearly, accurately, and on time — in any language, for any audience.",
+      "cta1": "Get a quote",
+      "cta2": "See our services",
+      "trust1": "Native-speaking linguists",
+      "trust2": "Human-reviewed, every time",
+      "trust3": "One dedicated point of contact"
+    },
+    "mock": {
+      "title": "Amidas — Translation in progress",
+      "langPair": {
+        "label": "Language pair"
+      },
+      "termCheck": {
+        "label": "Terminology check",
+        "value": "Passed"
+      },
+      "humanReview": {
+        "label": "Human review",
+        "value": "In progress"
+      },
+      "note": "\"Terminology is consistent with your style guide — ready for final approval.\"",
+      "tag": "Your language partner · Today"
+    },
+    "problem": {
+      "h2": "Language barriers cost more than time.",
+      "card1": {
+        "title": "Lost in translation",
+        "desc": "Subtle meaning and tone get lost when content is translated word-for-word instead of adapted for the audience."
+      },
+      "card2": {
+        "title": "Deadlines that don't wait",
+        "desc": "Global launches, contracts, and campaigns stall while translations sit in a queue."
+      },
+      "card3": {
+        "title": "Inconsistent terminology",
+        "desc": "Different translators make different word choices — and your brand voice drifts across markets."
+      },
+      "card4": {
+        "title": "No single point of contact",
+        "desc": "Coordinating a rotating cast of freelancers or agencies instead of one dedicated partner."
+      }
+    },
+    "services": {
+      "eyebrow": "What we do",
+      "h2": "A full-service language partner, powered by AI where it helps.",
+      "lead": "Every project is handled by native-speaking linguists, supported by AI-assisted tools for speed, consistency, and quality checks — never as a replacement for human judgment.",
+      "card1": {
+        "title": "Translation & localization",
+        "desc": "Documents, websites, software, and marketing content adapted for your target markets.",
+        "link": "Learn more →"
+      },
+      "card2": {
+        "title": "Interpretation",
+        "desc": "On-site and remote interpreters for meetings, conferences, and live events.",
+        "link": "Learn more →"
+      },
+      "card3": {
+        "title": "AI-assisted translation & QA",
+        "desc": "Faster first drafts and consistency checks — every output reviewed by a human linguist.",
+        "link": "Learn more →"
+      }
+    },
+    "how": {
+      "eyebrow": "How it works",
+      "h2": "From source text to finished translation, in three steps.",
+      "lead": "Share your content, let native-speaking linguists and AI-assisted tools do the work, then review and approve the result.",
+      "cta": "See the full process"
+    },
+    "why": {
+      "eyebrow": "Why Amidas",
+      "h2": "A communication partner, not just a vendor.",
+      "lead": "Native expertise, AI used where it genuinely helps, and one dedicated contact who knows your business — not a rotating cast of freelancers.",
+      "cta": "Why teams choose Amidas"
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "h2": "Questions, answered.",
+      "q1": "Which languages do you work with?",
+      "a1": "We cover a wide range of language pairs for translation and interpretation. Tell us your source and target languages and we'll confirm coverage and match you with the right native-speaking linguists.",
+      "q2": "How is AI actually used in my translation?",
+      "a2": "AI-assisted tools speed up first drafts, reuse translation memory, and flag terminology or consistency issues early. Every translation is still reviewed and finalized by a native-speaking human linguist before delivery — AI never has the final word.",
+      "q3": "How fast can you turn a project around?",
+      "a3": "It depends on length, language pair, and complexity. Share your content and deadline through the contact form and we'll confirm a realistic timeline before any work starts.",
+      "q4": "Can you match our existing terminology and style guide?",
+      "a4": "Yes. We build a glossary and style guide from your existing materials and preferences, then apply them consistently across every translator and project — see our terminology & style management service for details.",
+      "q5": "Do you offer interpretation for live events?",
+      "a5": "Yes, both on-site and remote (video or phone), in simultaneous or consecutive mode. Share your event date, format, and language pairs and we'll confirm interpreter availability.",
+      "q6": "How do I get a quote?",
+      "a6": "Use the contact form with your languages, content, and deadline, or email us directly at <a href=\"mailto:hello{'@'}amidas.si\">hello{'@'}amidas.si</a>. We'll follow up with a scope and a quote."
+    },
+    "cta": {
+      "h2": "Ready to communicate without barriers?",
+      "lead": "Tell us about your project — languages, content, and deadline — and we'll get back to you with a plan and a quote.",
+      "btn1": "Request a quote",
+      "btn2": "Email us directly"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "What we do",
+      "h1": "A full-service language partner, powered by AI where it helps.",
+      "lead": "Every project is handled by native-speaking linguists, supported by AI-assisted tools for speed, consistency, and quality checks — never as a replacement for human judgment."
+    },
+    "card1": {
+      "title": "Translation & localization",
+      "desc": "Documents, websites, software, and marketing content adapted for your target markets — not just translated word-for-word.",
+      "link": "Learn more →"
+    },
+    "card2": {
+      "title": "Interpretation",
+      "desc": "On-site and remote interpreters for meetings, conferences, and live events, in the language pairs you need.",
+      "link": "Learn more →"
+    },
+    "card3": {
+      "title": "AI-assisted translation & QA",
+      "desc": "Translation memory and AI tools speed up first drafts and catch inconsistencies — every output is reviewed by a human linguist.",
+      "link": "Learn more →"
+    },
+    "card4": {
+      "title": "Terminology & style management",
+      "desc": "Glossaries and style guides kept consistent across projects, languages, and translators.",
+      "link": "Learn more →"
+    },
+    "card5": {
+      "title": "Multilingual content creation",
+      "desc": "Copywriting and transcreation that reads naturally in every target language, not just accurately.",
+      "link": "Learn more →"
+    },
+    "card6": {
+      "title": "Dedicated language partner",
+      "desc": "One point of contact who knows your business, your terminology, and your deadlines.",
+      "link": "Learn more →"
+    },
+    "cta": {
+      "h2": "Not sure which service you need?",
+      "lead": "Tell us about your content and languages, and we'll recommend the right approach.",
+      "btn1": "Request a quote",
+      "btn2": "See how it works"
+    }
+  },
+  "how": {
+    "hero": {
+      "eyebrow": "How it works",
+      "h1": "From source text to finished translation, in three steps.",
+      "lead": "No lengthy onboarding, no black box — just a clear process with a human checkpoint at every stage that matters."
+    },
+    "step1": {
+      "title": "Share your content",
+      "desc": "Send us your files, context, and any style guides or terminology you already use. We'll confirm scope, languages, and timeline before anything starts."
+    },
+    "step2": {
+      "title": "Human + AI collaboration",
+      "desc": "Native-speaking linguists translate and review your content, using AI-assisted tools and translation memory to work faster without cutting corners."
+    },
+    "step3": {
+      "title": "Review & deliver",
+      "desc": "A final quality and terminology check before you receive a polished, ready-to-use translation — plus a dedicated contact for any follow-up."
+    },
+    "status": {
+      "sourceReview": "Source review",
+      "humanTranslation": "Human translation",
+      "termCheck": "Terminology check",
+      "finalApproval": "Final approval",
+      "complete": "Complete",
+      "awaiting": "Awaiting your review"
+    },
+    "cta": {
+      "h2": "Ready to start a project?",
+      "lead": "Share your content and deadline, and we'll walk you through timeline and pricing.",
+      "btn1": "Request a quote",
+      "btn2": "See our services"
+    }
+  },
+  "why": {
+    "hero": {
+      "eyebrow": "Why Amidas",
+      "h1": "A communication partner, not just a vendor.",
+      "lead": "We've spent years inside the day-to-day of language service delivery — project management, terminology, quality assurance — and built our process around what actually keeps translations accurate and on time."
+    },
+    "list": {
+      "item1": "<strong>Native expertise.</strong> Every translation is done and reviewed by a native-speaking linguist in the target language.",
+      "item2": "<strong>AI where it helps.</strong> Translation memory and AI-assisted drafting speed up delivery — human judgment always has the final word.",
+      "item3": "<strong>Consistent quality.</strong> Shared glossaries and style guides keep your terminology and tone consistent across every project.",
+      "item4": "<strong>One dedicated contact.</strong> A single point of contact who understands your business, not a rotating cast of freelancers."
+    },
+    "cta": {
+      "h2": "See it in practice",
+      "lead": "The best way to judge a language partner is a real project. Tell us what you need translated.",
+      "btn1": "Request a quote",
+      "btn2": "See our services"
+    }
+  },
+  "contact": {
+    "header": {
+      "email": "Email us"
+    },
+    "hero": {
+      "eyebrow": "Contact",
+      "h1": "Ready to communicate without barriers?",
+      "lead": "Tell us about your project — languages, content, and deadline — and we'll get back to you with a plan and a quote."
+    },
+    "form": {
+      "name": "Your name",
+      "email": "Work email",
+      "company": "Company",
+      "languages": "Language pair(s) needed (e.g. EN → DE)",
+      "submit": "Request a quote",
+      "note": "Or reach us directly at <a href=\"mailto:hello{'@'}amidas.si\">hello{'@'}amidas.si</a>.",
+      "thanksPrefix": "Thanks",
+      "thanksBody": " — we'll be in touch shortly. You can also reach us at hello{'@'}amidas.si."
+    }
+  },
+  "svcTranslation": {
+    "crumb": "/ Translation & Localization",
+    "h1": "Translation & localization that reads like it was written for your market.",
+    "lead": "We adapt documents, websites, software, and marketing content for each target market — not just translating words, but making sure tone, formatting, and cultural context land correctly.",
+    "p1": "Every project starts with understanding what the source content is trying to do — inform, persuade, instruct — and matching that intent in the target language, not just its words. A native-speaking linguist translates and reviews each document, so idioms, tone, and register carry over naturally instead of reading like a translation.",
+    "p2": "Localization goes further than translation: dates, currency, units, and formatting are adapted to local conventions, software and app strings are translated in context, and print-ready documents keep their original layout after translation.",
+    "f1": "Native-speaking translators for every language pair",
+    "f2": "Formatting and layout preserved across documents, websites, and apps",
+    "f3": "Cultural and regional adaptation, not just word-for-word translation",
+    "f4": "Consistent terminology across all translated content",
+    "mock": {
+      "title": "Amidas — Localization project",
+      "sourceLang": "Source language",
+      "targetLangs": "Target languages",
+      "contentType": "Content type",
+      "contentTypeValue": "Web & app strings",
+      "status": "Status",
+      "statusValue": "In review",
+      "note": "\"All target languages reviewed against your style guide — ready for final sign-off.\"",
+      "tag": "Project #4821 · Updated today"
+    },
+    "cta": {
+      "h2": "Have content that needs to travel?",
+      "lead": "Share your files and target markets, and we'll scope the project and quote a timeline.",
+      "btn1": "Request a quote",
+      "btn2": "See all services"
+    }
+  },
+  "svcInterpretation": {
+    "crumb": "/ Interpretation",
+    "h1": "Interpretation for meetings, conferences, and live events.",
+    "lead": "On-site and remote interpreters help you communicate confidently in real time, in the language pairs and format your event needs.",
+    "p1": "Simultaneous interpretation keeps a live event moving in real time, ideal for conferences, webinars, and multi-language panels. Consecutive interpretation works better for smaller meetings, negotiations, and site visits, where the interpreter speaks after each part of the conversation.",
+    "p2": "Interpreters can join on-site or remotely over video or phone, and we match each assignment to an interpreter experienced in your subject area — legal, technical, medical, or business — so nothing gets lost in translation when it matters most.",
+    "f1": "Simultaneous and consecutive interpretation",
+    "f2": "On-site and remote (video & phone) options",
+    "f3": "Interpreters matched to your subject area",
+    "f4": "Equipment coordination available for larger events",
+    "mock": {
+      "title": "Amidas — Live session",
+      "event": "Event",
+      "eventValue": "Product launch webinar",
+      "langPair": "Language pair",
+      "mode": "Mode",
+      "modeValue": "Simultaneous",
+      "status": "Status",
+      "statusValue": "Live now",
+      "note": "\"Interpreter connected and ready — audio check complete.\"",
+      "tag": "Session #212 · Today, 10:00"
+    },
+    "cta": {
+      "h2": "Planning a multilingual event?",
+      "lead": "Tell us the date, format, and language pairs, and we'll confirm interpreter availability.",
+      "btn1": "Request a quote",
+      "btn2": "See all services"
+    }
+  },
+  "svcAiQa": {
+    "crumb": "/ AI-Assisted Translation & QA",
+    "h1": "AI-assisted translation & QA, with a human always in the loop.",
+    "lead": "Translation memory and AI tools speed up first drafts and catch inconsistencies early — but every translation is reviewed and approved by a native-speaking linguist before it reaches you.",
+    "p1": "AI tools draft a first pass quickly by reusing your translation memory and applying your approved terminology, which shortens turnaround on large or recurring projects. Automated checks flag inconsistent terms, missed placeholders, and formatting issues before a linguist ever looks at the text.",
+    "p2": "That draft is only a starting point. A native-speaking linguist reviews and edits every segment for meaning, tone, and context — the parts AI still gets wrong — so the final translation reads naturally and holds up under scrutiny.",
+    "f1": "AI-assisted first drafts for faster turnaround",
+    "f2": "Automated terminology and consistency checks",
+    "f3": "Every output reviewed and finalized by a human linguist",
+    "f4": "Translation memory reused across projects to cut costs over time",
+    "mock": {
+      "title": "Amidas — Translation in progress",
+      "langPair": "Language pair",
+      "aiDraft": "AI first draft",
+      "aiDraftValue": "Complete",
+      "termCheck": "Terminology check",
+      "termCheckValue": "Passed",
+      "humanReview": "Human review",
+      "humanReviewValue": "In progress",
+      "note": "\"Terminology is consistent with your style guide — ready for final approval.\"",
+      "tag": "Your language partner · Today"
+    },
+    "cta": {
+      "h2": "Have a large or recurring translation workload?",
+      "lead": "Tell us your volume and deadlines, and we'll show you where AI-assisted delivery helps most.",
+      "btn1": "Request a quote",
+      "btn2": "See all services"
+    }
+  },
+  "svcTerminology": {
+    "crumb": "/ Terminology & Style Management",
+    "h1": "Terminology & style management that keeps every project consistent.",
+    "lead": "Shared glossaries and style guides make sure your brand voice and technical terms stay consistent — across languages, projects, and translators.",
+    "p1": "We build your glossary from the content you already have — past translations, product documentation, and any preferred terms you provide — then confirm it with you before it's applied to new work. A style guide captures tone, formatting conventions, and terms to avoid, so every translator works from the same playbook.",
+    "p2": "Both are living documents. As your product, market, or terminology evolves, we update the glossary and style guide and roll the changes into future projects, so consistency doesn't decay over time or across translators.",
+    "f1": "Custom glossary built from your existing content and preferences",
+    "f2": "Style guide covering tone, formatting, and terminology",
+    "f3": "Applied consistently across every translator and project",
+    "f4": "Reviewed and updated as your business evolves",
+    "mock": {
+      "title": "Amidas — Glossary · EN → DE",
+      "approved1": "Approved",
+      "approved2": "Approved",
+      "underReview": "Under review",
+      "note": "\"3 new terms added this week — pending your approval.\"",
+      "tag": "Glossary · Updated today"
+    },
+    "cta": {
+      "h2": "Already have a glossary or style guide?",
+      "lead": "Send us what you have and we'll fold it straight into your project setup.",
+      "btn1": "Request a quote",
+      "btn2": "See all services"
+    }
+  },
+  "svcContent": {
+    "crumb": "/ Multilingual Content Creation",
+    "h1": "Multilingual content creation that reads naturally in every language.",
+    "lead": "From marketing copy to product descriptions, our writers and linguists create content that resonates in each target language — not a translation that reads like one.",
+    "p1": "Transcreation starts from your message and goals, not your exact wording — a linguist rebuilds headlines, slogans, and calls to action so they land the way you intended in the target language, idiom and cultural reference included.",
+    "p2": "We work from a creative brief, existing brand guidelines, or source content you already have, and keep a consistent voice across every language and channel — website copy, ads, social posts, and product listings alike.",
+    "f1": "Copywriting and transcreation, not literal translation",
+    "f2": "Content adapted to local tone, idiom, and cultural context",
+    "f3": "Consistent voice across every language and channel",
+    "f4": "Works from a brief, existing content, or brand guidelines",
+    "mock": {
+      "title": "Amidas — Content brief",
+      "market": "New market",
+      "marketValue": "Germany",
+      "tone": "Tone",
+      "toneValue": "Friendly, professional",
+      "languages": "Languages",
+      "status": "Status",
+      "statusValue": "Draft ready",
+      "note": "\"Headline options ready for review — see attached for tone variations.\"",
+      "tag": "Brief #77 · Updated today"
+    },
+    "cta": {
+      "h2": "Launching in a new market?",
+      "lead": "Share your brief or brand guidelines, and we'll show you how the content adapts.",
+      "btn1": "Request a quote",
+      "btn2": "See all services"
+    }
+  },
+  "svcPartner": {
+    "crumb": "/ Dedicated Language Partner",
+    "h1": "A dedicated language partner, not a rotating cast of freelancers.",
+    "lead": "One point of contact learns your business, terminology, and deadlines — so every project starts from context, not from scratch.",
+    "p1": "Instead of re-explaining your business to a different freelancer every time, you work with one contact who already knows your glossary, your style guide, and how your projects usually run. That continuity means faster scoping, fewer clarifying questions, and translations that fit your context from the first draft.",
+    "p2": "Your dedicated contact coordinates the linguists and interpreters behind the scenes, keeps recurring and urgent work moving, and gives you one place to go for status updates, invoicing, and planning — instead of juggling several vendors.",
+    "f1": "One dedicated contact for all your projects",
+    "f2": "Faster turnaround thanks to established context and glossaries",
+    "f3": "Priority scheduling for recurring and urgent work",
+    "f4": "Simple, consolidated communication and invoicing",
+    "mock": {
+      "title": "Amidas — Your account",
+      "contact": "Dedicated contact",
+      "contactValue": "Assigned",
+      "activeProjects": "Active projects",
+      "responseTime": "Avg. response time",
+      "responseTimeValue": "Same day",
+      "nextCheckin": "Next check-in",
+      "nextCheckinValue": "This Friday",
+      "note": "\"Quarterly review scheduled — we'll share updated turnaround times.\"",
+      "tag": "Your account · Amidas"
+    },
+    "cta": {
+      "h2": "Tired of re-briefing a new freelancer every time?",
+      "lead": "Tell us about your ongoing language needs and we'll set up a dedicated point of contact.",
+      "btn1": "Request a quote",
+      "btn2": "See all services"
+    }
+  },
+  "meta": {
+    "home": {
+      "title": "Amidas — Your Language Communication Partner",
+      "description": "Amidas pairs expert translators and interpreters with AI-assisted tools to help you communicate clearly, accurately, and on time — in any language."
+    },
+    "services": {
+      "title": "Services — Amidas",
+      "description": "Translation, localization, interpretation, and AI-assisted language services from Amidas — every project reviewed by a native-speaking linguist."
+    },
+    "how": {
+      "title": "How It Works — Amidas",
+      "description": "How Amidas turns your source content into a finished translation: share your content, human + AI collaboration, review and delivery."
+    },
+    "why": {
+      "title": "Why Amidas — Amidas",
+      "description": "Why teams choose Amidas as their language communication partner: native expertise, AI used where it helps, and one dedicated point of contact."
+    },
+    "contact": {
+      "title": "Contact — Amidas",
+      "description": "Get in touch with Amidas for a translation, localization, or interpretation quote."
+    },
+    "svcTranslation": {
+      "title": "Translation & Localization — Amidas",
+      "description": "Documents, websites, software, and marketing content adapted for your target markets by native-speaking linguists."
+    },
+    "svcInterpretation": {
+      "title": "Interpretation — Amidas",
+      "description": "On-site and remote interpreters for meetings, conferences, and live events, in the language pairs you need."
+    },
+    "svcAiQa": {
+      "title": "AI-Assisted Translation & QA — Amidas",
+      "description": "Translation memory and AI tools speed up first drafts and catch inconsistencies — every output is reviewed by a human linguist."
+    },
+    "svcTerminology": {
+      "title": "Terminology & Style Management — Amidas",
+      "description": "Glossaries and style guides kept consistent across projects, languages, and translators."
+    },
+    "svcContent": {
+      "title": "Multilingual Content Creation — Amidas",
+      "description": "Copywriting and transcreation that reads naturally in every target language, not just accurately."
+    },
+    "svcPartner": {
+      "title": "Dedicated Language Partner — Amidas",
+      "description": "One point of contact who knows your business, your terminology, and your deadlines."
+    }
+  }
+}
