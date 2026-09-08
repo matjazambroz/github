@@ -21,18 +21,21 @@ interpretation, and AI-assisted language services. Built with [Nuxt 3](https://n
 ## Languages
 
 English is served at the site root (`/`, `/services`, …); Slovenian is served under `/sl/`
-(`/sl/`, `/sl/storitve`… no — routes keep their English slugs under `/sl/`, e.g. `/sl/services`).
-Both locales are real, indexable URLs (not a client-side toggle), so Slovenian content is
-crawlable and shareable on its own link.
+(routes keep their English slugs, e.g. `/sl/services`). Both locales are real, indexable URLs
+(not a client-side toggle), so Slovenian content is crawlable and shareable on its own link.
 
 ## Running locally
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 npm run dev
 ```
 
 Open http://localhost:3000.
+
+`--legacy-peer-deps` is currently required: a peer-dependency edge case in the installed
+dependency tree makes plain `npm install` fail with an internal npm error. Without the flag you'll
+see `npm error Cannot read properties of null (reading 'edgesOut')`.
 
 ## Building
 
