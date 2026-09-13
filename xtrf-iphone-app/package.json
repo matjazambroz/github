@@ -1,0 +1,17 @@
+{
+  "name": "xtrf-iphone-app",
+  "version": "0.1.0",
+  "description": "iPhone-friendly PWA showing 3 XTRF turnover figures (danes / ta teden / YTD), backed by a Cloudflare Worker that keeps the XTRF API key server-side.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "types": "wrangler types",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "wrangler": "^4.131.1"
+  }
+}

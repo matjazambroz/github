@@ -1,0 +1,44 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "xtrf-iphone-app",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-13",
+  "observability": {
+    "enabled": true,
+    "traces": {
+      "enabled": true
+    }
+  },
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "triggers": {
+    // Every 15 minutes - same cadence as the office-TV xtrf-dashboard.
+    // Danes/ta teden are cheap every run; YTD is backfilled a bounded
+    // batch of invoices at a time (see src/metrics.ts) and stays cheap
+    // once the cache has caught up.
+    "crons": ["*/15 * * * *"]
+  },
+  "vars": {
+    "XTRF_BASE_URL": "https://xtrf.amidas.si",
+    "XTRF_API_BASE_PATH": "/home-api",
+    "XTRF_ACCEPT_HEADER": "application/vnd.xtrf-v1+json;charset=UTF-8",
+    "XTRF_TIMEZONE": "Europe/Ljubljana",
+    // How many not-yet-cached YTD invoices to fetch per scheduled run, to
+    // stay comfortably under the Workers per-invocation subrequest limit
+    // (50 on the Free plan, 1000 on Paid). Raise this once you know your
+    // plan's limit if the initial backfill (see README) is too slow.
+    "MAX_INVOICES_PER_RUN": "30"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      // Replace with the id printed by `wrangler kv namespace create CACHE`
+      // (see README) before deploying.
+      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+    }
+  ]
+  // XTRF_API_KEY is a secret, not a var - set it with:
+  //   wrangler secret put XTRF_API_KEY
+}

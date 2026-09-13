@@ -1,0 +1,40 @@
+name: Deploy xtrf-iphone-app
+
+on:
+  push:
+    paths:
+      - "xtrf-iphone-app/**"
+      - ".github/workflows/deploy-xtrf-iphone-app.yml"
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: xtrf-iphone-app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      # Pushes the current wrangler.jsonc/src to Cloudflare, and (re)sets the
+      # XTRF_API_KEY Worker secret from the GitHub secret of the same name
+      # on every run, so rotating the GitHub secret is enough to rotate it
+      # on the Worker too - no local `wrangler secret put` needed.
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: xtrf-iphone-app
+          secrets: |
+            XTRF_API_KEY
+        env:
+          XTRF_API_KEY: ${{ secrets.XTRF_API_KEY }}

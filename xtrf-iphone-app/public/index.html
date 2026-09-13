@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>XTRF Promet</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" href="/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="XTRF Promet" />
+  <meta name="theme-color" content="#0b0d10" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="error-banner" id="error-banner"></div>
+
+  <div class="stage">
+    <div class="header">
+      <img class="logo" src="/amidas-logo.svg" alt="Amidas" />
+      <div class="date" id="date"></div>
+    </div>
+
+    <div class="frames">
+      <div class="frame">
+        <div class="label">Promet danes</div>
+        <div class="value skeleton" id="value-day">—</div>
+        <div class="meta" id="meta-day"></div>
+      </div>
+      <div class="frame">
+        <div class="label">Promet ta teden</div>
+        <div class="value skeleton" id="value-week">—</div>
+        <div class="meta" id="meta-week"></div>
+      </div>
+      <div class="frame">
+        <div class="label" id="label-ytd">Promet YTD</div>
+        <div class="value skeleton" id="value-ytd">—</div>
+        <div class="meta" id="meta-ytd"></div>
+        <div class="syncing" id="syncing-ytd"></div>
+      </div>
+    </div>
+
+    <div class="footer" id="footer"></div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
