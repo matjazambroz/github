@@ -45,27 +45,55 @@ povečaš, da se prvo dohitevanje konča hitreje.
 
 Potreben je Cloudflare račun (Workers + Workers KV) in Node.js ≥ 18.
 
+### Enkraten korak: KV namespace
+
+KV namespace (predpomnilnik) je edina stvar, ki jo je treba ustvariti ročno
+(Actions ga ne more ustvariti namesto tebe brez tvojega Cloudflare žetona) –
+naredi to enkrat, z lokalno namestitvijo `wrangler` ali prek Cloudflare
+nadzorne plošče (Workers & Pages → KV):
+
 ```bash
 cd xtrf-iphone-app
 npm install
-npx wrangler login          # prijava v Cloudflare račun
-
-# Ustvari KV namespace za predpomnilnik in izpiši njegov id:
+npx wrangler login
 npx wrangler kv namespace create CACHE
 # -> v izpisu poišči "id": "..." in ga prepiši v wrangler.jsonc,
-#    v kv_namespaces[0].id (namesto "REPLACE_WITH_KV_NAMESPACE_ID")
-
-# Nastavi XTRF API ključ kot secret (nikoli v .env/wrangler.jsonc):
-npx wrangler secret put XTRF_API_KEY
-# -> vnesi vrednost, ko vpraša
-
-npm run types                # generira worker-configuration.d.ts
-npm run deploy                # postavi Worker (izpiše javni *.workers.dev URL)
+#    v kv_namespaces[0].id (namesto "REPLACE_WITH_KV_NAMESPACE_ID"),
+#    nato commitaj in pushni to spremembo
 ```
 
-Po tem `npm run deploy` v izpisu javi URL (npr.
-`https://xtrf-iphone-app.<tvoj-subdomain>.workers.dev`) – to je naslov
-aplikacije.
+### Priporočeno: deploy prek GitHub Actions
+
+V repozitoriju je `.github/workflows/deploy-xtrf-iphone-app.yml`, ki ob vsakem
+pushu v `xtrf-iphone-app/**` (ali ročno prek zavihka **Actions → Deploy
+xtrf-iphone-app → Run workflow**) samodejno požene `wrangler deploy` **in**
+nastavi/posodobi `XTRF_API_KEY` secret na Workerju – lokalni `wrangler`
+sploh ni potreben za tekoče deploye.
+
+V GitHub repozitoriju pod **Settings → Secrets and variables → Actions**
+dodaj:
+
+- `CLOUDFLARE_API_TOKEN` – Cloudflare API žeton z dovoljenjema *Workers
+  Scripts: Edit* in *Workers KV Storage: Edit* (ustvariš ga na
+  [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens)).
+- `CLOUDFLARE_ACCOUNT_ID` – najdeš ga na Cloudflare nadzorni plošči (Workers
+  & Pages, desni rob).
+- `XTRF_API_KEY` – XTRF API ključ; workflow ga ob vsakem zagonu prenese na
+  Worker, zato ročni `wrangler secret put` ni potreben. Ko ključ zamenjaš, le
+  posodobi ta GitHub secret in znova sproži workflow (push ali "Run
+  workflow").
+
+Po prvem uspešnem zagonu workflowa je aplikacija dosegljiva na
+`https://xtrf-iphone-app.<tvoj-subdomain>.workers.dev` (natančen URL je tudi
+v izpisu koraka "Deploy Worker" v Actions logu).
+
+### Alternativa: ročni deploy iz lokalnega računalnika
+
+```bash
+npx wrangler secret put XTRF_API_KEY   # vnesi vrednost, ko vpraša
+npm run types                          # generira worker-configuration.d.ts
+npm run deploy                         # postavi Worker
+```
 
 ### Lokalni razvoj
 
