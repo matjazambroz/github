@@ -23,7 +23,7 @@ Uporabi skill `priprava-prijave` za celoten potek.
 ## Nadzor v živo
 `python nadzor/nadzor.py <ime-razpisa>` odpre lokalno stran (http://localhost:8765) s stanjem korakov, datotekami in zadnjimi dogodki agentov. Zaženi jo v drugem oknu terminala; samo bere datoteke.
 
-Nadzor šteje stroške vseh sej v mapi `razpisi`. Za štetje samo od začetka dela na razpisu zaženi z `NADZOR_OD=razpis` (PowerShell: `$env:NADZOR_OD="razpis"; python nadzor.py <razpis>`).
+Nadzor šteje stroške vseh sej v mapi `razpisi`. Gumb »Ponastavi stroške« na strani (ali zagon z `--ponastavi`) začne šteti znova od zdaj; zapisov sej ne briše. Za štetje samo od začetka dela na razpisu zaženi z `NADZOR_OD=razpis` (PowerShell: `$env:NADZOR_OD="razpis"; python nadzor.py <razpis>`).
 
 ## Izpolnjeni obrazci v izvirni obliki (Word, Excel, PDF)
 Končni dokumenti so **izvirni razpisni obrazci**, izpolnjeni v kopiji (`izhod/<razpis>/obrazci/`), z vso izvirno obliko: glave, noge, oštevilčenje, tip in velikost pisave. Agent `izpolnjevalec-obrazcev` jih izpolni, `python orodja/preveri_obliko.py <izvirnik> <izpolnjeno>` preveri, da se oblika ni spremenila, `python orodja/izvozi.py <razpis>` naredi PDF. Izvirnikov v `vhod/` nikoli ne spreminjaj.

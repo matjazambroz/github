@@ -5,12 +5,13 @@ Zagon (v mapi razpisi):   python nadzor/nadzor.py <ime-razpisa>
 Odpre http://localhost:8765 in vsaki 2 s osveži stanje. Samo bere datoteke, nič ne spreminja.
 """
 import json, sys, time, webbrowser
+from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PORT = 8765
-RAZPIS = sys.argv[1] if len(sys.argv) > 1 else ""
+RAZPIS = next((a for a in sys.argv[1:] if not a.startswith("--")), "")
 SKIP = {".gitkeep"}
 
 # Cene v USD na 1M žetonov: (vhod, izhod, branje iz predpomnilnika). Vir: cenik modelov Anthropic (stanje 2026-10).
@@ -158,6 +159,33 @@ def transcript_events(limit=25):
     return [{"cas": t[11:19], "kdo": w, "kaj": s} for t, w, s in events[:limit]]
 
 
+MARKER = Path(__file__).resolve().parent / ".stroski_od.json"
+
+
+def get_od():
+    """Čas (epoch), od katerega se šteje strošek za ta razpis; 0 = vse."""
+    try:
+        return float(json.loads(MARKER.read_text(encoding="utf-8")).get(RAZPIS, 0))
+    except (OSError, ValueError):
+        return 0.0
+
+
+def set_od(t):
+    try:
+        data = json.loads(MARKER.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        data = {}
+    data[RAZPIS] = t
+    MARKER.write_text(json.dumps(data), encoding="utf-8")
+
+
+def _ts(e, fallback):
+    try:
+        return datetime.fromisoformat(str(e.get("timestamp")).replace("Z", "+00:00")).timestamp()
+    except (ValueError, TypeError):
+        return fallback
+
+
 _TOK_CACHE = {}
 AGENTI = ("analitik-razpisa", "pisec-prijave", "kalkulant", "pregledovalec")
 
@@ -198,9 +226,9 @@ def _label_from_meta(f):
     return None
 
 
-def _file_tokens(f):
-    """Seštevek žetonov iz zapisa seje; vsako sporočilo (message.id) se šteje enkrat."""
-    key = (str(f), f.stat().st_mtime, f.stat().st_size)
+def _file_tokens(f, od=0.0):
+    """Seštevek žetonov iz zapisa seje (sporočila od časa `od`); vsako sporočilo (message.id) se šteje enkrat."""
+    key = (str(f), f.stat().st_mtime, f.stat().st_size, od)
     if key in _TOK_CACHE:
         return _TOK_CACHE[key]
     msgs, label = {}, _label_from_meta(f)
@@ -214,7 +242,7 @@ def _file_tokens(f):
                 label = _label_from(line)
             m = e.get("message") or {}
             u = m.get("usage")
-            if isinstance(u, dict) and m.get("role") == "assistant":
+            if isinstance(u, dict) and m.get("role") == "assistant" and _ts(e, f.stat().st_mtime) >= od:
                 mid = m.get("id") or f"{f.name}:{i}"
                 prev = msgs.get(mid)
                 if prev is None or u.get("output_tokens", 0) >= prev[0].get("output_tokens", 0):
@@ -262,10 +290,13 @@ def tokens():
         files.append(m)
         files += sorted(m.parent.glob(f"{m.stem}/**/*.jsonl"))
     mains_set = set(sel)
+    od = get_od()
     names = {}
     viri, total, n = [], {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0, "usd": 0.0, "brez_cene": 0}, 0
     for f in files:
-        t, label = _file_tokens(f)
+        t, label = _file_tokens(f, od)
+        if od and not (t["vhod"] or t["izhod"] or t["cache_beri"] or t["cache_pisi"]):
+            continue
         if f in mains_set:
             label = None
             ime = "glavna seja" if len(mains_set) == 1 else f"glavna seja {sorted(mains_set).index(f) + 1}"
@@ -289,7 +320,7 @@ def tokens():
             g[key] += v[key]
     order = {a: i for i, a in enumerate(AGENTI)}
     viri = sorted(groups.values(), key=lambda g: (order.get(g["ime"], 99), g["ime"]))
-    return {"skupaj": total, "viri": viri, "eur_na_usd": EUR_PER_USD}
+    return {"skupaj": total, "viri": viri, "eur_na_usd": EUR_PER_USD, "od": od}
 
 
 PAGE = """<!doctype html><html lang="sl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -318,7 +349,7 @@ svg{display:block;width:100%;min-width:600px;height:auto;color:var(--fg);font-fa
 @keyframes flow{to{stroke-dashoffset:-13}}
 .band{fill:none;stroke:var(--l);stroke-dasharray:5 4}
 .ic .sp,.ic .ck,.ic .wt,.ic .wr{display:none}.n.stop .ic .wt{display:none}.n.stop .ic .wr{display:block}.n .ic .wt{display:block}.n.konec .ic .wt{display:none}.n.konec .ic .ck{display:block}.n.tece .ic .wt,.n.pise .ic .wt{display:none}.n.tece .ic .sp,.n.pise .ic .sp{display:block}.spin{animation:rot .9s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes rot{to{transform:rotate(360deg)}}
-.tt{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}.tt small{font-size:.8rem;font-weight:400;color:var(--m)}.tr{display:grid;grid-template-columns:110px 1fr 120px;gap:8px;align-items:center;font-size:.85rem;margin-top:6px}.tr span:first-child{font-family:ui-monospace,Consolas,monospace}.tb{height:12px;background:var(--waitb);border-radius:4px;overflow:hidden;display:flex}.tb i{display:block;height:100%}.tb i.o{background:var(--ok)}.tb i.v{background:var(--run)}.tr .gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}.lg{font-size:.78rem;color:var(--m);margin-top:8px}.gl{font-size:11.5px;fill:var(--m)}
+#rs{float:right;font:inherit;font-size:.72rem;text-transform:none;letter-spacing:0;border:1px solid var(--l);background:var(--s);color:var(--fg);border-radius:6px;padding:2px 8px;cursor:pointer}#rs:hover{border-color:var(--run)}.tt{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}.tt small{font-size:.8rem;font-weight:400;color:var(--m)}.tr{display:grid;grid-template-columns:110px 1fr 120px;gap:8px;align-items:center;font-size:.85rem;margin-top:6px}.tr span:first-child{font-family:ui-monospace,Consolas,monospace}.tb{height:12px;background:var(--waitb);border-radius:4px;overflow:hidden;display:flex}.tb i{display:block;height:100%}.tb i.o{background:var(--ok)}.tb i.v{background:var(--run)}.tr .gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}.lg{font-size:.78rem;color:var(--m);margin-top:8px}.gl{font-size:11.5px;fill:var(--m)}
 .gantt{display:grid;gap:6px;position:relative}
 .g{display:grid;grid-template-columns:110px 1fr 50px;gap:8px;align-items:center;font-size:.85rem}
 .g span:first-child{font-family:ui-monospace,Consolas,monospace}.gt{position:relative;height:16px;background:var(--waitb);border-radius:4px}
@@ -333,7 +364,7 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 <header><h1>Nadzor razpisa: <span id=r></span></h1><div class=pill>Pretečeno <b id=el>0:00</b> · končano <b id=pc>0/5</b> · žetoni <b id=tk>–</b> · strošek <b id=ec>–</b></div></header>
 <div class=cols>
 <div class=card><h2>Časovnica</h2><div class=gantt id=gantt></div></div>
-<div class=card><h2>Porabljeni žetoni</h2><div id=tok></div></div>
+<div class=card><h2>Porabljeni žetoni <button id=rs type=button>Ponastavi stroške</button></h2><div class=lg id=od></div><div id=tok></div></div>
 </div>
 <div class=card><h2>Potek</h2><div class=bar><i id=pb style="width:0"></i></div>
 <div class=scroll style="margin-top:10px">
@@ -400,7 +431,7 @@ async function tick(){try{
  $("files").innerHTML=d.datoteke.map(f=>`<tr><td>pred ${f.pred} s</td><td><code>${esc(f.pot)}</code></td></tr>`).join("")||"<tr><td>Ni datotek.</td></tr>";
  $("ev").innerHTML=d.dogodki.map(e=>`<tr><td>${esc(e.cas)}</td><td>${esc(e.kdo)}</td><td>${esc(e.kaj)}</td></tr>`).join("")||"<tr><td>Ni zapisa seje.</td></tr>";
 
- const Z=d.zetoni||{},K=Z.skupaj;
+ const Z=d.zetoni||{},K=Z.skupaj;if(Z.od)$("od").textContent="šteto od "+new Date(Z.od*1000).toLocaleString("sl-SI");else $("od").textContent="";
  if(K){const nf=n=>n>=1e6?(n/1e6).toFixed(2)+" M":n>=1e3?(n/1e3).toFixed(1)+" k":String(n);
   const tot=K.vhod+K.izhod+K.cache_pisi;$("tk").textContent=nf(tot);const R=Z.eur_na_usd||0.9;const eur=x=>(x*R).toLocaleString("sl-SI",{style:"currency",currency:"EUR",minimumFractionDigits:2});$("ec").textContent="≈ "+eur(K.usd);
   const mx=Math.max(1,...Z.viri.map(v=>v.vhod+v.izhod+v.cache_pisi));
@@ -409,6 +440,8 @@ async function tick(){try{
    +'<div class=lg><i style="color:var(--run)">■</i> vhod &nbsp; <i style="color:var(--ok)">■</i> izhod · strošek vključuje tudi predpomnilnik po njegovi ceni</div>';
  }else{$("tok").innerHTML="<div class=lg>Ni zapisa seje (~/.claude/projects/…razpisi).</div>"}
 }catch(e){}}
+$("rs").addEventListener("click",async()=>{if($("rs").dataset.sure!=="1"){$("rs").dataset.sure="1";$("rs").textContent="Klikni še enkrat za potrditev";setTimeout(()=>{$("rs").dataset.sure="";$("rs").textContent="Ponastavi stroške"},4000);return}
+ $("rs").dataset.sure="";$("rs").textContent="Ponastavi stroške";try{await fetch("/api/reset",{method:"POST"})}catch(e){}tick()});
 tick();setInterval(tick,2000);
 </script></html>"""
 
@@ -428,11 +461,27 @@ class H(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def do_POST(self):
+        if self.path.startswith("/api/reset"):
+            set_od(time.time())
+            body = b'{"ok": true}'
+        else:
+            body = b'{"ok": false}'
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def log_message(self, *a):
         pass
 
 
 if __name__ == "__main__":
+    if "--ponastavi" in sys.argv:
+        RAZPIS = next((a for a in sys.argv[1:] if not a.startswith("--")), "")
+        set_od(time.time())
+        print(f"Stroški za '{RAZPIS}' se štejejo od zdaj.")
     srv = ThreadingHTTPServer(("127.0.0.1", PORT), H)
     print(f"Nadzor razpisa '{RAZPIS}': http://localhost:{PORT}  (Ctrl+C za konec)")
     webbrowser.open(f"http://localhost:{PORT}")
