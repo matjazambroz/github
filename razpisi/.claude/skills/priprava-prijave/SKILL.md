@@ -4,6 +4,13 @@ description: Orkestrira pripravo prijave na razpis: analiza, osnutek, ponudba, p
 ---
 Argument: ime mape razpisa v `razpisi/vhod/`.
 
+0. Priprava datotek (agenti Read ne bere ZIP, DOCX in XLSX). Za `vhod/<razpis>/` in `viri/`:
+   - razpakiraj vse ZIP-e v `razpakirano/<ime-arhiva>/` (podmapa ob datoteki, ena mapa na arhiv; razpakiraj tudi ZIP-e znotraj ZIP-ov);
+   - pretvori vse DOCX in XLSX (tudi tiste iz `razpakirano/`) v besedilne datoteke `.md` v `besedilo/`. Pri XLSX zapiši vrednosti in formule celic po listih; oblikovanje se izgubi;
+   - PDF in XML pustita kot sta, Read ju bere neposredno;
+   - uporabi orodja, ki so na voljo (PowerShell `Expand-Archive`, Python z `python-docx`/`openpyxl`, `pandoc`); če nobeno ne deluje, to sporoči in vprašaj uporabnika;
+   - preskoči datoteke, ki so že pretvorjene in novejše od izvirnika;
+   - na koncu izpiši seznam pretvorjenih datotek in tistih, ki jih ni bilo mogoče pretvoriti.
 1. Zaženi samo agenta `analitik-razpisa` in počakaj, da se konča. Preveri, da `izhod/<razpis>/zahteve.md` obstaja in ni prazen. Do takrat NE zaženi nobenega drugega agenta.
 2. Šele ko `zahteve.md` obstaja, zaženi `pisec-prijave` in `kalkulant` vzporedno (v enem sporočilu).
 3. Zaženi `pregledovalec`; povzemi vrzeli uporabniku.
