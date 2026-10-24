@@ -13,6 +13,27 @@ PORT = 8765
 RAZPIS = sys.argv[1] if len(sys.argv) > 1 else ""
 SKIP = {".gitkeep"}
 
+# Cene v USD na 1M žetonov: (vhod, izhod, branje iz predpomnilnika). Vir: cenik modelov Anthropic (stanje 2026-10).
+# Pisanje v predpomnilnik je ocenjeno kot 1,25 x cena vhoda (5 min). Spremeni, če se cene spremenijo.
+PRICES = {
+    "fable-5-1": (10.0, 50.0, 0.25), "fable-5": (10.0, 50.0, 0.25),
+    "opus-5-5": (4.0, 20.0, 0.20), "opus-5": (5.0, 25.0, 0.50), "opus-4": (5.0, 25.0, 0.50),
+    "sonnet-5-5": (2.0, 10.0, 0.20), "sonnet-5": (2.0, 10.0, 0.20), "sonnet-4": (3.0, 15.0, 0.30),
+    "haiku-5-5": (0.10, 0.50, 0.01), "haiku-4": (1.0, 5.0, 0.10),
+}
+CACHE_WRITE_X = 1.25
+import os
+EUR_PER_USD = float(os.environ.get("EUR_PER_USD", "0.90"))  # približen tečaj; nastavi z okoljsko spremenljivko
+
+
+def _price(model):
+    m = (model or "").lower()
+    for key in sorted(PRICES, key=len, reverse=True):
+        if key in m:
+            return PRICES[key]
+    return None
+
+
 
 def newest(path):
     files = [p for p in path.rglob("*") if p.is_file() and p.name not in SKIP] if path.exists() else []
@@ -40,7 +61,8 @@ def steps(now):
     def mt(path):
         return path.stat().st_mtime if path.exists() and path.stat().st_size > 0 else None
 
-    tz, to, tp = mt(zahteve), mt(osnutek), mt(ponudba)
+    pregled = izhod / "pregled.md"
+    tz, to, tp, tr = mt(zahteve), mt(osnutek), mt(ponudba), mt(pregled)
     return [
         {"id": "k0", "naziv": "Korak 0: priprava datotek", "stanje": "konec" if k0_done else "tece",
          "opis": f"{k0_n} pretvorjenih datotek v besedilo/" if k0_done else "razpakiranje in pretvorba",
@@ -54,9 +76,10 @@ def steps(now):
         {"id": "kalkulant", "naziv": "kalkulant", "stanje": state(p, z, ponudba),
          "opis": "ponudba.md", "datoteka": "ponudba.md", "velikost": read_size(ponudba),
          "zacetek": tz, "konec": tp},
-        {"id": "pregled", "naziv": "pregledovalec", "stanje": "tece" if (o and p and state(o, z, osnutek) == "konec" and state(p, z, ponudba) == "konec") else "caka",
-         "opis": "poročilo o vrzelih je v konzoli (agent ne piše datotek)",
-         "zacetek": max(to, tp) if (to and tp) else None, "konec": None},
+        {"id": "pregled", "naziv": "pregledovalec",
+         "stanje": state(tr is not None, bool(o and p and state(o, z, osnutek) == "konec" and state(p, z, ponudba) == "konec"), pregled),
+         "opis": "pregled.md", "datoteka": "pregled.md", "velikost": read_size(pregled),
+         "zacetek": max(to, tp) if (to and tp) else None, "konec": tr},
     ]
 
 
@@ -111,6 +134,18 @@ _TOK_CACHE = {}
 AGENTI = ("analitik-razpisa", "pisec-prijave", "kalkulant", "pregledovalec")
 
 
+def _label_from(line):
+    low = line.lower()
+    found = [a for a in AGENTI if a in low]
+    if len(found) == 1:
+        return found[0]
+    for kw, a in (("analiz", AGENTI[0]), ("osnutek", AGENTI[1]), ("cenovn", AGENTI[2]),
+                  ("kalkul", AGENTI[2]), ("pregled", AGENTI[3])):
+        if kw in low:
+            return a
+    return ""
+
+
 def _file_tokens(f):
     """Seštevek žetonov iz zapisa seje; vsako sporočilo (message.id) se šteje enkrat."""
     key = (str(f), f.stat().st_mtime, f.stat().st_size)
@@ -123,26 +158,30 @@ def _file_tokens(f):
                 e = json.loads(line)
             except ValueError:
                 continue
-            if label is None and i < 5:
-                for a in AGENTI:
-                    if a in line:
-                        label = a
-                        break
+            if label is None and e.get("type") == "user":
+                label = _label_from(line)
             m = e.get("message") or {}
             u = m.get("usage")
             if isinstance(u, dict) and m.get("role") == "assistant":
                 mid = m.get("id") or f"{f.name}:{i}"
                 prev = msgs.get(mid)
-                if prev is None or u.get("output_tokens", 0) >= prev.get("output_tokens", 0):
-                    msgs[mid] = u
+                if prev is None or u.get("output_tokens", 0) >= prev[0].get("output_tokens", 0):
+                    msgs[mid] = (u, m.get("model"))
     except OSError:
         pass
-    t = {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0}
-    for u in msgs.values():
-        t["vhod"] += u.get("input_tokens", 0) or 0
-        t["izhod"] += u.get("output_tokens", 0) or 0
-        t["cache_beri"] += u.get("cache_read_input_tokens", 0) or 0
-        t["cache_pisi"] += u.get("cache_creation_input_tokens", 0) or 0
+    t = {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0, "usd": 0.0, "brez_cene": 0}
+    for u, model in msgs.values():
+        vh, iz = u.get("input_tokens", 0) or 0, u.get("output_tokens", 0) or 0
+        cr, cw = u.get("cache_read_input_tokens", 0) or 0, u.get("cache_creation_input_tokens", 0) or 0
+        t["vhod"] += vh
+        t["izhod"] += iz
+        t["cache_beri"] += cr
+        t["cache_pisi"] += cw
+        pr = _price(model)
+        if pr:
+            t["usd"] += (vh * pr[0] + iz * pr[1] + cr * pr[2] + cw * pr[0] * CACHE_WRITE_X) / 1e6
+        else:
+            t["brez_cene"] += vh + iz + cr + cw
     res = (t, label)
     _TOK_CACHE[key] = res
     return res
@@ -158,7 +197,7 @@ def tokens():
         return {"skupaj": None, "viri": []}
     main = mains[0]
     files = [main] + sorted(main.parent.glob(f"{main.stem}/**/*.jsonl"))
-    viri, total, n = [], {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0}, 0
+    viri, total, n = [], {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0, "usd": 0.0, "brez_cene": 0}, 0
     for f in files:
         t, label = _file_tokens(f)
         if f == main:
@@ -169,7 +208,7 @@ def tokens():
         viri.append({"ime": ime, **t})
         for k in total:
             total[k] += t[k]
-    return {"skupaj": total, "viri": viri}
+    return {"skupaj": total, "viri": viri, "eur_na_usd": EUR_PER_USD}
 
 
 PAGE = """<!doctype html><html lang="sl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -198,7 +237,7 @@ svg{display:block;width:100%;min-width:600px;height:auto;color:var(--fg);font-fa
 @keyframes flow{to{stroke-dashoffset:-13}}
 .band{fill:none;stroke:var(--l);stroke-dasharray:5 4}
 .ic .sp,.ic .ck,.ic .wt{display:none}.n .ic .wt{display:block}.n.konec .ic .wt{display:none}.n.konec .ic .ck{display:block}.n.tece .ic .wt,.n.pise .ic .wt{display:none}.n.tece .ic .sp,.n.pise .ic .sp{display:block}.spin{animation:rot .9s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes rot{to{transform:rotate(360deg)}}
-.tt{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}.tt small{font-size:.8rem;font-weight:400;color:var(--m)}.tr{display:grid;grid-template-columns:130px 1fr 90px;gap:8px;align-items:center;font-size:.85rem;margin-top:6px}.tr span:first-child{font-family:ui-monospace,Consolas,monospace}.tb{height:12px;background:var(--waitb);border-radius:4px;overflow:hidden;display:flex}.tb i{display:block;height:100%}.tb i.o{background:var(--ok)}.tb i.v{background:var(--run)}.tr .gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}.lg{font-size:.78rem;color:var(--m);margin-top:8px}.gl{font-size:11.5px;fill:var(--m)}
+.tt{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}.tt small{font-size:.8rem;font-weight:400;color:var(--m)}.tr{display:grid;grid-template-columns:130px 1fr 130px;gap:8px;align-items:center;font-size:.85rem;margin-top:6px}.tr span:first-child{font-family:ui-monospace,Consolas,monospace}.tb{height:12px;background:var(--waitb);border-radius:4px;overflow:hidden;display:flex}.tb i{display:block;height:100%}.tb i.o{background:var(--ok)}.tb i.v{background:var(--run)}.tr .gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}.lg{font-size:.78rem;color:var(--m);margin-top:8px}.gl{font-size:11.5px;fill:var(--m)}
 .gantt{display:grid;gap:6px;position:relative}
 .g{display:grid;grid-template-columns:130px 1fr 60px;gap:8px;align-items:center;font-size:.85rem}
 .g span:first-child{font-family:ui-monospace,Consolas,monospace}.gt{position:relative;height:16px;background:var(--waitb);border-radius:4px}
@@ -210,10 +249,11 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 <main>
-<header><h1>Nadzor razpisa: <span id=r></span></h1><div class=pill>Pretečeno <b id=el>0:00</b> · končano <b id=pc>0/5</b> · žetoni <b id=tk>–</b></div></header>
+<header><h1>Nadzor razpisa: <span id=r></span></h1><div class=pill>Pretečeno <b id=el>0:00</b> · končano <b id=pc>0/5</b> · žetoni <b id=tk>–</b> · strošek <b id=ec>–</b></div></header>
+<div class=card><h2>Časovnica</h2><div class=gantt id=gantt></div></div>
 <div class=card><h2>Potek</h2><div class=bar><i id=pb style="width:0"></i></div>
 <div class=scroll style="margin-top:10px">
-<svg viewBox="0 0 800 500" role="img" aria-label="Živi diagram poteka agentov">
+<svg viewBox="0 0 800 560" role="img" aria-label="Živi diagram poteka agentov">
 <defs></defs>
 <g id=edges>
  <path class=e data-d=k0 d="M405 62 V110"/>
@@ -237,10 +277,10 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 <g class=n id=s-kalkulant><rect x="420" y="250" width="230" height="56" rx="6"/><text class=nt x="535" y="273" text-anchor=middle>kalkulant</text><text class=ns x="535" y="292" text-anchor=middle>cenovna ponudba</text><g transform="translate(444,278)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <g class=f data-f=osnutek><rect x="190" y="352" width="150" height="34" rx="4"/><text class=ft x="265" y="374" text-anchor=middle>osnutek.md</text></g>
 <g class=f data-f=ponudba><rect x="460" y="352" width="150" height="34" rx="4"/><text class=ft x="535" y="374" text-anchor=middle>ponudba.md</text></g>
-<g class=n id=s-pregled><rect x="285" y="428" width="240" height="56" rx="6"/><text class=nt x="405" y="451" text-anchor=middle>pregledovalec</text><text class=ns x="405" y="470" text-anchor=middle>poročilo o vrzelih v konzoli</text><g transform="translate(309,456)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
-<g id=s-k0 class=n><rect x="285" y="508" width="240" height="0" rx="6" style="display:none"/></g>
+<g class=n id=s-pregled><rect x="285" y="428" width="240" height="56" rx="6"/><text class=nt x="405" y="451" text-anchor=middle>pregledovalec</text><text class=ns x="405" y="470" text-anchor=middle>vrzeli po merilih</text><g transform="translate(309,456)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<path class="e" data-d=pregled d="M405 484 V510"/>
+<g class=f data-f=pregled><rect x="330" y="510" width="150" height="34" rx="4"/><text class=ft x="405" y="532" text-anchor=middle>pregled.md</text></g>
 </svg></div></div>
-<div class=card><h2>Časovnica</h2><div class=gantt id=gantt></div></div>
 <div class=card><h2>Porabljeni žetoni</h2><div id=tok></div></div>
 <div class=cols>
 <div class=card><h2>Zadnje spremenjene datoteke</h2><table id=files></table></div>
@@ -257,7 +297,7 @@ async function tick(){try{
  $("r").textContent=d.razpis||"(ni imena)";
  for(const id of ["analitik","pisec","kalkulant","pregled"]){const g=$("s-"+id);if(g)g.setAttribute("class","n "+S[id].stanje)}
  document.querySelectorAll("#edges .e").forEach(e=>e.setAttribute("class","e "+S[e.dataset.d].stanje));
- document.querySelectorAll("[data-f]").forEach(g=>{const k=g.dataset.f;const s=k==="zahteve"?S.analitik:k==="osnutek"?S.pisec:k==="ponudba"?S.kalkulant:null;
+ document.querySelectorAll("[data-f]").forEach(g=>{const k=g.dataset.f;const s=k==="zahteve"?S.analitik:k==="osnutek"?S.pisec:k==="ponudba"?S.kalkulant:k==="pregled"?S.pregled:null;
   if(s)g.setAttribute("class","f"+(s.velikost>0?" on":""));});
  const done=d.koraki.filter(s=>s.stanje==="konec").length;$("pc").textContent=done+"/5";$("pb").style.width=done*20+"%";
  const starts=d.koraki.map(s=>s.zacetek||s.konec).filter(Boolean);
@@ -274,11 +314,11 @@ async function tick(){try{
 
  const Z=d.zetoni||{},K=Z.skupaj;
  if(K){const nf=n=>n>=1e6?(n/1e6).toFixed(2)+" M":n>=1e3?(n/1e3).toFixed(1)+" k":String(n);
-  const tot=K.vhod+K.izhod+K.cache_pisi;$("tk").textContent=nf(tot);
+  const tot=K.vhod+K.izhod+K.cache_pisi;$("tk").textContent=nf(tot);const R=Z.eur_na_usd||0.9;const eur=x=>(x*R).toLocaleString("sl-SI",{style:"currency",currency:"EUR",minimumFractionDigits:2});$("ec").textContent="≈ "+eur(K.usd);
   const mx=Math.max(1,...Z.viri.map(v=>v.vhod+v.izhod+v.cache_pisi));
-  $("tok").innerHTML=`<div class=tt>${nf(tot)} <small>žetonov (vhod ${nf(K.vhod+K.cache_pisi)} · izhod ${nf(K.izhod)}) + ${nf(K.cache_beri)} prebranih iz predpomnilnika</small></div>`
-   +Z.viri.map(v=>{const vh=v.vhod+v.cache_pisi,t=vh+v.izhod;return `<div class=tr><span>${esc(v.ime)}</span><div class=tb><i class=v style="width:${vh/mx*100}%"></i><i class=o style="width:${v.izhod/mx*100}%"></i></div><span class=gd>${nf(t)}</span></div>`}).join("")
-   +'<div class=lg><i style="color:var(--run)">■</i> vhod &nbsp; <i style="color:var(--ok)">■</i> izhod · branje iz predpomnilnika ni všteto, ker je poceni</div>';
+  $("tok").innerHTML=`<div class=tt>${nf(tot)} <small>žetonov (vhod ${nf(K.vhod+K.cache_pisi)} · izhod ${nf(K.izhod)}) + ${nf(K.cache_beri)} prebranih iz predpomnilnika</small></div><div class=tt>≈ ${eur(K.usd)} <small>ocenjen strošek po cenah API (${(R).toFixed(2)} EUR za 1 USD)${K.brez_cene?" · "+nf(K.brez_cene)+" žetonov brez znane cene ni všteto":""}</small></div>`
+   +Z.viri.map(v=>{const vh=v.vhod+v.cache_pisi,t=vh+v.izhod;return `<div class=tr><span>${esc(v.ime)}</span><div class=tb><i class=v style="width:${vh/mx*100}%"></i><i class=o style="width:${v.izhod/mx*100}%"></i></div><span class=gd>${nf(t)} · ${eur(v.usd)}</span></div>`}).join("")
+   +'<div class=lg><i style="color:var(--run)">■</i> vhod &nbsp; <i style="color:var(--ok)">■</i> izhod · strošek vključuje tudi predpomnilnik po njegovi ceni</div>';
  }else{$("tok").innerHTML="<div class=lg>Ni zapisa seje (~/.claude/projects/…razpisi).</div>"}
 }catch(e){}}
 tick();setInterval(tick,2000);
