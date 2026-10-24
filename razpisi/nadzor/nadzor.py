@@ -247,13 +247,16 @@ def tokens():
     mains = sorted((f for d in dirs for f in d.glob("*.jsonl")), key=lambda f: f.stat().st_mtime)
     if not mains:
         return {"skupaj": None, "viri": []}
-    # seje od začetka dela na razpisu (najstarejša datoteka v besedilo/, razpakirano/ ali izhod/)
-    starts = []
-    for sub in (ROOT / "vhod" / RAZPIS / "besedilo", ROOT / "vhod" / RAZPIS / "razpakirano", ROOT / "izhod" / RAZPIS):
-        if sub.exists():
-            starts += [f.stat().st_mtime for f in sub.rglob("*") if f.is_file()]
-    thr = (min(starts) - 120) if starts else mains[-1].stat().st_mtime - 1
-    sel = [f for f in mains if f.stat().st_mtime >= thr] or [mains[-1]]
+    # privzeto vse seje v mapi razpisi; NADZOR_OD=razpis šteje samo seje od začetka dela na razpisu
+    sel = mains
+    if os.environ.get("NADZOR_OD") == "razpis":
+        starts = []
+        for sub in (ROOT / "vhod" / RAZPIS / "besedilo", ROOT / "vhod" / RAZPIS / "razpakirano", ROOT / "izhod" / RAZPIS):
+            if sub.exists():
+                starts += [f.stat().st_mtime for f in sub.rglob("*") if f.is_file()]
+        if starts:
+            thr = min(starts) - 120
+            sel = [f for f in mains if f.stat().st_mtime >= thr] or [mains[-1]]
     files = []
     for m in sel:
         files.append(m)
@@ -393,7 +396,7 @@ async function tick(){try{
  if(K){const nf=n=>n>=1e6?(n/1e6).toFixed(2)+" M":n>=1e3?(n/1e3).toFixed(1)+" k":String(n);
   const tot=K.vhod+K.izhod+K.cache_pisi;$("tk").textContent=nf(tot);const R=Z.eur_na_usd||0.9;const eur=x=>(x*R).toLocaleString("sl-SI",{style:"currency",currency:"EUR",minimumFractionDigits:2});$("ec").textContent="≈ "+eur(K.usd);
   const mx=Math.max(1,...Z.viri.map(v=>v.vhod+v.izhod+v.cache_pisi));
-  $("tok").innerHTML=`<div class=tt>${nf(tot)} <small>žetonov (vhod ${nf(K.vhod+K.cache_pisi)} · izhod ${nf(K.izhod)}) + ${nf(K.cache_beri)} prebranih iz predpomnilnika</small></div><div class=tt>≈ ${eur(K.usd)} <small>ocenjen strošek po cenah API (${(R).toFixed(2)} EUR za 1 USD)${K.brez_cene?" · "+nf(K.brez_cene)+" žetonov brez znane cene ni všteto":""}</small></div>`
+  $("tok").innerHTML=`<div class=tt>${nf(tot)} <small>žetonov (vhod ${nf(K.vhod+K.cache_pisi)} · izhod ${nf(K.izhod)}) + ${nf(K.cache_beri)} prebranih iz predpomnilnika</small></div><div class=tt>≈ ${eur(K.usd)} <small>ocenjen strošek po cenah API (vse seje v mapi razpisi) (${(R).toFixed(2)} EUR za 1 USD)${K.brez_cene?" · "+nf(K.brez_cene)+" žetonov brez znane cene ni všteto":""}</small></div>`
    +Z.viri.map(v=>{const vh=v.vhod+v.cache_pisi,t=vh+v.izhod;return `<div class=tr><span>${esc(v.ime)}</span><div class=tb><i class=v style="width:${vh/mx*100}%"></i><i class=o style="width:${v.izhod/mx*100}%"></i></div><span class=gd>${nf(t)} · ${eur(v.usd)}</span></div>`}).join("")
    +'<div class=lg><i style="color:var(--run)">■</i> vhod &nbsp; <i style="color:var(--ok)">■</i> izhod · strošek vključuje tudi predpomnilnik po njegovi ceni</div>';
  }else{$("tok").innerHTML="<div class=lg>Ni zapisa seje (~/.claude/projects/…razpisi).</div>"}

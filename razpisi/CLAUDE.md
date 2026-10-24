@@ -22,3 +22,5 @@ Uporabi skill `priprava-prijave` za celoten potek.
 
 ## Nadzor v živo
 `python nadzor/nadzor.py <ime-razpisa>` odpre lokalno stran (http://localhost:8765) s stanjem korakov, datotekami in zadnjimi dogodki agentov. Zaženi jo v drugem oknu terminala; samo bere datoteke.
+
+Nadzor šteje stroške vseh sej v mapi `razpisi`. Za štetje samo od začetka dela na razpisu zaženi z `NADZOR_OD=razpis` (PowerShell: `$env:NADZOR_OD="razpis"; python nadzor.py <razpis>`).
