@@ -107,6 +107,71 @@ def transcript_events(limit=25):
     return [{"cas": t[11:19], "kdo": w, "kaj": s} for t, w, s in events[:limit]]
 
 
+_TOK_CACHE = {}
+AGENTI = ("analitik-razpisa", "pisec-prijave", "kalkulant", "pregledovalec")
+
+
+def _file_tokens(f):
+    """Seštevek žetonov iz zapisa seje; vsako sporočilo (message.id) se šteje enkrat."""
+    key = (str(f), f.stat().st_mtime, f.stat().st_size)
+    if key in _TOK_CACHE:
+        return _TOK_CACHE[key]
+    msgs, label = {}, None
+    try:
+        for i, line in enumerate(f.read_text(encoding="utf-8", errors="ignore").splitlines()):
+            try:
+                e = json.loads(line)
+            except ValueError:
+                continue
+            if label is None and i < 5:
+                for a in AGENTI:
+                    if a in line:
+                        label = a
+                        break
+            m = e.get("message") or {}
+            u = m.get("usage")
+            if isinstance(u, dict) and m.get("role") == "assistant":
+                mid = m.get("id") or f"{f.name}:{i}"
+                prev = msgs.get(mid)
+                if prev is None or u.get("output_tokens", 0) >= prev.get("output_tokens", 0):
+                    msgs[mid] = u
+    except OSError:
+        pass
+    t = {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0}
+    for u in msgs.values():
+        t["vhod"] += u.get("input_tokens", 0) or 0
+        t["izhod"] += u.get("output_tokens", 0) or 0
+        t["cache_beri"] += u.get("cache_read_input_tokens", 0) or 0
+        t["cache_pisi"] += u.get("cache_creation_input_tokens", 0) or 0
+    res = (t, label)
+    _TOK_CACHE[key] = res
+    return res
+
+
+def tokens():
+    base = Path.home() / ".claude" / "projects"
+    if not base.exists():
+        return {"skupaj": None, "viri": []}
+    dirs = [d for d in base.iterdir() if d.is_dir() and d.name.lower().endswith("razpisi")]
+    mains = sorted((f for d in dirs for f in d.glob("*.jsonl")), key=lambda f: f.stat().st_mtime, reverse=True)
+    if not mains:
+        return {"skupaj": None, "viri": []}
+    main = mains[0]
+    files = [main] + sorted(main.parent.glob(f"{main.stem}/**/*.jsonl"))
+    viri, total, n = [], {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0}, 0
+    for f in files:
+        t, label = _file_tokens(f)
+        if f == main:
+            ime = "glavna seja"
+        else:
+            n += 1
+            ime = label or f"agent {n}"
+        viri.append({"ime": ime, **t})
+        for k in total:
+            total[k] += t[k]
+    return {"skupaj": total, "viri": viri}
+
+
 PAGE = """<!doctype html><html lang="sl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nadzor razpisa</title>
 <style>
@@ -132,7 +197,8 @@ svg{display:block;width:100%;min-width:600px;height:auto;color:var(--fg);font-fa
 .e.tece,.e.pise{stroke:var(--run);stroke-width:2.2;opacity:1;stroke-dasharray:7 6;animation:flow .7s linear infinite}
 @keyframes flow{to{stroke-dashoffset:-13}}
 .band{fill:none;stroke:var(--l);stroke-dasharray:5 4}
-.gl{font-size:11.5px;fill:var(--m)}
+.ic .sp,.ic .ck,.ic .wt{display:none}.n .ic .wt{display:block}.n.konec .ic .wt{display:none}.n.konec .ic .ck{display:block}.n.tece .ic .wt,.n.pise .ic .wt{display:none}.n.tece .ic .sp,.n.pise .ic .sp{display:block}.spin{animation:rot .9s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes rot{to{transform:rotate(360deg)}}
+.tt{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}.tt small{font-size:.8rem;font-weight:400;color:var(--m)}.tr{display:grid;grid-template-columns:130px 1fr 90px;gap:8px;align-items:center;font-size:.85rem;margin-top:6px}.tr span:first-child{font-family:ui-monospace,Consolas,monospace}.tb{height:12px;background:var(--waitb);border-radius:4px;overflow:hidden;display:flex}.tb i{display:block;height:100%}.tb i.o{background:var(--ok)}.tb i.v{background:var(--run)}.tr .gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}.lg{font-size:.78rem;color:var(--m);margin-top:8px}.gl{font-size:11.5px;fill:var(--m)}
 .gantt{display:grid;gap:6px;position:relative}
 .g{display:grid;grid-template-columns:130px 1fr 60px;gap:8px;align-items:center;font-size:.85rem}
 .g span:first-child{font-family:ui-monospace,Consolas,monospace}.gt{position:relative;height:16px;background:var(--waitb);border-radius:4px}
@@ -144,7 +210,7 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 <main>
-<header><h1>Nadzor razpisa: <span id=r></span></h1><div class=pill>Pretečeno <b id=el>0:00</b> · končano <b id=pc>0/5</b></div></header>
+<header><h1>Nadzor razpisa: <span id=r></span></h1><div class=pill>Pretečeno <b id=el>0:00</b> · končano <b id=pc>0/5</b> · žetoni <b id=tk>–</b></div></header>
 <div class=card><h2>Potek</h2><div class=bar><i id=pb style="width:0"></i></div>
 <div class=scroll style="margin-top:10px">
 <svg viewBox="0 0 800 500" role="img" aria-label="Živi diagram poteka agentov">
@@ -162,19 +228,20 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
  <path class=e data-d=pregled d="M535 386 V412 H405"/>
 </g>
 <rect class=band x="135" y="236" width="530" height="96" rx="8"/><text class=gl x="145" y="230">vzporedno</text>
-<g class="n konec" id=s-skill><rect x="255" y="14" width="300" height="48" rx="6"/><text class=nt x="405" y="35" text-anchor=middle>/priprava-prijave</text><text class=ns x="405" y="52" text-anchor=middle id=t-skill>zagnano</text></g>
+<g class="n konec" id=s-skill><rect x="255" y="14" width="300" height="48" rx="6"/><text class=nt x="405" y="35" text-anchor=middle>/priprava-prijave</text><text class=ns x="405" y="52" text-anchor=middle id=t-skill>zagnano</text><g transform="translate(279,38)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <g class="f on" data-f=vhod><rect x="10" y="118" width="150" height="40" rx="4"/><text class=ft x="85" y="142" text-anchor=middle>vhod/razpis/</text></g>
-<g class=n id=s-analitik><rect x="285" y="110" width="240" height="56" rx="6"/><text class=nt x="405" y="133" text-anchor=middle>analitik-razpisa</text><text class=ns x="405" y="152" text-anchor=middle>zahteve, merila, roki</text></g>
+<g class=n id=s-analitik><rect x="285" y="110" width="240" height="56" rx="6"/><text class=nt x="405" y="133" text-anchor=middle>analitik-razpisa</text><text class=ns x="405" y="152" text-anchor=middle>zahteve, merila, roki</text><g transform="translate(309,138)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <g class=f data-f=zahteve><rect x="600" y="118" width="170" height="40" rx="4"/><text class=ft x="685" y="142" text-anchor=middle>zahteve.md</text></g>
 <g class="f on"><rect x="10" y="257" width="100" height="42" rx="4"/><text class=ft x="60" y="282" text-anchor=middle>viri/</text></g>
-<g class=n id=s-pisec><rect x="150" y="250" width="230" height="56" rx="6"/><text class=nt x="265" y="273" text-anchor=middle>pisec-prijave</text><text class=ns x="265" y="292" text-anchor=middle>osnutek odgovorov</text></g>
-<g class=n id=s-kalkulant><rect x="420" y="250" width="230" height="56" rx="6"/><text class=nt x="535" y="273" text-anchor=middle>kalkulant</text><text class=ns x="535" y="292" text-anchor=middle>cenovna ponudba</text></g>
+<g class=n id=s-pisec><rect x="150" y="250" width="230" height="56" rx="6"/><text class=nt x="265" y="273" text-anchor=middle>pisec-prijave</text><text class=ns x="265" y="292" text-anchor=middle>osnutek odgovorov</text><g transform="translate(174,278)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<g class=n id=s-kalkulant><rect x="420" y="250" width="230" height="56" rx="6"/><text class=nt x="535" y="273" text-anchor=middle>kalkulant</text><text class=ns x="535" y="292" text-anchor=middle>cenovna ponudba</text><g transform="translate(444,278)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <g class=f data-f=osnutek><rect x="190" y="352" width="150" height="34" rx="4"/><text class=ft x="265" y="374" text-anchor=middle>osnutek.md</text></g>
 <g class=f data-f=ponudba><rect x="460" y="352" width="150" height="34" rx="4"/><text class=ft x="535" y="374" text-anchor=middle>ponudba.md</text></g>
-<g class=n id=s-pregled><rect x="285" y="428" width="240" height="56" rx="6"/><text class=nt x="405" y="451" text-anchor=middle>pregledovalec</text><text class=ns x="405" y="470" text-anchor=middle>poročilo o vrzelih v konzoli</text></g>
+<g class=n id=s-pregled><rect x="285" y="428" width="240" height="56" rx="6"/><text class=nt x="405" y="451" text-anchor=middle>pregledovalec</text><text class=ns x="405" y="470" text-anchor=middle>poročilo o vrzelih v konzoli</text><g transform="translate(309,456)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <g id=s-k0 class=n><rect x="285" y="508" width="240" height="0" rx="6" style="display:none"/></g>
 </svg></div></div>
 <div class=card><h2>Časovnica</h2><div class=gantt id=gantt></div></div>
+<div class=card><h2>Porabljeni žetoni</h2><div id=tok></div></div>
 <div class=cols>
 <div class=card><h2>Zadnje spremenjene datoteke</h2><table id=files></table></div>
 <div class=card><h2>Dogajanje agentov (približno)</h2><table id=ev></table></div></div>
@@ -204,6 +271,15 @@ async function tick(){try{
   return `<div class=g><span>${NAZ[s.id]}</span><div class=gt><div class="gb ${s.stanje}" style="left:${l}%;width:${w}%"></div></div><span class=gd>${fmt(b-a)}</span></div>`}).join("");
  $("files").innerHTML=d.datoteke.map(f=>`<tr><td>pred ${f.pred} s</td><td><code>${esc(f.pot)}</code></td></tr>`).join("")||"<tr><td>Ni datotek.</td></tr>";
  $("ev").innerHTML=d.dogodki.map(e=>`<tr><td>${esc(e.cas)}</td><td>${esc(e.kdo)}</td><td>${esc(e.kaj)}</td></tr>`).join("")||"<tr><td>Ni zapisa seje.</td></tr>";
+
+ const Z=d.zetoni||{},K=Z.skupaj;
+ if(K){const nf=n=>n>=1e6?(n/1e6).toFixed(2)+" M":n>=1e3?(n/1e3).toFixed(1)+" k":String(n);
+  const tot=K.vhod+K.izhod+K.cache_pisi;$("tk").textContent=nf(tot);
+  const mx=Math.max(1,...Z.viri.map(v=>v.vhod+v.izhod+v.cache_pisi));
+  $("tok").innerHTML=`<div class=tt>${nf(tot)} <small>žetonov (vhod ${nf(K.vhod+K.cache_pisi)} · izhod ${nf(K.izhod)}) + ${nf(K.cache_beri)} prebranih iz predpomnilnika</small></div>`
+   +Z.viri.map(v=>{const vh=v.vhod+v.cache_pisi,t=vh+v.izhod;return `<div class=tr><span>${esc(v.ime)}</span><div class=tb><i class=v style="width:${vh/mx*100}%"></i><i class=o style="width:${v.izhod/mx*100}%"></i></div><span class=gd>${nf(t)}</span></div>`}).join("")
+   +'<div class=lg><i style="color:var(--run)">■</i> vhod &nbsp; <i style="color:var(--ok)">■</i> izhod · branje iz predpomnilnika ni všteto, ker je poceni</div>';
+ }else{$("tok").innerHTML="<div class=lg>Ni zapisa seje (~/.claude/projects/…razpisi).</div>"}
 }catch(e){}}
 tick();setInterval(tick,2000);
 </script></html>"""
@@ -214,7 +290,7 @@ class H(BaseHTTPRequestHandler):
         if self.path.startswith("/api/status"):
             now = time.time()
             body = json.dumps({"razpis": RAZPIS, "koraki": steps(now), "datoteke": recent_files(now),
-                               "dogodki": transcript_events(), "zdaj": now}, ensure_ascii=False).encode("utf-8")
+                               "dogodki": transcript_events(), "zetoni": tokens(), "zdaj": now}, ensure_ascii=False).encode("utf-8")
             ctype = "application/json; charset=utf-8"
         else:
             body, ctype = PAGE.encode("utf-8"), "text/html; charset=utf-8"
