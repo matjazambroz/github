@@ -298,7 +298,7 @@ PAGE = """<!doctype html><html lang="sl"><meta charset="utf-8"><meta name="viewp
 :root{--bg:#f3f5f8;--s:#fff;--fg:#1b2433;--m:#5b6678;--l:#c9d0dc;--ok:#0d7a6b;--okb:#d6f0ea;--run:#3b64c4;--runb:#dfe9fb;--wait:#8a95a8;--waitb:#eef1f5;--warn:#b4551a;--warnb:#fbe9dc}
 @media(prefers-color-scheme:dark){:root{--bg:#11161f;--s:#1a212d;--fg:#e6ebf3;--m:#9aa6ba;--l:#2d3748;--ok:#4fd1bb;--okb:#15332e;--run:#7aa2f0;--runb:#22345a;--wait:#6f7b90;--waitb:#202938;--warn:#f0a46b;--warnb:#3a2a1d}}
 body{margin:0;padding:20px;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,Segoe UI,sans-serif}
-main{max-width:980px;margin:auto;display:grid;gap:16px}
+main{max-width:1180px;margin:auto;display:grid;gap:16px}
 header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
 h1{font-size:1.4rem;margin:0}h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--m);margin:0 0 8px}
 .pill{font-size:.85rem;color:var(--m)}.pill b{color:var(--fg);font-variant-numeric:tabular-nums}
@@ -318,9 +318,9 @@ svg{display:block;width:100%;min-width:600px;height:auto;color:var(--fg);font-fa
 @keyframes flow{to{stroke-dashoffset:-13}}
 .band{fill:none;stroke:var(--l);stroke-dasharray:5 4}
 .ic .sp,.ic .ck,.ic .wt,.ic .wr{display:none}.n.stop .ic .wt{display:none}.n.stop .ic .wr{display:block}.n .ic .wt{display:block}.n.konec .ic .wt{display:none}.n.konec .ic .ck{display:block}.n.tece .ic .wt,.n.pise .ic .wt{display:none}.n.tece .ic .sp,.n.pise .ic .sp{display:block}.spin{animation:rot .9s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes rot{to{transform:rotate(360deg)}}
-.tt{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}.tt small{font-size:.8rem;font-weight:400;color:var(--m)}.tr{display:grid;grid-template-columns:130px 1fr 130px;gap:8px;align-items:center;font-size:.85rem;margin-top:6px}.tr span:first-child{font-family:ui-monospace,Consolas,monospace}.tb{height:12px;background:var(--waitb);border-radius:4px;overflow:hidden;display:flex}.tb i{display:block;height:100%}.tb i.o{background:var(--ok)}.tb i.v{background:var(--run)}.tr .gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}.lg{font-size:.78rem;color:var(--m);margin-top:8px}.gl{font-size:11.5px;fill:var(--m)}
+.tt{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}.tt small{font-size:.8rem;font-weight:400;color:var(--m)}.tr{display:grid;grid-template-columns:110px 1fr 120px;gap:8px;align-items:center;font-size:.85rem;margin-top:6px}.tr span:first-child{font-family:ui-monospace,Consolas,monospace}.tb{height:12px;background:var(--waitb);border-radius:4px;overflow:hidden;display:flex}.tb i{display:block;height:100%}.tb i.o{background:var(--ok)}.tb i.v{background:var(--run)}.tr .gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}.lg{font-size:.78rem;color:var(--m);margin-top:8px}.gl{font-size:11.5px;fill:var(--m)}
 .gantt{display:grid;gap:6px;position:relative}
-.g{display:grid;grid-template-columns:130px 1fr 60px;gap:8px;align-items:center;font-size:.85rem}
+.g{display:grid;grid-template-columns:110px 1fr 50px;gap:8px;align-items:center;font-size:.85rem}
 .g span:first-child{font-family:ui-monospace,Consolas,monospace}.gt{position:relative;height:16px;background:var(--waitb);border-radius:4px}
 .gb{position:absolute;top:0;bottom:0;border-radius:4px;background:var(--ok);min-width:3px}.gb.tece,.gb.pise{background:var(--run);animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.55}}.gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}
@@ -331,7 +331,10 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 </style>
 <main>
 <header><h1>Nadzor razpisa: <span id=r></span></h1><div class=pill>Pretečeno <b id=el>0:00</b> · končano <b id=pc>0/5</b> · žetoni <b id=tk>–</b> · strošek <b id=ec>–</b></div></header>
+<div class=cols>
 <div class=card><h2>Časovnica</h2><div class=gantt id=gantt></div></div>
+<div class=card><h2>Porabljeni žetoni</h2><div id=tok></div></div>
+</div>
 <div class=card><h2>Potek</h2><div class=bar><i id=pb style="width:0"></i></div>
 <div class=scroll style="margin-top:10px">
 <svg viewBox="0 0 800 560" role="img" aria-label="Živi diagram poteka agentov">
@@ -362,7 +365,6 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 <path class="e" data-d=pregled d="M405 484 V510"/>
 <g class=f data-f=pregled><rect x="330" y="510" width="150" height="34" rx="4"/><text class=ft x="405" y="532" text-anchor=middle>pregled.md</text></g>
 </svg></div></div>
-<div class=card><h2>Porabljeni žetoni</h2><div id=tok></div></div>
 <div class=cols>
 <div class=card><h2>Zadnje spremenjene datoteke</h2><table id=files></table></div>
 <div class=card><h2>Dogajanje agentov (približno)</h2><table id=ev></table></div></div>
