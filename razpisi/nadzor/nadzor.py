@@ -277,12 +277,18 @@ def tokens():
         viri.append({"ime": ime, "_k": label, **t})
         for k in total:
             total[k] += t[k]
-    seen = {}
+    # združi vrstice po agentu; glavne seje v eno vrstico
+    groups = {}
     for v in viri:
         k = v.pop("_k")
-        if k and names[k] > 1:
-            seen[k] = seen.get(k, 0) + 1
-            v["ime"] = f"{k} #{seen[k]}"
+        name = k or ("glavna seja" if v["ime"].startswith("glavna seja") else v["ime"])
+        g = groups.setdefault(name, {"ime": name, "zagoni": 0, "vhod": 0, "izhod": 0, "cache_beri": 0,
+                                     "cache_pisi": 0, "usd": 0.0, "brez_cene": 0})
+        g["zagoni"] += 1
+        for key in ("vhod", "izhod", "cache_beri", "cache_pisi", "usd", "brez_cene"):
+            g[key] += v[key]
+    order = {a: i for i, a in enumerate(AGENTI)}
+    viri = sorted(groups.values(), key=lambda g: (order.get(g["ime"], 99), g["ime"]))
     return {"skupaj": total, "viri": viri, "eur_na_usd": EUR_PER_USD}
 
 
@@ -397,7 +403,7 @@ async function tick(){try{
   const tot=K.vhod+K.izhod+K.cache_pisi;$("tk").textContent=nf(tot);const R=Z.eur_na_usd||0.9;const eur=x=>(x*R).toLocaleString("sl-SI",{style:"currency",currency:"EUR",minimumFractionDigits:2});$("ec").textContent="≈ "+eur(K.usd);
   const mx=Math.max(1,...Z.viri.map(v=>v.vhod+v.izhod+v.cache_pisi));
   $("tok").innerHTML=`<div class=tt>${nf(tot)} <small>žetonov (vhod ${nf(K.vhod+K.cache_pisi)} · izhod ${nf(K.izhod)}) + ${nf(K.cache_beri)} prebranih iz predpomnilnika</small></div><div class=tt>≈ ${eur(K.usd)} <small>ocenjen strošek po cenah API (vse seje v mapi razpisi) (${(R).toFixed(2)} EUR za 1 USD)${K.brez_cene?" · "+nf(K.brez_cene)+" žetonov brez znane cene ni všteto":""}</small></div>`
-   +Z.viri.map(v=>{const vh=v.vhod+v.cache_pisi,t=vh+v.izhod;return `<div class=tr><span>${esc(v.ime)}</span><div class=tb><i class=v style="width:${vh/mx*100}%"></i><i class=o style="width:${v.izhod/mx*100}%"></i></div><span class=gd>${nf(t)} · ${eur(v.usd)}</span></div>`}).join("")
+   +Z.viri.map(v=>{const vh=v.vhod+v.cache_pisi,t=vh+v.izhod;return `<div class=tr><span>${esc(v.ime)}${v.zagoni>1?" ×"+v.zagoni:""}</span><div class=tb><i class=v style="width:${vh/mx*100}%"></i><i class=o style="width:${v.izhod/mx*100}%"></i></div><span class=gd>${nf(t)} · ${eur(v.usd)}</span></div>`}).join("")
    +'<div class=lg><i style="color:var(--run)">■</i> vhod &nbsp; <i style="color:var(--ok)">■</i> izhod · strošek vključuje tudi predpomnilnik po njegovi ceni</div>';
  }else{$("tok").innerHTML="<div class=lg>Ni zapisa seje (~/.claude/projects/…razpisi).</div>"}
 }catch(e){}}
