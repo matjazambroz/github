@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Pretvori izhodne .md datoteke razpisa v Word (.docx) in PDF.
+"""Izvoz izhodnih dokumentov razpisa v PDF (in po želji .md v Word).
 
-Zagon (v mapi razpisi):   python orodja/izvozi.py <ime-razpisa>
-Vhod:   izhod/<razpis>/*.md
-Izhod:  izhod/<razpis>/*.docx in *.pdf (PDF samo, če je na voljo Word, LibreOffice ali pandoc)
+Zagon (v mapi razpisi):
+  python orodja/izvozi.py <ime-razpisa>          PDF iz izpolnjenih izvirnih obrazcev v izhod/<razpis>/obrazci/ (DOCX, XLSX)
+  python orodja/izvozi.py <ime-razpisa> --md     poleg tega .md v izhod/<razpis>/ pretvori v .docx in .pdf
+                                                 (splošna oblika, NI izvirna oblika razpisa; samo za notranje dokumente)
 
+Izvirna oblika (glave, noge, pisave, oštevilčenje) se ohrani, ker se PDF naredi iz že izpolnjenega izvirnika.
+PDF potrebuje Word (docx2pdf) ali LibreOffice; če njihove pisave niso nameščene, jih PDF nadomesti.
 Potrebuje: pip install python-docx
 """
 import re
@@ -133,23 +136,46 @@ def to_pdf(docx_path):
     return None
 
 
+def pdf_from_office(path):
+    """PDF iz DOCX (Word ali LibreOffice) ali XLSX (LibreOffice)."""
+    if path.suffix.lower() == ".docx":
+        return to_pdf(path)
+    pdf = path.with_suffix(".pdf")
+    for exe in ("soffice", "libreoffice", r"C:\Program Files\LibreOffice\program\soffice.exe"):
+        exe_path = shutil.which(exe) or (exe if Path(exe).exists() else None)
+        if exe_path:
+            subprocess.run([exe_path, "--headless", "--convert-to", "pdf", "--outdir", str(path.parent), str(path)],
+                           capture_output=True, timeout=180)
+            if pdf.exists():
+                return pdf
+    return None
+
+
 def main():
-    if len(sys.argv) < 2:
-        sys.exit("Uporaba: python orodja/izvozi.py <ime-razpisa>")
-    folder = ROOT / "izhod" / sys.argv[1]
-    mds = sorted(folder.glob("*.md"))
-    if not mds:
-        sys.exit(f"V {folder} ni .md datotek.")
-    no_pdf = []
-    for md in mds:
-        out = md.with_suffix(".docx")
-        md_to_docx(md.read_text(encoding="utf-8"), out)
-        pdf = to_pdf(out)
-        print(f"{md.name} -> {out.name}" + (f", {pdf.name}" if pdf else ""))
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    if not args:
+        sys.exit("Uporaba: python orodja/izvozi.py <ime-razpisa> [--md]")
+    folder = ROOT / "izhod" / args[0]
+    failed = []
+    forms = sorted(p for p in (folder / "obrazci").glob("*") if p.suffix.lower() in (".docx", ".xlsx", ".xlsm")
+                   and not p.name.startswith("~$"))
+    if not forms:
+        print(f"Ni izpolnjenih obrazcev v {folder / 'obrazci'} (to naredi agent izpolnjevalec-obrazcev).")
+    for f in forms:
+        pdf = pdf_from_office(f)
+        print(f"{f.name} -> " + (pdf.name if pdf else "PDF ni bil ustvarjen"))
         if not pdf:
-            no_pdf.append(md.name)
-    if no_pdf:
-        print("\nPDF ni bil ustvarjen (ni Worda ali LibreOffice). Odpri .docx v Wordu in shrani kot PDF.")
+            failed.append(f.name)
+    if "--md" in sys.argv:
+        for md in sorted(folder.glob("*.md")):
+            out = md.with_suffix(".docx")
+            md_to_docx(md.read_text(encoding="utf-8"), out)
+            pdf = to_pdf(out)
+            print(f"{md.name} -> {out.name}" + (f", {pdf.name}" if pdf else ""))
+            if not pdf:
+                failed.append(md.name)
+    if failed:
+        print("\nPDF ni nastal za: " + ", ".join(failed) + ". Namesti Word ali LibreOffice, ali odpri datoteko in shrani kot PDF.")
 
 
 if __name__ == "__main__":

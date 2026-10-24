@@ -15,4 +15,6 @@ Argument: ime mape razpisa v `razpisi/vhod/`.
 2. Šele ko `zahteve.md` obstaja, zaženi `pisec-prijave` in `kalkulant` vzporedno (v enem sporočilu).
 3. Zaženi `pregledovalec` (poročilo shrani v `izhod/<razpis>/pregled.md`); povzemi vrzeli uporabniku.
 4. Če so vrzeli, vprašaj uporabnika po manjkajočih podatkih (eno vprašanje naenkrat) in ponovi korak 2 samo za prizadete dele.
-5. Na koncu (ko so vrzeli obravnavane ali uporabnik reče, da je dovolj) izvozi dokumente: zaženi `python orodja/izvozi.py <razpis>` v mapi `razpisi` (če manjka `python-docx`, ga namesti z `pip install python-docx`). Ukaz iz `izhod/<razpis>/*.md` ustvari `.docx` in, če je na voljo Word ali LibreOffice, tudi `.pdf`. Sporoči uporabniku, katere datoteke so nastale in ali PDF manjka.
+5. Zaženi `izpolnjevalec-obrazcev`: izvirne obrazce (DOCX) in predračun (XLSX) iz `vhod/<razpis>/` izpolni v kopijah v `izhod/<razpis>/obrazci/` z izvirno obliko (glave, noge, oštevilčenje, pisave). Izvirnikov ne spreminja. Obrazce izpolni šele, ko so vrzeli obravnavane ali uporabnik reče, da je dovolj. Povzemi `obrazci/POROCILO.md`.
+6. Preveri obliko vsakega izpolnjenega obrazca: `python orodja/preveri_obliko.py <izvirnik> <izpolnjeno>`. Pri razlikah poženi izpolnjevalca znova za ta obrazec.
+7. Izvozi PDF: `python orodja/izvozi.py <razpis>` v mapi `razpisi` (če manjka `python-docx` ali `openpyxl`, ju namesti s `pip install`). PDF nastane iz izpolnjenih izvirnikov. Sporoči, katere datoteke so nastale in ali kakšen PDF manjka.

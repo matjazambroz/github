@@ -25,5 +25,6 @@ Uporabi skill `priprava-prijave` za celoten potek.
 
 Nadzor šteje stroške vseh sej v mapi `razpisi`. Za štetje samo od začetka dela na razpisu zaženi z `NADZOR_OD=razpis` (PowerShell: `$env:NADZOR_OD="razpis"; python nadzor.py <razpis>`).
 
-## Izvoz v Word in PDF
-`python orodja/izvozi.py <ime-razpisa>` pretvori `izhod/<razpis>/*.md` v `.docx` in `.pdf` (PDF le, če je nameščen Word ali LibreOffice). Potrebuje `pip install python-docx`. Skill ga požene kot zadnji korak.
+## Izpolnjeni obrazci v izvirni obliki (Word, Excel, PDF)
+Končni dokumenti so **izvirni razpisni obrazci**, izpolnjeni v kopiji (`izhod/<razpis>/obrazci/`), z vso izvirno obliko: glave, noge, oštevilčenje, tip in velikost pisave. Agent `izpolnjevalec-obrazcev` jih izpolni, `python orodja/preveri_obliko.py <izvirnik> <izpolnjeno>` preveri, da se oblika ni spremenila, `python orodja/izvozi.py <razpis>` naredi PDF. Izvirnikov v `vhod/` nikoli ne spreminjaj.
+`.md` datoteke (`zahteve`, `osnutek`, `ponudba`, `pregled`) so delovni material; z `--md` jih izvozi v Word s splošno obliko, ki ni izvirna oblika razpisa.
