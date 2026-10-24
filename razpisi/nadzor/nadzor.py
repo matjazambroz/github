@@ -23,6 +23,7 @@ PRICES = {
     "haiku-5-5": (0.10, 0.50, 0.01), "haiku-4": (1.0, 5.0, 0.10),
 }
 CACHE_WRITE_X = 1.25
+ACTIVE_S = 180  # agent se šteje za aktivnega, če se je zapis njegove seje spremenil v tolikšnem času (dolgo razmišljanje)
 import os
 EUR_PER_USD = float(os.environ.get("EUR_PER_USD", "0.90"))  # približen tečaj; nastavi z okoljsko spremenljivko
 
@@ -89,7 +90,7 @@ def steps(now):
     seen, last = agent_activity("pregledovalec")
     if tr is not None:
         pregled_state = state(True, ready, pregled)
-    elif seen and last is not None and now - last < 45:
+    elif seen and last is not None and now - last < ACTIVE_S:
         pregled_state = "tece"
     elif seen and ready:
         pregled_state = "stop"
@@ -102,9 +103,9 @@ def steps(now):
     newest_form = max([f.stat().st_mtime for f in forms], default=None)
     if tobr is not None:
         obrazci_state = state(True, True, porocilo)
-    elif form_seen and form_last is not None and now - form_last < 45:
+    elif form_seen and form_last is not None and now - form_last < ACTIVE_S:
         obrazci_state = "tece"
-    elif forms and newest_form is not None and now - newest_form < 45:
+    elif forms and newest_form is not None and now - newest_form < ACTIVE_S:
         obrazci_state = "tece"
     elif form_seen or forms:
         obrazci_state = "stop"
