@@ -6,10 +6,12 @@ DOCX: primerja glave, noge, sloge, oštevilčenje, teme, nastavitve strani in up
 XLSX: primerja sloge, širine stolpcev, združene celice in formule.
 Izhod: 0 = enako, 1 = razlike, 2 = napaka v uporabi.
 """
+import posixpath
 import re
 import sys
 import zipfile
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 PARTS_DOCX = re.compile(r"^word/(header\d*|footer\d*|styles|numbering|theme/theme\d*|fontTable|settings)\.xml$")
 FONT_RE = re.compile(rb'w:(?:ascii|hAnsi|cs|eastAsia)="([^"]+)"')
@@ -21,8 +23,70 @@ def read(zf, name):
     return zf.read(name) if name in zf.namelist() else b""
 
 
-def check_docx(a, b):
+def check_package(a, b):
+    """Preveri, da je izpolnjen DOCX veljaven paket, ki ga Word lahko odpre."""
     diffs = []
+    with zipfile.ZipFile(a) as za, zipfile.ZipFile(b) as zb:
+        try:
+            bad = zb.testzip()
+        except Exception as e:  # poškodovan ZIP
+            return [f"ZIP je poškodovan: {e}"]
+        if bad:
+            diffs.append(f"ZIP: poškodovan zapis {bad}")
+        names_a, names_b = set(za.namelist()), set(zb.namelist())
+        for n in sorted(names_a - names_b):
+            diffs.append(f"manjka del paketa, ki je v izvirniku: {n}")
+        for n in sorted(names_b - names_a):
+            diffs.append(f"dodan del paketa, ki ga izvirnik nima: {n}")
+        if "[Content_Types].xml" not in names_b:
+            diffs.append("manjka [Content_Types].xml")
+        trees = {}
+        for n in zb.namelist():
+            if n.endswith((".xml", ".rels")):
+                try:
+                    trees[n] = ET.fromstring(zb.read(n))
+                except ET.ParseError as e:
+                    diffs.append(f"{n}: neveljaven XML ({e})")
+        # cilji povezav (relationships) morajo obstajati
+        for n, tree in trees.items():
+            if not n.endswith(".rels"):
+                continue
+            base = posixpath.dirname(posixpath.dirname(n))
+            for rel in tree:
+                if rel.get("TargetMode") == "External":
+                    continue
+                target = rel.get("Target", "")
+                full = target.lstrip("/") if target.startswith("/") else posixpath.normpath(posixpath.join(base, target))
+                if full not in names_b:
+                    diffs.append(f"{n}: povezava kaže na manjkajoči del {full}")
+        # sprotne in končne opombe: vsaka referenca mora imeti zapis
+        doc = zb.read("word/document.xml").decode("utf-8", "ignore") if "word/document.xml" in names_b else ""
+        for kind, part in (("footnote", "word/footnotes.xml"), ("endnote", "word/endnotes.xml")):
+            refs = set(re.findall(rf'<w:{kind}Reference[^>]*w:id="(-?\d+)"', doc))
+            if not refs:
+                continue
+            if part not in names_b:
+                diffs.append(f"dokument sklicuje {kind}-e ({len(refs)}), a {part} manjka (Word: »footnotes are missing or corrupt«)")
+                continue
+            have = set(re.findall(rf'<w:{kind}[^>]*w:id="(-?\d+)"', zb.read(part).decode("utf-8", "ignore")))
+            missing = refs - have
+            if missing:
+                diffs.append(f"{part}: manjkajo zapisi za reference {sorted(missing)}")
+        # vsak del mora imeti vrsto vsebine
+        ct = trees.get("[Content_Types].xml")
+        if ct is not None:
+            defaults = {d.get("Extension", "").lower() for d in ct if d.tag.endswith("Default")}
+            overrides = {o.get("PartName", "") for o in ct if o.tag.endswith("Override")}
+            for n in names_b:
+                if n == "[Content_Types].xml" or n.endswith("/"):
+                    continue
+                if "/" + n not in overrides and n.rsplit(".", 1)[-1].lower() not in defaults:
+                    diffs.append(f"[Content_Types].xml ne pozna vrste za {n}")
+    return diffs
+
+
+def check_docx(a, b):
+    diffs = check_package(a, b)
     with zipfile.ZipFile(a) as za, zipfile.ZipFile(b) as zb:
         names = sorted({n for n in za.namelist() + zb.namelist() if PARTS_DOCX.match(n)})
         for n in names:

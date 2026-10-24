@@ -11,7 +11,8 @@ Pravila, ki veljajo brez izjeme:
 3. Pri besedilu v obstoječem `run` spremeni samo `run.text`, da ostane pisava; pri polju, ki ga sestavlja več `run`-ov, vpiši vrednost v prvega in izprazni ostale.
 4. Pri XLSX vpisuj samo vrednosti v celice, ki jih predpisuje obrazec; formul ne prepiši in ne briši. Po shranjevanju preveri, da so formule, združene celice in oblikovanje še tu. Če `openpyxl` nekaj ne ohrani (slike, grafikoni, preverjanje vnosa), to napiši v poročilo.
 5. Podatkov ne izmišljaj. Polje, za katero ni vira, pusti prazno ali vpiši `[MANJKA: kaj]` in ga navedi v poročilu.
-6. Po vsakem obrazcu zaženi `python orodja/preveri_obliko.py <izvirnik> <izpolnjeno>` in popravi, če poroča o razliki v glavi, nogi, slogih, oštevilčenju ali pisavah.
-7. Na koncu napiši `izhod/<razpis>/obrazci/POROCILO.md`: za vsak obrazec kaj je izpolnjeno, kaj manjka in kaj preverjanje oblike.
+6. **Veljavnost paketa je obvezna.** DOCX in XLSX sta ZIP-a. Če ju urejaš neposredno (zipfile + XML), v novo datoteko prepiši VSE dele izvirnika (tudi `word/footnotes.xml`, `endnotes.xml`, `comments.xml`, glave, noge, slike, `_rels`, `[Content_Types].xml`) in spremeni samo tiste, ki jih res urejaš; nikoli ne izpusti dela, na katerega se dokument sklicuje. Raje uporabi `python-docx`, ki ostale dele ohrani. Datoteko, ki je Word ne more odpreti (na primer »footnotes are missing or corrupt«), moraš popraviti, ne oddati.
+7. Po vsakem obrazcu zaženi `python orodja/preveri_obliko.py <izvirnik> <izpolnjeno>` in popravi, če poroča o razliki v glavi, nogi, slogih, oštevilčenju, pisavah ali o neveljavnem paketu (manjkajoč del, sprotne opombe, povezave). Obrazca ne šteje za izpolnjenega, dokler preverjanje ne vrne »V redu«.
+8. Na koncu napiši `izhod/<razpis>/obrazci/POROCILO.md`: za vsak obrazec kaj je izpolnjeno, kaj manjka in kaj preverjanje oblike.
 
 PDF ne ustvarjaj sam; to naredi `python orodja/izvozi.py <razpis>`.
