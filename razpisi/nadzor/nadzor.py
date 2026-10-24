@@ -139,8 +139,8 @@ def _label_from(line):
     found = [a for a in AGENTI if a in low]
     if len(found) == 1:
         return found[0]
-    for kw, a in (("analiz", AGENTI[0]), ("osnutek", AGENTI[1]), ("cenovn", AGENTI[2]),
-                  ("kalkul", AGENTI[2]), ("pregled", AGENTI[3])):
+    for kw, a in (("pregled", AGENTI[3]), ("analiz", AGENTI[0]), ("cenovn", AGENTI[2]),
+                  ("kalkul", AGENTI[2]), ("osnutek", AGENTI[1])):
         if kw in low:
             return a
     return ""
@@ -192,16 +192,26 @@ def tokens():
     if not base.exists():
         return {"skupaj": None, "viri": []}
     dirs = [d for d in base.iterdir() if d.is_dir() and d.name.lower().endswith("razpisi")]
-    mains = sorted((f for d in dirs for f in d.glob("*.jsonl")), key=lambda f: f.stat().st_mtime, reverse=True)
+    mains = sorted((f for d in dirs for f in d.glob("*.jsonl")), key=lambda f: f.stat().st_mtime)
     if not mains:
         return {"skupaj": None, "viri": []}
-    main = mains[0]
-    files = [main] + sorted(main.parent.glob(f"{main.stem}/**/*.jsonl"))
+    # seje od začetka dela na razpisu (najstarejša datoteka v besedilo/, razpakirano/ ali izhod/)
+    starts = []
+    for sub in (ROOT / "vhod" / RAZPIS / "besedilo", ROOT / "vhod" / RAZPIS / "razpakirano", ROOT / "izhod" / RAZPIS):
+        if sub.exists():
+            starts += [f.stat().st_mtime for f in sub.rglob("*") if f.is_file()]
+    thr = (min(starts) - 120) if starts else mains[-1].stat().st_mtime - 1
+    sel = [f for f in mains if f.stat().st_mtime >= thr] or [mains[-1]]
+    files = []
+    for m in sel:
+        files.append(m)
+        files += sorted(m.parent.glob(f"{m.stem}/**/*.jsonl"))
+    mains_set = set(sel)
     viri, total, n = [], {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0, "usd": 0.0, "brez_cene": 0}, 0
     for f in files:
         t, label = _file_tokens(f)
-        if f == main:
-            ime = "glavna seja"
+        if f in mains_set:
+            ime = "glavna seja" if len(mains_set) == 1 else f"glavna seja {sorted(mains_set).index(f) + 1}"
         else:
             n += 1
             ime = label or f"agent {n}"
