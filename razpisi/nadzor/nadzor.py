@@ -80,6 +80,10 @@ def steps(now):
         return path.stat().st_mtime if path.exists() and path.stat().st_size > 0 else None
 
     pregled = izhod / "pregled.md"
+    obrazci_dir = izhod / "obrazci"
+    porocilo = obrazci_dir / "POROCILO.md"
+    forms = [f for f in obrazci_dir.glob("*") if f.is_file() and f.suffix.lower() in (".docx", ".xlsx", ".xlsm")] if obrazci_dir.exists() else []
+    pdfs = [f for f in obrazci_dir.glob("*.pdf")] if obrazci_dir.exists() else []
     tz, to, tp, tr = mt(zahteve), mt(osnutek), mt(ponudba), mt(pregled)
     ready = bool(o and p and state(o, z, osnutek) == "konec" and state(p, z, ponudba) == "konec")
     seen, last = agent_activity("pregledovalec")
@@ -93,6 +97,21 @@ def steps(now):
         pregled_state = "pripr"
     else:
         pregled_state = "caka"
+    form_seen, form_last = agent_activity("izpolnjevalec-obrazcev")
+    tobr = mt(porocilo)
+    newest_form = max([f.stat().st_mtime for f in forms], default=None)
+    if tobr is not None:
+        obrazci_state = state(True, True, porocilo)
+    elif form_seen and form_last is not None and now - form_last < 45:
+        obrazci_state = "tece"
+    elif forms and newest_form is not None and now - newest_form < 45:
+        obrazci_state = "tece"
+    elif form_seen or forms:
+        obrazci_state = "stop"
+    elif tr is not None:
+        obrazci_state = "pripr"
+    else:
+        obrazci_state = "caka"
     return [
         {"id": "k0", "naziv": "Korak 0: priprava datotek", "stanje": "konec" if k0_done else "tece",
          "opis": f"{k0_n} pretvorjenih datotek v besedilo/" if k0_done else "razpakiranje in pretvorba",
@@ -109,6 +128,9 @@ def steps(now):
         {"id": "pregled", "naziv": "pregledovalec", "stanje": pregled_state,
          "opis": "pregled.md", "datoteka": "pregled.md", "velikost": read_size(pregled),
          "zacetek": max(to, tp) if (to and tp) else None, "konec": tr},
+        {"id": "obrazci", "naziv": "izpolnjevalec-obrazcev", "stanje": obrazci_state,
+         "opis": f"{len(forms)} obrazcev · {len(pdfs)} PDF", "datoteka": "obrazci/", "velikost": read_size(porocilo),
+         "zacetek": tr, "konec": tobr},
     ]
 
 
@@ -187,7 +209,7 @@ def _ts(e, fallback):
 
 
 _TOK_CACHE = {}
-AGENTI = ("analitik-razpisa", "pisec-prijave", "kalkulant", "pregledovalec")
+AGENTI = ("analitik-razpisa", "pisec-prijave", "kalkulant", "pregledovalec", "izpolnjevalec-obrazcev")
 
 
 def _label_from(line):
@@ -196,7 +218,7 @@ def _label_from(line):
     if len(found) == 1:
         return found[0]
     for kw, a in (("pregled", AGENTI[3]), ("analiz", AGENTI[0]), ("cenovn", AGENTI[2]),
-                  ("kalkul", AGENTI[2]), ("osnutek", AGENTI[1])):
+                  ("kalkul", AGENTI[2]), ("izpolni", AGENTI[4]), ("osnutek", AGENTI[1])):
         if kw in low:
             return a
     return ""
@@ -368,7 +390,7 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 </div>
 <div class=card><h2>Potek</h2><div class=bar><i id=pb style="width:0"></i></div>
 <div class=scroll style="margin-top:10px">
-<svg viewBox="0 0 800 560" role="img" aria-label="Živi diagram poteka agentov">
+<svg viewBox="0 0 800 700" role="img" aria-label="Živi diagram poteka agentov">
 <defs></defs>
 <g id=edges>
  <path class=e data-d=k0 d="M405 62 V110"/>
@@ -393,6 +415,10 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 <g class=f data-f=osnutek><rect x="190" y="352" width="150" height="34" rx="4"/><text class=ft x="265" y="374" text-anchor=middle>osnutek.md</text></g>
 <g class=f data-f=ponudba><rect x="460" y="352" width="150" height="34" rx="4"/><text class=ft x="535" y="374" text-anchor=middle>ponudba.md</text></g>
 <g class=n id=s-pregled><rect x="285" y="428" width="240" height="56" rx="6"/><text class=nt x="405" y="451" text-anchor=middle>pregledovalec</text><text class=ns x="405" y="470" text-anchor=middle id=t-pregled>vrzeli po merilih</text><g transform="translate(309,456)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wr><circle r="9" fill="var(--warn)"/><path d="M0 -5 V1" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round"/><circle cy="5" r="1.4" fill="var(--s)"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<path class="e" data-d=obrazci d="M405 544 V570"/>
+<g class=n id=s-obrazci><rect x="285" y="570" width="240" height="56" rx="6"/><text class=nt x="415" y="593" text-anchor=middle style="font-size:11.5px">izpolnjevalec-obrazcev</text><text class=ns x="405" y="612" text-anchor=middle id=t-obrazci>izvirni obrazci in predračun</text><g transform="translate(309,598)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wr><circle r="9" fill="var(--warn)"/><path d="M0 -5 V1" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round"/><circle cy="5" r="1.4" fill="var(--s)"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<path class="e" data-d=obrazci d="M405 626 V652"/>
+<g class=f data-f=obrazci><rect x="330" y="652" width="150" height="34" rx="4"/><text class=ft x="405" y="674" text-anchor=middle>obrazci/</text></g>
 <path class="e" data-d=pregled d="M405 484 V510"/>
 <g class=f data-f=pregled><rect x="330" y="510" width="150" height="34" rx="4"/><text class=ft x="405" y="532" text-anchor=middle>pregled.md</text></g>
 </svg></div></div>
@@ -404,21 +430,21 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
-const NAZ={k0:"korak 0",analitik:"analitik",pisec:"pisec",kalkulant:"kalkulant",pregled:"pregledovalec"};
+const NAZ={k0:"korak 0",analitik:"analitik",pisec:"pisec",kalkulant:"kalkulant",pregled:"pregledovalec",obrazci:"obrazci"};
 let T0=null;
 async function tick(){try{
  const d=await (await fetch("/api/status")).json();const S=Object.fromEntries(d.koraki.map(s=>[s.id,s]));
  $("r").textContent=d.razpis||"(ni imena)";
- for(const id of ["analitik","pisec","kalkulant","pregled"]){const g=$("s-"+id);if(g)g.setAttribute("class","n "+S[id].stanje)}
+ for(const id of ["analitik","pisec","kalkulant","pregled","obrazci"]){const g=$("s-"+id);if(g)g.setAttribute("class","n "+S[id].stanje)}
 
  const TXT={konec:"končano",tece:"v teku",pise:"piše datoteko",caka:"čaka na prejšnji korak",pripr:"pripravljen, še ni zagnan",stop:"ni poročila (prekinjen?)"};
- for(const id of ["analitik","pisec","kalkulant","pregled"]){const s=S[id],t=$("t-"+id);if(!t)continue;let x=TXT[s.stanje]||s.stanje;
+ for(const id of ["analitik","pisec","kalkulant","pregled","obrazci"]){const s=S[id],t=$("t-"+id);if(!t)continue;let x=TXT[s.stanje]||s.stanje;
   if(s.stanje==="konec"&&s.zacetek&&s.konec)x+=" · "+fmt(s.konec-s.zacetek);
   if((s.stanje==="tece"||s.stanje==="pise")&&s.zacetek)x+=" · "+fmt(d.zdaj-s.zacetek);t.textContent=x}
  document.querySelectorAll("#edges .e").forEach(e=>e.setAttribute("class","e "+S[e.dataset.d].stanje));
- document.querySelectorAll("[data-f]").forEach(g=>{const k=g.dataset.f;const s=k==="zahteve"?S.analitik:k==="osnutek"?S.pisec:k==="ponudba"?S.kalkulant:k==="pregled"?S.pregled:null;
+ document.querySelectorAll("[data-f]").forEach(g=>{const k=g.dataset.f;const s=k==="zahteve"?S.analitik:k==="osnutek"?S.pisec:k==="ponudba"?S.kalkulant:k==="pregled"?S.pregled:k==="obrazci"?S.obrazci:null;
   if(s)g.setAttribute("class","f"+(s.velikost>0?" on":""));});
- const done=d.koraki.filter(s=>s.stanje==="konec").length;$("pc").textContent=done+"/5";$("pb").style.width=done*20+"%";
+ const done=d.koraki.filter(s=>s.stanje==="konec").length;const nk=d.koraki.length;$("pc").textContent=done+"/"+nk;$("pb").style.width=done/nk*100+"%";
  const starts=d.koraki.map(s=>s.zacetek||s.konec).filter(Boolean);
  if(starts.length){const t=Math.min(...starts);if(T0===null||t<T0)T0=t}
  const now=d.zdaj;$("el").textContent=T0?fmt(now-T0):"0:00";
