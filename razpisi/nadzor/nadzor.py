@@ -174,19 +174,43 @@ def _label_from(line):
     return ""
 
 
+def _label_from_meta(f):
+    """Tip agenta iz datoteke agent-<id>.meta.json (zapis ob transkriptu); ime polja ni predpostavljeno."""
+    meta = f.with_name(f.stem + ".meta.json")
+    try:
+        data = json.loads(meta.read_text(encoding="utf-8", errors="ignore"))
+    except (OSError, ValueError):
+        return None
+
+    def values(x):
+        if isinstance(x, dict):
+            for v in x.values():
+                yield from values(v)
+        elif isinstance(x, list):
+            for v in x:
+                yield from values(v)
+        elif isinstance(x, str):
+            yield x
+
+    for v in values(data):
+        if v in AGENTI:
+            return v
+    return None
+
+
 def _file_tokens(f):
     """Seštevek žetonov iz zapisa seje; vsako sporočilo (message.id) se šteje enkrat."""
     key = (str(f), f.stat().st_mtime, f.stat().st_size)
     if key in _TOK_CACHE:
         return _TOK_CACHE[key]
-    msgs, label = {}, None
+    msgs, label = {}, _label_from_meta(f)
     try:
         for i, line in enumerate(f.read_text(encoding="utf-8", errors="ignore").splitlines()):
             try:
                 e = json.loads(line)
             except ValueError:
                 continue
-            if label is None and e.get("type") == "user":
+            if not label and e.get("type") == "user":
                 label = _label_from(line)
             m = e.get("message") or {}
             u = m.get("usage")
@@ -235,17 +259,27 @@ def tokens():
         files.append(m)
         files += sorted(m.parent.glob(f"{m.stem}/**/*.jsonl"))
     mains_set = set(sel)
+    names = {}
     viri, total, n = [], {"vhod": 0, "izhod": 0, "cache_beri": 0, "cache_pisi": 0, "usd": 0.0, "brez_cene": 0}, 0
     for f in files:
         t, label = _file_tokens(f)
         if f in mains_set:
+            label = None
             ime = "glavna seja" if len(mains_set) == 1 else f"glavna seja {sorted(mains_set).index(f) + 1}"
         else:
             n += 1
             ime = label or f"agent {n}"
-        viri.append({"ime": ime, **t})
+            if label:
+                names[label] = names.get(label, 0) + 1
+        viri.append({"ime": ime, "_k": label, **t})
         for k in total:
             total[k] += t[k]
+    seen = {}
+    for v in viri:
+        k = v.pop("_k")
+        if k and names[k] > 1:
+            seen[k] = seen.get(k, 0) + 1
+            v["ime"] = f"{k} #{seen[k]}"
     return {"skupaj": total, "viri": viri, "eur_na_usd": EUR_PER_USD}
 
 
