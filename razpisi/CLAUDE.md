@@ -19,3 +19,6 @@ Uporabi skill `priprava-prijave` za celoten potek.
 - Nikoli si ne izmišljaj referenc ali številk; manjkajoče podatke označi z `[MANJKA: ...]`.
 - Vsaka trditev v osnutku naj ima vir v `viri/`.
 - Končnih prijav ne oddajaj in ne pošiljaj brez izrecne potrditve uporabnika.
+
+## Nadzor v živo
+`python nadzor/nadzor.py <ime-razpisa>` odpre lokalno stran (http://localhost:8765) s stanjem korakov, datotekami in zadnjimi dogodki agentov. Zaženi jo v drugem oknu terminala; samo bere datoteke.
