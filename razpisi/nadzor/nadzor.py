@@ -44,6 +44,23 @@ def read_size(p):
     return p.stat().st_size if p.exists() else 0
 
 
+def agent_activity(label):
+    """(obstaja, čas zadnje spremembe) zapisa seje agenta s to oznako; best-effort."""
+    base = Path.home() / ".claude" / "projects"
+    if not base.exists():
+        return False, None
+    newest, found = None, False
+    for d in base.iterdir():
+        if d.is_dir() and d.name.lower().endswith("razpisi"):
+            files = sorted(d.glob("*/subagents/*.jsonl"), key=lambda f: f.stat().st_mtime, reverse=True)[:12]
+            for f in files:
+                if _file_tokens(f)[1] == label:
+                    found = True
+                    t = f.stat().st_mtime
+                    newest = t if newest is None else max(newest, t)
+    return found, newest
+
+
 def steps(now):
     vhod, viri = ROOT / "vhod" / RAZPIS, ROOT / "viri"
     izhod = ROOT / "izhod" / RAZPIS
@@ -63,6 +80,18 @@ def steps(now):
 
     pregled = izhod / "pregled.md"
     tz, to, tp, tr = mt(zahteve), mt(osnutek), mt(ponudba), mt(pregled)
+    ready = bool(o and p and state(o, z, osnutek) == "konec" and state(p, z, ponudba) == "konec")
+    seen, last = agent_activity("pregledovalec")
+    if tr is not None:
+        pregled_state = state(True, ready, pregled)
+    elif seen and last is not None and now - last < 45:
+        pregled_state = "tece"
+    elif seen and ready:
+        pregled_state = "stop"
+    elif ready:
+        pregled_state = "pripr"
+    else:
+        pregled_state = "caka"
     return [
         {"id": "k0", "naziv": "Korak 0: priprava datotek", "stanje": "konec" if k0_done else "tece",
          "opis": f"{k0_n} pretvorjenih datotek v besedilo/" if k0_done else "razpakiranje in pretvorba",
@@ -76,8 +105,7 @@ def steps(now):
         {"id": "kalkulant", "naziv": "kalkulant", "stanje": state(p, z, ponudba),
          "opis": "ponudba.md", "datoteka": "ponudba.md", "velikost": read_size(ponudba),
          "zacetek": tz, "konec": tp},
-        {"id": "pregled", "naziv": "pregledovalec",
-         "stanje": state(tr is not None, bool(o and p and state(o, z, osnutek) == "konec" and state(p, z, ponudba) == "konec"), pregled),
+        {"id": "pregled", "naziv": "pregledovalec", "stanje": pregled_state,
          "opis": "pregled.md", "datoteka": "pregled.md", "velikost": read_size(pregled),
          "zacetek": max(to, tp) if (to and tp) else None, "konec": tr},
     ]
@@ -224,8 +252,8 @@ def tokens():
 PAGE = """<!doctype html><html lang="sl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nadzor razpisa</title>
 <style>
-:root{--bg:#f3f5f8;--s:#fff;--fg:#1b2433;--m:#5b6678;--l:#c9d0dc;--ok:#0d7a6b;--okb:#d6f0ea;--run:#3b64c4;--runb:#dfe9fb;--wait:#8a95a8;--waitb:#eef1f5}
-@media(prefers-color-scheme:dark){:root{--bg:#11161f;--s:#1a212d;--fg:#e6ebf3;--m:#9aa6ba;--l:#2d3748;--ok:#4fd1bb;--okb:#15332e;--run:#7aa2f0;--runb:#22345a;--wait:#6f7b90;--waitb:#202938}}
+:root{--bg:#f3f5f8;--s:#fff;--fg:#1b2433;--m:#5b6678;--l:#c9d0dc;--ok:#0d7a6b;--okb:#d6f0ea;--run:#3b64c4;--runb:#dfe9fb;--wait:#8a95a8;--waitb:#eef1f5;--warn:#b4551a;--warnb:#fbe9dc}
+@media(prefers-color-scheme:dark){:root{--bg:#11161f;--s:#1a212d;--fg:#e6ebf3;--m:#9aa6ba;--l:#2d3748;--ok:#4fd1bb;--okb:#15332e;--run:#7aa2f0;--runb:#22345a;--wait:#6f7b90;--waitb:#202938;--warn:#f0a46b;--warnb:#3a2a1d}}
 body{margin:0;padding:20px;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,Segoe UI,sans-serif}
 main{max-width:980px;margin:auto;display:grid;gap:16px}
 header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
@@ -236,7 +264,7 @@ h1{font-size:1.4rem;margin:0}h2{font-size:.8rem;text-transform:uppercase;letter-
 .bar{height:10px;background:var(--waitb);border-radius:6px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--ok);transition:width .6s}
 svg{display:block;width:100%;min-width:600px;height:auto;color:var(--fg);font-family:system-ui,Segoe UI,sans-serif}
 .n rect{fill:var(--waitb);stroke:var(--wait);stroke-width:1.5;transition:fill .4s,stroke .4s}
-.n.konec rect{fill:var(--okb);stroke:var(--ok)}.n.tece rect,.n.pise rect{fill:var(--runb);stroke:var(--run);stroke-width:2.5}
+.n.stop rect{fill:var(--warnb);stroke:var(--warn);stroke-width:2}.n.konec rect{fill:var(--okb);stroke:var(--ok)}.n.tece rect,.n.pise rect{fill:var(--runb);stroke:var(--run);stroke-width:2.5}
 .n.tece rect,.n.pise rect{animation:glow 1.4s ease-in-out infinite}
 @keyframes glow{50%{stroke-width:5;stroke-opacity:.45}}
 .nt{font:600 13px ui-monospace,Consolas,monospace;fill:currentColor}.ns{font-size:11.5px;fill:var(--m)}
@@ -246,7 +274,7 @@ svg{display:block;width:100%;min-width:600px;height:auto;color:var(--fg);font-fa
 .e.tece,.e.pise{stroke:var(--run);stroke-width:2.2;opacity:1;stroke-dasharray:7 6;animation:flow .7s linear infinite}
 @keyframes flow{to{stroke-dashoffset:-13}}
 .band{fill:none;stroke:var(--l);stroke-dasharray:5 4}
-.ic .sp,.ic .ck,.ic .wt{display:none}.n .ic .wt{display:block}.n.konec .ic .wt{display:none}.n.konec .ic .ck{display:block}.n.tece .ic .wt,.n.pise .ic .wt{display:none}.n.tece .ic .sp,.n.pise .ic .sp{display:block}.spin{animation:rot .9s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes rot{to{transform:rotate(360deg)}}
+.ic .sp,.ic .ck,.ic .wt,.ic .wr{display:none}.n.stop .ic .wt{display:none}.n.stop .ic .wr{display:block}.n .ic .wt{display:block}.n.konec .ic .wt{display:none}.n.konec .ic .ck{display:block}.n.tece .ic .wt,.n.pise .ic .wt{display:none}.n.tece .ic .sp,.n.pise .ic .sp{display:block}.spin{animation:rot .9s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes rot{to{transform:rotate(360deg)}}
 .tt{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}.tt small{font-size:.8rem;font-weight:400;color:var(--m)}.tr{display:grid;grid-template-columns:130px 1fr 130px;gap:8px;align-items:center;font-size:.85rem;margin-top:6px}.tr span:first-child{font-family:ui-monospace,Consolas,monospace}.tb{height:12px;background:var(--waitb);border-radius:4px;overflow:hidden;display:flex}.tb i{display:block;height:100%}.tb i.o{background:var(--ok)}.tb i.v{background:var(--run)}.tr .gd{text-align:right;color:var(--m);font-variant-numeric:tabular-nums}.lg{font-size:.78rem;color:var(--m);margin-top:8px}.gl{font-size:11.5px;fill:var(--m)}
 .gantt{display:grid;gap:6px;position:relative}
 .g{display:grid;grid-template-columns:130px 1fr 60px;gap:8px;align-items:center;font-size:.85rem}
@@ -278,16 +306,16 @@ td:first-child{color:var(--m);white-space:nowrap}code{font-family:ui-monospace,C
  <path class=e data-d=pregled d="M535 386 V412 H405"/>
 </g>
 <rect class=band x="135" y="236" width="530" height="96" rx="8"/><text class=gl x="145" y="230">vzporedno</text>
-<g class="n konec" id=s-skill><rect x="255" y="14" width="300" height="48" rx="6"/><text class=nt x="405" y="35" text-anchor=middle>/priprava-prijave</text><text class=ns x="405" y="52" text-anchor=middle id=t-skill>zagnano</text><g transform="translate(279,38)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<g class="n konec" id=s-skill><rect x="255" y="14" width="300" height="48" rx="6"/><text class=nt x="405" y="35" text-anchor=middle>/priprava-prijave</text><text class=ns x="405" y="52" text-anchor=middle id=t-skill>zagnano</text><g transform="translate(279,38)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wr><circle r="9" fill="var(--warn)"/><path d="M0 -5 V1" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round"/><circle cy="5" r="1.4" fill="var(--s)"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <g class="f on" data-f=vhod><rect x="10" y="118" width="150" height="40" rx="4"/><text class=ft x="85" y="142" text-anchor=middle>vhod/razpis/</text></g>
-<g class=n id=s-analitik><rect x="285" y="110" width="240" height="56" rx="6"/><text class=nt x="405" y="133" text-anchor=middle>analitik-razpisa</text><text class=ns x="405" y="152" text-anchor=middle>zahteve, merila, roki</text><g transform="translate(309,138)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<g class=n id=s-analitik><rect x="285" y="110" width="240" height="56" rx="6"/><text class=nt x="405" y="133" text-anchor=middle>analitik-razpisa</text><text class=ns x="405" y="152" text-anchor=middle id=t-analitik>zahteve, merila, roki</text><g transform="translate(309,138)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wr><circle r="9" fill="var(--warn)"/><path d="M0 -5 V1" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round"/><circle cy="5" r="1.4" fill="var(--s)"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <g class=f data-f=zahteve><rect x="600" y="118" width="170" height="40" rx="4"/><text class=ft x="685" y="142" text-anchor=middle>zahteve.md</text></g>
 <g class="f on"><rect x="10" y="257" width="100" height="42" rx="4"/><text class=ft x="60" y="282" text-anchor=middle>viri/</text></g>
-<g class=n id=s-pisec><rect x="150" y="250" width="230" height="56" rx="6"/><text class=nt x="265" y="273" text-anchor=middle>pisec-prijave</text><text class=ns x="265" y="292" text-anchor=middle>osnutek odgovorov</text><g transform="translate(174,278)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
-<g class=n id=s-kalkulant><rect x="420" y="250" width="230" height="56" rx="6"/><text class=nt x="535" y="273" text-anchor=middle>kalkulant</text><text class=ns x="535" y="292" text-anchor=middle>cenovna ponudba</text><g transform="translate(444,278)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<g class=n id=s-pisec><rect x="150" y="250" width="230" height="56" rx="6"/><text class=nt x="265" y="273" text-anchor=middle>pisec-prijave</text><text class=ns x="265" y="292" text-anchor=middle id=t-pisec>osnutek odgovorov</text><g transform="translate(174,278)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wr><circle r="9" fill="var(--warn)"/><path d="M0 -5 V1" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round"/><circle cy="5" r="1.4" fill="var(--s)"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<g class=n id=s-kalkulant><rect x="420" y="250" width="230" height="56" rx="6"/><text class=nt x="535" y="273" text-anchor=middle>kalkulant</text><text class=ns x="535" y="292" text-anchor=middle id=t-kalkulant>cenovna ponudba</text><g transform="translate(444,278)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wr><circle r="9" fill="var(--warn)"/><path d="M0 -5 V1" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round"/><circle cy="5" r="1.4" fill="var(--s)"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <g class=f data-f=osnutek><rect x="190" y="352" width="150" height="34" rx="4"/><text class=ft x="265" y="374" text-anchor=middle>osnutek.md</text></g>
 <g class=f data-f=ponudba><rect x="460" y="352" width="150" height="34" rx="4"/><text class=ft x="535" y="374" text-anchor=middle>ponudba.md</text></g>
-<g class=n id=s-pregled><rect x="285" y="428" width="240" height="56" rx="6"/><text class=nt x="405" y="451" text-anchor=middle>pregledovalec</text><text class=ns x="405" y="470" text-anchor=middle>vrzeli po merilih</text><g transform="translate(309,456)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
+<g class=n id=s-pregled><rect x="285" y="428" width="240" height="56" rx="6"/><text class=nt x="405" y="451" text-anchor=middle>pregledovalec</text><text class=ns x="405" y="470" text-anchor=middle id=t-pregled>vrzeli po merilih</text><g transform="translate(309,456)" class=ic><g class=sp><circle r="9" fill="none" stroke="var(--wait)" stroke-opacity=".25" stroke-width="3"/><g class=spin><circle r="9" fill="none" stroke="var(--run)" stroke-width="3" stroke-dasharray="20 60" stroke-linecap="round"/></g></g><g class=ck><circle r="9" fill="var(--ok)"/><path d="M-4.5 0 L-1.2 3.6 L5 -3.8" fill="none" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class=wr><circle r="9" fill="var(--warn)"/><path d="M0 -5 V1" stroke="var(--s)" stroke-width="2.4" stroke-linecap="round"/><circle cy="5" r="1.4" fill="var(--s)"/></g><g class=wt><circle r="9" fill="none" stroke="var(--wait)" stroke-width="2"/><path d="M0 -5 V0 L3.5 2" fill="none" stroke="var(--wait)" stroke-width="2" stroke-linecap="round"/></g></g></g>
 <path class="e" data-d=pregled d="M405 484 V510"/>
 <g class=f data-f=pregled><rect x="330" y="510" width="150" height="34" rx="4"/><text class=ft x="405" y="532" text-anchor=middle>pregled.md</text></g>
 </svg></div></div>
@@ -306,6 +334,11 @@ async function tick(){try{
  const d=await (await fetch("/api/status")).json();const S=Object.fromEntries(d.koraki.map(s=>[s.id,s]));
  $("r").textContent=d.razpis||"(ni imena)";
  for(const id of ["analitik","pisec","kalkulant","pregled"]){const g=$("s-"+id);if(g)g.setAttribute("class","n "+S[id].stanje)}
+
+ const TXT={konec:"končano",tece:"v teku",pise:"piše datoteko",caka:"čaka na prejšnji korak",pripr:"pripravljen, še ni zagnan",stop:"ni poročila (prekinjen?)"};
+ for(const id of ["analitik","pisec","kalkulant","pregled"]){const s=S[id],t=$("t-"+id);if(!t)continue;let x=TXT[s.stanje]||s.stanje;
+  if(s.stanje==="konec"&&s.zacetek&&s.konec)x+=" · "+fmt(s.konec-s.zacetek);
+  if((s.stanje==="tece"||s.stanje==="pise")&&s.zacetek)x+=" · "+fmt(d.zdaj-s.zacetek);t.textContent=x}
  document.querySelectorAll("#edges .e").forEach(e=>e.setAttribute("class","e "+S[e.dataset.d].stanje));
  document.querySelectorAll("[data-f]").forEach(g=>{const k=g.dataset.f;const s=k==="zahteve"?S.analitik:k==="osnutek"?S.pisec:k==="ponudba"?S.kalkulant:k==="pregled"?S.pregled:null;
   if(s)g.setAttribute("class","f"+(s.velikost>0?" on":""));});
