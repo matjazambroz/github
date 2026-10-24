@@ -15,3 +15,4 @@ Argument: ime mape razpisa v `razpisi/vhod/`.
 2. Šele ko `zahteve.md` obstaja, zaženi `pisec-prijave` in `kalkulant` vzporedno (v enem sporočilu).
 3. Zaženi `pregledovalec` (poročilo shrani v `izhod/<razpis>/pregled.md`); povzemi vrzeli uporabniku.
 4. Če so vrzeli, vprašaj uporabnika po manjkajočih podatkih (eno vprašanje naenkrat) in ponovi korak 2 samo za prizadete dele.
+5. Na koncu (ko so vrzeli obravnavane ali uporabnik reče, da je dovolj) izvozi dokumente: zaženi `python orodja/izvozi.py <razpis>` v mapi `razpisi` (če manjka `python-docx`, ga namesti z `pip install python-docx`). Ukaz iz `izhod/<razpis>/*.md` ustvari `.docx` in, če je na voljo Word ali LibreOffice, tudi `.pdf`. Sporoči uporabniku, katere datoteke so nastale in ali PDF manjka.

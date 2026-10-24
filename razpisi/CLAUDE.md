@@ -24,3 +24,6 @@ Uporabi skill `priprava-prijave` za celoten potek.
 `python nadzor/nadzor.py <ime-razpisa>` odpre lokalno stran (http://localhost:8765) s stanjem korakov, datotekami in zadnjimi dogodki agentov. Zaženi jo v drugem oknu terminala; samo bere datoteke.
 
 Nadzor šteje stroške vseh sej v mapi `razpisi`. Za štetje samo od začetka dela na razpisu zaženi z `NADZOR_OD=razpis` (PowerShell: `$env:NADZOR_OD="razpis"; python nadzor.py <razpis>`).
+
+## Izvoz v Word in PDF
+`python orodja/izvozi.py <ime-razpisa>` pretvori `izhod/<razpis>/*.md` v `.docx` in `.pdf` (PDF le, če je nameščen Word ali LibreOffice). Potrebuje `pip install python-docx`. Skill ga požene kot zadnji korak.
