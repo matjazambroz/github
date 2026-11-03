@@ -34,6 +34,22 @@ Ukazi so v `.claude/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi
 | `/hardsig [tema]` | 5 močnih zaključkov e-pošte | `/hardsig ponudba` |
 | `/intro [oseba A + oseba B]` | predstavitev dveh oseb | `/intro Ana in Boris, oba prevajalca` |
 
+## Work & Career
+
+| Ukaz | Pomen | Primer |
+|---|---|---|
+| `/interviewq [vprašanja]` | samozavestni odgovori na vprašanja z razgovora | `/interviewq Povejte nekaj o sebi` |
+| `/resumebullet [dosežek]` | dosežek v močne točke za življenjepis | `/resumebullet vodil sem prevajalski projekt` |
+| `/askinterviewer [vloga + podjetje]` | pametna vprašanja za anketarja | `/askinterviewer projektni vodja, agencija` |
+| `/negotiate [vloga]` | scenariji za pogajanje o plači | `/negotiate senior prevajalec` |
+| `/reconnect [oseba + kontekst]` | sporočilo za ponoven stik | `/reconnect Ana, kolegica s prejšnje službe` |
+| `/gap [razlog]` | razlaga vrzeli v karieri | `/gap 8 mesecev skrbi za družino` |
+| `/wins [vloge]` | izluščeni dosežki iz vlog | `/wins prevajalec, koordinator` |
+| `/oneonone [tema]` | priprava na pogovor 1:1 z vodjo | `/oneonone obremenitev v ekipi` |
+| `/selfreview [zapiski]` | samoocenitev | `/selfreview <zapiski>` |
+| `/idiomtov [situacija]` | prave fraze za poslovno situacijo | `/idiomtov zavrnitev ponudbe` |
+| `/raise [kontekst]` | scenarij za pogovor o povišici | `/raise 3 leta v podjetju` |
+
 ## Pravilo
 
 Ukazi `/proof`, `/clarify` in `/human` dajejo prednost slovenskemu pravopisu (SSKJ, Slovenski pravopis).

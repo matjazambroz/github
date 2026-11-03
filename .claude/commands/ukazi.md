@@ -7,6 +7,7 @@ Preberi vse datoteke `.claude/commands/*.md` v tem repozitoriju (glej tudi `UKAZ
 Ukaze razvrsti v kategorije:
 - **Write & Edit**: proof, rewrites, clarify, openers, filler, active, human, examples, simplify, title, tone
 - **Email & Messages**: decline, shorten, warmer, followup, answer, bulletproof, thanks, comfort, odo, hardsig, intro
+- **Work & Career**: interviewq, resumebullet, askinterviewer, negotiate, reconnect, gap, wins, oneonone, selfreview, idiomtov, raise
 - **Drugo**: vsi ostali ukazi, ki niso v zgornjih kategorijah
 
 Za vsak ukaz izpiši eno vrstico: `/ukaz [argument]` – pomen (iz `description`). Pod vsako kategorijo dodaj en kratek primer uporabe. Če je spodaj naveden filter, pokaži samo ustrezno kategorijo ali ukaze, katerih ime ali opis vsebuje to besedo. Odgovori v slovenščini, brez uvoda.
