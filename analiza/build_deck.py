@@ -38,7 +38,7 @@ def table(title, rows, widths):
 # 1 naslov
 s = prs.slides.add_slide(prs.slide_layouts[0])
 s.shapes.title.text = "Analiza konkurence v Sloveniji"
-s.placeholders[1].text = "AMIDAS d.o.o. · faza 1 (Slovenija) · osnutek v3 · javni viri + bonitetni podatki"
+s.placeholders[1].text = "AMIDAS d.o.o. · faza 1 (Slovenija) · osnutek v4 · neposredni konkurenti"
 
 bullets("Obseg in omejitve", [
     "Cilj: pregled slovenskih konkurentov AMIDAS in izhodišče za razširitev na EU (faza 2).",
@@ -55,7 +55,7 @@ bullets("Slovenski trg prevajalskih storitev", [
 ], "Vir: Fišer, »Recent trends in the translation industry in Slovenia«, JoSTrans.")
 
 
-def table_n(title, rows, widths, font=10):
+def table_n(title, rows, widths, font=10, right_from=3):
     s = prs.slides.add_slide(prs.slide_layouts[5])
     s.shapes.title.text = title
     s.shapes.title.text_frame.paragraphs[0].font.size = Pt(26)
@@ -69,7 +69,7 @@ def table_n(title, rows, widths, font=10):
             c.margin_top = c.margin_bottom = Inches(0.01)
             for p in c.text_frame.paragraphs:
                 p.font.size = Pt(font); p.font.bold = (i == 0 or "AMIDAS" in r[0])
-                if j >= 3: p.alignment = 3
+                if j >= right_from: p.alignment = 3
 
 def eur(n): return f"{n:,.0f}".replace(",", ".")
 DATA = [
@@ -135,31 +135,43 @@ table("Konkurenti (2/2): lokalne in nišne agencije", [
     ["Julija, ATE Globalis (Adriatiqa), Trans Linguis, Slavna, TAIA INT, Eurotranslate, M prevodi", "Samo vpis v poslovni register kot prevajalska podjetja v Ljubljani; Trans Linguis ima 2 zaposlena", "Vse ostalo"],
 ], [3.6, 5.8, 2.9])
 
+table_n("Neposredni konkurenti: primerjava", [
+    ["Podjetje", "Prihodki / zaposleni (ebonitete)", "Certifikati (lastne navedbe)", "Obseg po lastnih navedbah", "Cene na spletu", "Posebnost"],
+    ["AMIDAS", "1,00 mio. € / 5,87", "ISO 17100, ISO 9001", "300+ prevajalcev in partnerjev; vsi evropski in večji svetovni jeziki", "ni", "Od 1991; naravni govorci; SL↔EN; tolmačenje, sodni prevodi, MT"],
+    ["IOLAR", "3,88 mio. € / 20,16", "ISO 17100, ISO 9001", "90+ jezikov; 650+ lingvistov in PM; 12.000+ strani/mesec; pisarne Lj, Mb, Zg, Beograd", "ni", "Od 1991; EU institucije od 2004; Trados reseller; širitev v AI/podatke, upravljanje vsebine"],
+    ["Leemeta", "1,27 mio. € / 5", "ISO 17100, ISO 9001 (omenjena)", "Prevodi na ključ; 6 faz kontrole; lasten IT-oddelek", "paketi + spletni hitri izračun", "Naročnine, DTP, avtomatizacija"],
+    ["STAR", "0,86 mio. € / 6,6", "na naslovnici ni navedenih", "25 let v SI; skupina STAR (40 let); stalno zaposleni prevajalci", "ni", "Lastna orodja (STAR Transit, CLM); člani EUATC, ZPP"],
+    ["Julija", "0,52 mio. € / 3", "ISO 17100, ISO 18587", "500+ prevajalcev; 100+ jezikov; 90 mio. besed; 200+ tolmačenj", "0,064 / 0,078 € na besedo (osnovni/premium)", "Spletno naročanje 24/7, sledenje; 17+ let"],
+    ["Translat", "0,56 mio. € / 4,36", "»upoštevamo ISO 17100:2015«", "30+ jezikov (140 prek partnerjev)", "ni", "Člani ZPP, EUATC, ELIA; sodni prevodi, podnaslavljanje, DTP"],
+    ["GORR", "ni podatka (ni v top 20)", "ni navedenih", "50+ jezikov; 1.800+ podjetij; ELIA", "ni", "Butična agencija za rastoča podjetja; SL↔HR/SR/BS/EN/IT"],
+], [1.1, 1.8, 1.8, 3.3, 1.8, 2.7], font=12, right_from=99)
+
 bullets("Kaj opažamo (hipoteze za razpravo)", [
-    "Certifikati: AMIDAS ima ISO 17100 in 9001, a ju spletna stran ne omenja. Ciklopea ju izpostavlja na naslovnici, Translat in Leemeta ju omenjata – hitra priložnost: certifikata pokazati.",
-    "Tehnologija: STAR ima lastna orodja, Ciklopea »technology-powered«; AMIDAS je s ponudbo Amidas MT (april 2026) v isti smeri.",
-    "Cene: Leemeta kaže cene prek paketov in hitrega izračuna; AMIDAS cen ne objavlja.",
-    "Kjer AMIDAS izstopa: tradicija od 1991, naravni govorci, slovenščina↔angleščina, polna paleta (sodni prevodi, tolmačenje, MT).",
-    "Birotranslations ni neposreden domači konkurent (izvozna niša).",
-], "To so opažanja iz spletnih strani, ne ocene tržnega deleža ali kakovosti.")
+    "Certifikati: AMIDAS ima ISO 17100 in 9001, a ju spletna stran ne omenja. IOLAR in Leemeta ju kažeta; Julija in Ciklopea imata tudi ISO 18587 (post-editing) – AMIDAS ponuja Amidas MT, a 18587 ni omenjen.",
+    "Cene: Julija javno objavlja ceno na besedo (0,064 € osnovni, 0,078 € premium; jezikovni par ni naveden), Leemeta ponuja pakete in hiter izračun. AMIDAS cen ne objavlja.",
+    "Velikost: IOLAR je začel istega leta kot AMIDAS (1991), a ima ≈3,9× več prihodkov, 650+ lingvistov in širi se v AI in upravljanje vsebine.",
+    "Kjer AMIDAS izstopa: tradicija od 1991, naravni govorci (SL→EN), polna paleta storitev (sodni prevodi, tolmačenje, MT) in prihodki na zaposlenega nad STAR in Translat.",
+    "GORR: butična agencija z 1.800+ podjetji; finančnih podatkov nimamo.",
+], "To so opažanja iz lastnih spletnih strani in bonitetnih podatkov, ne ocene kakovosti.")
 
 bullets("Kaj vemo o cenah", [
-    "Tržnih cenikov konkurentov (razen naročniških paketov Leemete) v javnih virih nismo našli.",
-    "Edina številčna referenca: javni razpis iz 2020 – 25,80 EUR bruto na obračunsko stran (1.500 znakov brez presledkov). To NI tržna cena.",
-    "Sodni prevodi imajo z Pravilnikom omejeno ceno (v razpisu omenjeno do 41,00 EUR).",
-    "Predlog: povpraševanje pri 3–5 agencijah (isto besedilo, isti jezikovni par) za pošteno primerjavo.",
+    "Julija objavlja: osnovni paket 0,064 €/besedo (enostavna besedila), premium 0,078 €/besedo (strokovna besedila, pogodbe); jezikovni par in DDV nista navedena – za preveriti.",
+    "Leemeta: naročniški paketi (Lite, Mini, Standard) glede na letni obseg strani ter spletni hitri izračun; konkretnih cen na naslovnici ni.",
+    "IOLAR, STAR, Translat, GORR cen na spletu ne objavljajo.",
+    "Javni razpis iz 2020: 25,80 EUR bruto na obračunsko stran (1.500 znakov brez presledkov) – NI tržna cena.",
+    "Predlog: povpraševanje pri 5 neposrednih konkurentih (isto besedilo, isti jezikovni par) za pošteno primerjavo.",
 ])
 
 bullets("Priporočeni naslednji koraki", [
-    "1. AJPES: prihodki, zaposleni in dobiček za vsa našteta podjetja → tržna lestvica.",
-    "2. Mystery shopping: ista ponudba pri 3–5 agencijah → cene, odzivni čas, ponudba.",
+    "1. Finančni podatki za GORR (v ebonitete ni bil med prvimi 20) in Ciklopeo; osvežiti leto izkazov.",
+    "2. Mystery shopping pri Leemeti, STAR, Translat, Juliji, IOLAR in GORR: ista ponudba → cene, odzivni čas.",
     "3. Certifikate konkurentov (ISO 17100, 18587, 9001) preveriti pri izdajateljih; certifikata AMIDAS objaviti na spletni strani.",
     "4. SWOT za AMIDAS z notranjimi podatki (ni v javnih virih).",
     "5. Faza 2 – EU: isti postopek z agentom (--scope eu), ločen memory.",
 ])
 
 bullets("Viri", [
-    "Spletne strani: amidas.si, ciklopea.com, star-ljubljana.si, translat.si, leemeta.com, birotranslations.com (stanje: november 2026)",
+    "Spletne strani: amidas.si, iolar.com, julija.si, gorr-translation.com, leemeta.com, star-ljubljana.si, translat.si, ciklopea.com, birotranslations.com (november 2026)",
     "bizi.si – poslovni register; ELIA – profila Birotranslations in Translat; PBA ebonitete.si – finančni podatki (posnetek zaslona)",
     "Fišer (2008), Recent trends in the translation industry in Slovenia, JoSTrans",
     "skrivanek.pl / skrivanek.com; gov.si – razpis 2021 (cene)",
