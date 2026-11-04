@@ -50,6 +50,22 @@ Ukazi so v `.claude/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi
 | `/idiomtov [situacija]` | prave fraze za poslovno situacijo | `/idiomtov zavrnitev ponudbe` |
 | `/raise [kontekst]` | scenarij za pogovor o povišici | `/raise 3 leta v podjetju` |
 
+## Learn & Understand
+
+| Ukaz | Pomen | Primer |
+|---|---|---|
+| `/eli10 [tema]` | razlaga, kot za 10-letnika | `/eli10 inflacija` |
+| `/primer [tema]` | hiter uvodni tečaj | `/primer računovodstvo` |
+| `/myths [tema]` | pogoste napačne predstave | `/myths strojno prevajanje` |
+| `/analogy [pojem]` | primer iz resničnega sveta | `/analogy API` |
+| `/quiz [tema]` | kviz s 5 vprašanji | `/quiz GDPR` |
+| `/compare [A vs B]` | primerjava, razlike | `/compare DOCX vs PDF` |
+| `/proscons [tema]` | prednosti in slabosti | `/proscons delo od doma` |
+| `/sums [besedilo]` | povzetek v 3 točkah | `/sums <besedilo>` |
+| `/glossary [tema]` | slovar ključnih izrazov | `/glossary pravno prevajanje` |
+| `/askbetter [tema]` | boljša vprašanja o temi | `/askbetter davčna reforma` |
+| `/mentalmodel [tema]` | miselni model za razumevanje | `/mentalmodel ponudba in povpraševanje` |
+
 ## Pravilo
 
 Ukazi `/proof`, `/clarify` in `/human` dajejo prednost slovenskemu pravopisu (SSKJ, Slovenski pravopis).
