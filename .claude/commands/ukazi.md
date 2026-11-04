@@ -13,6 +13,7 @@ Ukaze razvrsti v kategorije:
 - **Content & Social**: hook, caption, thread, caro, repurpose, cta, bio, subject, contrarian, shortpost, comment
 - **Think & Decide**: choose, realpc, blindspot, steelman, devil, skeptic, steps, ripple, premortem, minetest
 - **Brainstorm**: ideas20, gifts, names, unusual, angle, combine, metaphor, starters, journal10, as, child
+- **Meetings & Notes**: meetingnotes, actions, standup, recap, decisions, questions, status, briefme, debrief, tldr, retro
 - **Drugo**: vsi ostali ukazi, ki niso v zgornjih kategorijah
 
 Za vsak ukaz izpiši eno vrstico: `/ukaz [argument]` – pomen (iz `description`). Pod vsako kategorijo dodaj en kratek primer uporabe. Če je spodaj naveden filter, pokaži samo ustrezno kategorijo ali ukaze, katerih ime ali opis vsebuje to besedo. Odgovori v slovenščini, brez uvoda.

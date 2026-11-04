@@ -129,6 +129,22 @@ Ukazi so v `.claude/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi
 | `/as [vloga + problem]` | rešitev v vlogi strokovnjaka | `/as projektni vodja: zamuda pri prevodu` |
 | `/child [problem]` | rešitev z očmi otroka | `/child dolgi sestanki` |
 
+## Meetings & Notes
+
+| Ukaz | Pomen | Primer |
+|---|---|---|
+| `/meetingnotes [transkript]` | čisti zapiski iz transkripta | `/meetingnotes <transkript>` |
+| `/actions [zapiski]` | naloge z odgovornimi in roki | `/actions <zapiski>` |
+| `/standup [včeraj + danes + ovire]` | kratko poročilo za standup | `/standup včeraj prevod, danes lektura, ovira: čakam na glosar` |
+| `/recap [sestanek]` | povzetek z ključnimi ugotovitvami | `/recap <podatki o sestanku>` |
+| `/decisions [zapiski]` | sprejete odločitve | `/decisions <zapiski>` |
+| `/questions [tema]` | vprašanja za sestanek | `/questions nov dobavitelj` |
+| `/status [projekt]` | posodobitev stanja projekta | `/status prevod pogodbe, 80 %` |
+| `/briefme [tema + gradivo]` | priprava pred sestankom | `/briefme stranka X <gradivo>` |
+| `/debrief [sestanek]` | kaj je šlo dobro, kaj ne | `/debrief <sestanek>` |
+| `/tldr [besedilo]` | kratek povzetek | `/tldr <besedilo>` |
+| `/retro [projekt]` | retrospektiva projekta | `/retro lansiranje spletne strani` |
+
 ## Pravilo
 
 Ukazi `/proof`, `/clarify` in `/human` dajejo prednost slovenskemu pravopisu (SSKJ, Slovenski pravopis).
