@@ -82,6 +82,22 @@ Ukazi so v `.claude/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi
 | `/order [naloge]` | zaporedje nalog | `/order <seznam nalog>` |
 | `/checklist [naloga]` | seznam korakov | `/checklist selitev pisarne` |
 
+## Content & Social
+
+| Ukaz | Pomen | Primer |
+|---|---|---|
+| `/hook [tema]` | 5 uvodnih stavkov, ki ustavijo scrollanje | `/hook prevajalski trg` |
+| `/caption [fotografija/tema]` | kratek podnapis + hashtagi | `/caption ekipa na konferenci` |
+| `/thread [ideja]` | nit s 5 objavami | `/thread zakaj je lektoriranje pomembno` |
+| `/caro [tema]` | zasnova vrtiljaka (carousel) | `/caro 5 napak pri prevajanju pogodb` |
+| `/repurpose [objava]` | isto objavo v 3 nove formate | `/repurpose <objava>` |
+| `/cta [cilj]` | 3 ideje za poziv k dejanju | `/cta prijava na novičnik` |
+| `/bio [podrobnosti + slog]` | kratka predstavitev | `/bio prevajalec, 15 let, prijazen ton` |
+| `/subject [e-pošta/objava]` | 5 možnosti zadeve ali naslova | `/subject <e-pošta>` |
+| `/contrarian [tema]` | nasprotna stališča | `/contrarian strojno prevajanje` |
+| `/shortpost [ideja]` | objava do 100 besed | `/shortpost lekcija iz zadnjega projekta` |
+| `/comment [objava]` | 3 pronicljivi odgovori | `/comment <objava>` |
+
 ## Pravilo
 
 Ukazi `/proof`, `/clarify` in `/human` dajejo prednost slovenskemu pravopisu (SSKJ, Slovenski pravopis).
