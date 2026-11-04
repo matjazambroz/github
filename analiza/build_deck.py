@@ -38,7 +38,7 @@ def table(title, rows, widths):
 # 1 naslov
 s = prs.slides.add_slide(prs.slide_layouts[0])
 s.shapes.title.text = "Analiza konkurence v Sloveniji"
-s.placeholders[1].text = "AMIDAS d.o.o. · faza 1 (Slovenija) · osnutek v2 na podlagi javnih virov"
+s.placeholders[1].text = "AMIDAS d.o.o. · faza 1 (Slovenija) · osnutek v3 · javni viri + bonitetni podatki"
 
 bullets("Obseg in omejitve", [
     "Cilj: pregled slovenskih konkurentov AMIDAS in izhodišče za razširitev na EU (faza 2).",
@@ -54,12 +54,70 @@ bullets("Slovenski trg prevajalskih storitev", [
     "Podatek je star 17 let (Fišer, JoSTrans 2008) – nujno ga je osvežiti z AJPES-om.",
 ], "Vir: Fišer, »Recent trends in the translation industry in Slovenia«, JoSTrans.")
 
+
+def table_n(title, rows, widths, font=10):
+    s = prs.slides.add_slide(prs.slide_layouts[5])
+    s.shapes.title.text = title
+    s.shapes.title.text_frame.paragraphs[0].font.size = Pt(26)
+    s.shapes.title.text_frame.paragraphs[0].font.color.rgb = DARK
+    t = s.shapes.add_table(len(rows), len(widths), Inches(0.4), Inches(1.3), Inches(sum(widths)), Inches(5.6)).table
+    for j, w in enumerate(widths): t.columns[j].width = Inches(w)
+    for i, r in enumerate(rows):
+        t.rows[i].height = Inches(0.26)
+        for j, v in enumerate(r):
+            c = t.cell(i, j); c.text = v
+            c.margin_top = c.margin_bottom = Inches(0.01)
+            for p in c.text_frame.paragraphs:
+                p.font.size = Pt(font); p.font.bold = (i == 0 or "AMIDAS" in r[0])
+                if j >= 3: p.alignment = 3
+
+def eur(n): return f"{n:,.0f}".replace(",", ".")
+DATA = [
+ ("IOLAR d.o.o.","Ljubljana",3881431,5595,797038,20.16,7),
+ ("Alcatranz Linguistics d.o.o.","Medvode",2573391,233096,1696013,1.25,10),
+ ("LEEMETA d.o.o.","Celje",1271687,263217,414097,5,10),
+ ("SDL d.o.o., Ljubljana","Ljubljana",1264716,71703,607908,16.31,10),
+ ("AMIDAS d.o.o.","Ljubljana",1004119,537,291887,5.87,8),
+ ("ALKEMIST d.o.o.","Ljubljana",984758,20916,97083,6,6),
+ ("CeFormT d.o.o.","Trzin",953938,150205,305288,6.47,10),
+ ("Prevajalski Studio Milenko Babič d.o.o.","Ljubljana - Polje",912632,-20386,33524,20.65,4),
+ ("STAR Prevajalske storitve d.o.o.","Ljubljana - Šentvid",859880,4763,374692,6.6,10),
+ ("Zavod združenje tolmačev za slovenski znakovni jezik","Ljubljana",802291,-3958,120541,1,"N"),
+ ("VERIS d.o.o.","Ljubljana",800154,-12967,206546,6,7),
+ ("Aikwit d.o.o.","Beltinci",667892,57904,180587,3.42,10),
+ ("BIRO 2000 d.o.o. (Birotranslations)","Ljubljana",628797,47820,1087333,3.75,10),
+ ("Ekspert-S d.o.o.","Ljubljana",593439,19051,113392,0,1),
+ ("TRANSLAT d.o.o.","Ljubljana",560914,3295,14621,4.36,5),
+ ("TRANSLEKTRA d.o.o.","Maribor",521982,137447,215868,0.91,10),
+ ("ALT PLUS d.o.o.","Ljubljana",519569,5574,93824,8.31,10),
+ ("Prevajalska agencija Julija d.o.o.","Ljubljana",517224,45176,325173,3,8),
+ ("Mojca Andrijanič s.p.","Novo mesto",457253,37525,412333,0,10),
+ ("PREVEKSO d.o.o.","Bled",436200,11952,190333,3.15,10),
+]
+rows = [["#", "Podjetje", "Kraj", "Prihodki €", "Čisti izid €", "Kapital €", "Zaposleni", "Prih./zaposl. tis. €", "Bonit. ocena"]]
+for i, (n, k, p, iz, kap, z, o) in enumerate(DATA, 1):
+    pz = f"{p / z / 1000:.0f}" if z >= 2 else "–"
+    rows.append([str(i), n, k, eur(p), eur(iz), eur(kap), f"{z:.2f}".replace(".", ","), pz, str(o)])
+table_n("Top 20 po prihodkih (iz baze ebonitete.si)", [[r[0]] + r[1:] for r in rows], [0.4, 3.9, 1.6, 1.2, 1.1, 1.1, 0.9, 1.4, 0.8])
+slide_note = prs.slides[-1].shapes.add_textbox(Inches(0.4), Inches(7.0), Inches(12.5), Inches(0.4))
+slide_note.text_frame.text = "Vir: PBA ebonitete.si (posnetek zaslona, 3.643 zadetkov, razvrščeno po prihodkih). Leto izkazov ni razvidno. Seznam ni nujno omejen na prevajalska podjetja. Prih./zaposl. je naš izračun (le pri 2+ zaposlenih)."
+slide_note.text_frame.paragraphs[0].font.size = Pt(10); slide_note.text_frame.paragraphs[0].font.color.rgb = GREY
+slide_note.text_frame.word_wrap = True
+
+bullets("AMIDAS v primerjavi z lestvico", [
+    "Po prihodkih je AMIDAS 5. na lestvici: 1,00 mio. €. Pred njim so IOLAR (3,88), Alcatranz Linguistics (2,57), Leemeta (1,27) in SDL (1,26 mio. €).",
+    "Za AMIDAS so STAR (0,86), BIRO 2000 (0,63), Translat (0,56) in Julija (0,52 mio. €).",
+    "Prihodki na zaposlenega: AMIDAS ≈ 171 tis. €; Leemeta ≈ 254 tis., IOLAR ≈ 193 tis., STAR ≈ 130 tis., Translat ≈ 129 tis. €.",
+    "Čisti izid AMIDAS je 537 €, kapital 292 tis. €; Leemeta ima izid 263 tis. €, CeFormT 150 tis. € – marža je področje za razpravo.",
+    "Ciklopea in Skrivanek nista med prvimi 20 (slovenska pravna oseba Ciklopee v registru nosi drugo ime – za preveriti).",
+], "Vir: ebonitete.si. Leto izkazov ni razvidno; prihodki so lahko deloma izvozni. Zaposleni so lahko povprečje FTE.")
+
 bullets("Izhodišče: AMIDAS d.o.o. (po lastnih navedbah)", [
     "Ljubljana (Ukmarjeva ulica 2), od 1991; družinsko podjetje; prevedli so tudi Ustavo RS.",
     "Mreža 300+ samostojnih prevajalcev in partnerskih agencij; prevaja le v materni jezik; »največja ekipa angleških naravnih govorcev v državi«.",
     "Storitve: prevajanje, strojno prevajanje (Amidas MT v orodju memoQ), lektoriranje, sodni prevodi, vse tri vrste tolmačenja.",
     "Članstva: soustanovitelj ELIA, ustanovni član Eulogia, član Združenja prevajalskih podjetij Slovenije.",
-    "Na spletni strani ni navedenih certifikatov ISO, cenika ali referenčnih strank – za preveriti.",
+    "Certifikata ISO 17100 in ISO 9001 (podatek naročnika; na amidas.si nista omenjena). Cenika in referenc na strani ni.",
 ], "Vir: amidas.si (naslovnica, O Amidasu, Strojno prevajanje).")
 
 table("Konkurenti (1/2): večji in mednarodno povezani", [
@@ -78,7 +136,7 @@ table("Konkurenti (2/2): lokalne in nišne agencije", [
 ], [3.6, 5.8, 2.9])
 
 bullets("Kaj opažamo (hipoteze za razpravo)", [
-    "Certifikati: Ciklopea jih izpostavlja na naslovnici, Translat in Leemeta jih omenjata; amidas.si jih ne omenja – preveriti, ali jih AMIDAS ima, in če da, jih pokazati.",
+    "Certifikati: AMIDAS ima ISO 17100 in 9001, a ju spletna stran ne omenja. Ciklopea ju izpostavlja na naslovnici, Translat in Leemeta ju omenjata – hitra priložnost: certifikata pokazati.",
     "Tehnologija: STAR ima lastna orodja, Ciklopea »technology-powered«; AMIDAS je s ponudbo Amidas MT (april 2026) v isti smeri.",
     "Cene: Leemeta kaže cene prek paketov in hitrega izračuna; AMIDAS cen ne objavlja.",
     "Kjer AMIDAS izstopa: tradicija od 1991, naravni govorci, slovenščina↔angleščina, polna paleta (sodni prevodi, tolmačenje, MT).",
@@ -95,14 +153,14 @@ bullets("Kaj vemo o cenah", [
 bullets("Priporočeni naslednji koraki", [
     "1. AJPES: prihodki, zaposleni in dobiček za vsa našteta podjetja → tržna lestvica.",
     "2. Mystery shopping: ista ponudba pri 3–5 agencijah → cene, odzivni čas, ponudba.",
-    "3. Preveriti certifikate (ISO 17100, 18587, 9001) pri izdajateljih; ugotoviti stanje pri AMIDAS.",
+    "3. Certifikate konkurentov (ISO 17100, 18587, 9001) preveriti pri izdajateljih; certifikata AMIDAS objaviti na spletni strani.",
     "4. SWOT za AMIDAS z notranjimi podatki (ni v javnih virih).",
     "5. Faza 2 – EU: isti postopek z agentom (--scope eu), ločen memory.",
 ])
 
 bullets("Viri", [
     "Spletne strani: amidas.si, ciklopea.com, star-ljubljana.si, translat.si, leemeta.com, birotranslations.com (stanje: november 2026)",
-    "bizi.si – poslovni register; ELIA – profila Birotranslations in Translat",
+    "bizi.si – poslovni register; ELIA – profila Birotranslations in Translat; PBA ebonitete.si – finančni podatki (posnetek zaslona)",
     "Fišer (2008), Recent trends in the translation industry in Slovenia, JoSTrans",
     "skrivanek.pl / skrivanek.com; gov.si – razpis 2021 (cene)",
 ])
