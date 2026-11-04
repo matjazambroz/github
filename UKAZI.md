@@ -66,6 +66,22 @@ Ukazi so v `.claude/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi
 | `/askbetter [tema]` | boljša vprašanja o temi | `/askbetter davčna reforma` |
 | `/mentalmodel [tema]` | miselni model za razumevanje | `/mentalmodel ponudba in povpraševanje` |
 
+## Plan & Organize
+
+| Ukaz | Pomen | Primer |
+|---|---|---|
+| `/week [prioritete]` | načrt tedna | `/week oddaja prevoda, davki, zobozdravnik` |
+| `/milestones [cilj + rok]` | mejniki z roki | `/milestones nova spletna stran do 31. 1.` |
+| `/pack [potovanje]` | seznam za pakiranje | `/pack 3 dni Dunaj, službeno` |
+| `/schedule [dogodek + trajanje]` | časovni razpored | `/schedule delavnica, 4 ure` |
+| `/routine [cilj]` | dnevna rutina | `/routine več gibanja` |
+| `/prioritize [seznam]` | razvrstitev po prioriteti | `/prioritize <seznam nalog>` |
+| `/meals [sestavine/omejitve]` | jedilnik za teden | `/meals brez glutena, 30 min kuhanja` |
+| `/agenda [tema + trajanje]` | dnevni red sestanka | `/agenda pregled projekta, 45 min` |
+| `/prepare [dogodek + čas]` | seznam priprav | `/prepare predstavitev v petek` |
+| `/order [naloge]` | zaporedje nalog | `/order <seznam nalog>` |
+| `/checklist [naloga]` | seznam korakov | `/checklist selitev pisarne` |
+
 ## Pravilo
 
 Ukazi `/proof`, `/clarify` in `/human` dajejo prednost slovenskemu pravopisu (SSKJ, Slovenski pravopis).
