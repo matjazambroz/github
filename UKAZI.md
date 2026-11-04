@@ -98,6 +98,21 @@ Ukazi so v `.claude/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi
 | `/shortpost [ideja]` | objava do 100 besed | `/shortpost lekcija iz zadnjega projekta` |
 | `/comment [objava]` | 3 pronicljivi odgovori | `/comment <objava>` |
 
+## Think & Decide
+
+| Ukaz | Pomen | Primer |
+|---|---|---|
+| `/choose [A vs B]` | tehta možnosti, priporočilo | `/choose najem vs nakup pisarne` |
+| `/realpc [odločitev]` | realne prednosti in slabosti | `/realpc zaposlitev prevajalca` |
+| `/blindspot [situacija]` | slepe pege | `/blindspot širitev na nov trg` |
+| `/steelman [stališče]` | najmočnejša različica nasprotnega stališča | `/steelman strojno prevajanje je dovolj dobro` |
+| `/devil [ideja]` | vražji odvetnik | `/devil nova cena storitev` |
+| `/skeptic [načrt]` | skeptična vprašanja | `/skeptic <načrt>` |
+| `/steps [problem]` | korak za korakom | `/steps stranka ne plača` |
+| `/ripple [odločitev]` | posledice 1., 2. in 3. reda | `/ripple dvig cen` |
+| `/premortem [načrt]` | kako lahko načrt propade | `/premortem lansiranje storitve` |
+| `/minetest [projekt]` | najmanjši možen test | `/minetest nova storitev lektoriranja` |
+
 ## Pravilo
 
 Ukazi `/proof`, `/clarify` in `/human` dajejo prednost slovenskemu pravopisu (SSKJ, Slovenski pravopis).

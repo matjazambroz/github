@@ -11,6 +11,7 @@ Ukaze razvrsti v kategorije:
 - **Learn & Understand**: eli10, primer, myths, analogy, quiz, compare, proscons, sums, glossary, askbetter, mentalmodel
 - **Plan & Organize**: week, milestones, pack, schedule, routine, prioritize, meals, agenda, prepare, order, checklist
 - **Content & Social**: hook, caption, thread, caro, repurpose, cta, bio, subject, contrarian, shortpost, comment
+- **Think & Decide**: choose, realpc, blindspot, steelman, devil, skeptic, steps, ripple, premortem, minetest
 - **Drugo**: vsi ostali ukazi, ki niso v zgornjih kategorijah
 
 Za vsak ukaz izpiši eno vrstico: `/ukaz [argument]` – pomen (iz `description`). Pod vsako kategorijo dodaj en kratek primer uporabe. Če je spodaj naveden filter, pokaži samo ustrezno kategorijo ali ukaze, katerih ime ali opis vsebuje to besedo. Odgovori v slovenščini, brez uvoda.
