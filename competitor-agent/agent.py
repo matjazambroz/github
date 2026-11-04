@@ -53,13 +53,32 @@ class Memory:
                 for c, q, a in self.db.execute("SELECT * FROM findings")]
 
 
+# ---------- SCOUT (faza 1: Slovenija, faza 2: EU) ----------
+SCOPES = {
+    "si": "prevajalske agencije in jezikovni ponudniki s sedežem v Sloveniji",
+    "eu": "prevajalske agencije (LSP) v državah EU, ki konkurirajo slovenskim agencijam "
+          "(npr. za EU institucije, tehnično in pravno prevajanje, lokalizacijo)",
+}
+
+
+def discover(company: str, scope: str, n: int) -> list[str]:
+    out = llm(
+        "Si Scout. Z web_search poišči realne konkurente. Vrni SAMO JSON seznam imen: "
+        '["Podjetje 1", "Podjetje 2"]. Ne vključi samega podjetja.',
+        f"Podjetje: {company}\nIščemo: {SCOPES[scope]}\nŠtevilo: {n}",
+        tools=WEB_SEARCH,
+    )
+    return parse_json(out)
+
+
 # ---------- PLANNER ----------
 def plan(goal: str, company: str, competitors: list[str], mem: Memory) -> list[dict]:
     out = llm(
-        "Si Planner. Razbij cilj na konkretne raziskovalne naloge. Vrni SAMO JSON: "
+        "Si Planner. Piši v slovenščini. Razbij cilj na konkretne raziskovalne naloge. Vrni SAMO JSON: "
         '[{"competitor": "...", "question": "..."}]. Za vsakega konkurenta 3 vprašanja: '
         "produkt in cene, pozicioniranje in ciljna publika, prednosti/slabosti.",
         f"Cilj: {goal}\nNaše podjetje: {company}\nKonkurenti: {competitors}\n"
+        "Panoga: prevajalske storitve (jezikovni pari, specializacije, ISO 17100, CAT/MT, cene, reference).\n"
         f"Preference uporabnika iz prejšnjih zagonov:\n{mem.prefs()}",
     )
     return parse_json(out)
@@ -68,7 +87,7 @@ def plan(goal: str, company: str, competitors: list[str], mem: Memory) -> list[d
 # ---------- EXECUTOR + CRITIC (Author-Critic z reflection loop) ----------
 def execute(task: dict, feedback: str = "") -> str:
     return llm(
-        "Si Executor. Uporabi web_search in odgovori jedrnato (max 120 besed), "
+        "Si Executor. Piši v slovenščini. Uporabi web_search in odgovori jedrnato (max 120 besed), "
         "z dejstvi in navedbo vira (URL). Ne si izmišljaj številk.",
         f"Konkurent: {task['competitor']}\nVprašanje: {task['question']}\n"
         + (f"Popravi glede na kritiko: {feedback}" if feedback else ""),
@@ -101,7 +120,7 @@ def run_task(task: dict, mem: Memory) -> str:
 # ---------- SYNTHESIZER -> slides ----------
 def synthesize(company: str, mem: Memory, human_feedback: str = "") -> list[dict]:
     out = llm(
-        "Si analitik. Iz ugotovitev sestavi 6-8 slide-ov. Vrni SAMO JSON: "
+        "Si analitik. Piši v slovenščini. Iz ugotovitev sestavi 6-8 slide-ov. Vrni SAMO JSON: "
         '[{"title": "...", "bullets": ["...", "..."]}]. Zadnji slide: priporočila. '
         "Max 4 bullets na slide.",
         f"Naše podjetje: {company}\nUgotovitve: {json.dumps(mem.findings(), ensure_ascii=False)}\n"
@@ -129,13 +148,19 @@ def build_pptx(slides: list[dict], path: str):
 def main(argv=None, ask=input):
     ap = argparse.ArgumentParser()
     ap.add_argument("--company", required=True)
-    ap.add_argument("--competitors", nargs="+", required=True)
+    ap.add_argument("--competitors", nargs="*", default=[], help="Če jih ne podaš, jih najde Scout")
+    ap.add_argument("--scope", choices=["si", "eu"], default="si", help="si = Slovenija, eu = EU")
+    ap.add_argument("--n", type=int, default=5, help="Koliko konkurentov naj najde Scout")
     ap.add_argument("--goal", default="Pripravi analizo konkurence in predstavitev za ponedeljek.")
     ap.add_argument("--out", default="analiza_konkurence.pptx")
     ap.add_argument("--db", default="memory.db")
     a = ap.parse_args(argv)
 
     mem = Memory(a.db)
+    if not a.competitors:
+        print(f"0) Scout ({a.scope}) ...")
+        a.competitors = discover(a.company, a.scope, a.n)
+        print(f"   {a.competitors}")
     print("1) Planner ...")
     tasks = plan(a.goal, a.company, a.competitors, mem)
     print(f"   {len(tasks)} nalog")
