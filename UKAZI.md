@@ -113,6 +113,22 @@ Ukazi so v `.claude/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi
 | `/premortem [načrt]` | kako lahko načrt propade | `/premortem lansiranje storitve` |
 | `/minetest [projekt]` | najmanjši možen test | `/minetest nova storitev lektoriranja` |
 
+## Brainstorm
+
+| Ukaz | Pomen | Primer |
+|---|---|---|
+| `/ideas20 [tema]` | 20 idej na temo | `/ideas20 novi viri strank` |
+| `/gifts [oseba + priložnost + proračun]` | ideje za darila | `/gifts sodelavka, upokojitev, 50 €` |
+| `/names [stvar + slog]` | ideje za imena | `/names prevajalska agencija, resno a prijazno` |
+| `/unusual [problem]` | nekonvencionalne ideje | `/unusual premalo naročil` |
+| `/angle [tema]` | spregledani vidiki | `/angle pravno prevajanje` |
+| `/combine [A + B]` | kombinacija dveh stvari | `/combine prevajanje + umetna inteligenca` |
+| `/metaphor [pojem]` | metafore za pojem | `/metaphor terminološka baza` |
+| `/starters [tema]` | zanimivi uvodni stavki | `/starters članek o zaupnosti` |
+| `/journal10 [tema]` | 10 vprašanj za dnevnik | `/journal10 delo in počitek` |
+| `/as [vloga + problem]` | rešitev v vlogi strokovnjaka | `/as projektni vodja: zamuda pri prevodu` |
+| `/child [problem]` | rešitev z očmi otroka | `/child dolgi sestanki` |
+
 ## Pravilo
 
 Ukazi `/proof`, `/clarify` in `/human` dajejo prednost slovenskemu pravopisu (SSKJ, Slovenski pravopis).

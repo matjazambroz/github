@@ -12,6 +12,7 @@ Ukaze razvrsti v kategorije:
 - **Plan & Organize**: week, milestones, pack, schedule, routine, prioritize, meals, agenda, prepare, order, checklist
 - **Content & Social**: hook, caption, thread, caro, repurpose, cta, bio, subject, contrarian, shortpost, comment
 - **Think & Decide**: choose, realpc, blindspot, steelman, devil, skeptic, steps, ripple, premortem, minetest
+- **Brainstorm**: ideas20, gifts, names, unusual, angle, combine, metaphor, starters, journal10, as, child
 - **Drugo**: vsi ostali ukazi, ki niso v zgornjih kategorijah
 
 Za vsak ukaz izpiši eno vrstico: `/ukaz [argument]` – pomen (iz `description`). Pod vsako kategorijo dodaj en kratek primer uporabe. Če je spodaj naveden filter, pokaži samo ustrezno kategorijo ali ukaze, katerih ime ali opis vsebuje to besedo. Odgovori v slovenščini, brez uvoda.
