@@ -1,6 +1,6 @@
 # Moji slovenski ukazi za Claude Code
 
-Ukazi so v `.claude/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi` za pregled po kategorijah.
+Ukazi so v `plugins/slovenski-ukazi/commands/`. V Claude Code vpišite `/` za seznam ali `/ukazi` za pregled po kategorijah.
 
 ## Write & Edit
 

@@ -1,0 +1,7 @@
+{
+  "name": "slovenski-ukazi",
+  "version": "1.0.0",
+  "description": "98 slovenskih ukazov za pisanje, e-pošto, kariero, učenje, načrtovanje, vsebine, odločanje, brainstorming in sestanke. /ukazi izpiše pregled.",
+  "author": { "name": "Matjaž Ambrož" },
+  "license": "MIT"
+}

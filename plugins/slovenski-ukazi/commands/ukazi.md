@@ -2,7 +2,7 @@
 description: Izpiše vse moje ukaze po kategorijah s pomenom in primerom
 argument-hint: [kategorija ali iskana beseda, neobvezno]
 ---
-Preberi vse datoteke z ukazi iz obeh mest: `.claude/commands/*.md` v trenutnem projektu in `~/.claude/commands/*.md` (osebni ukazi). Če se ime ukaza pojavi na obeh mestih, upoštevaj projektno različico in ukaza ne podvajaj. Če mapa ne obstaja, jo preskoči. Iz glave vsake datoteke vzemi `description` in `argument-hint`.
+Poišči datoteke z ukazi s Glob na teh mestih: `.claude/commands/*.md` v trenutnem projektu, `~/.claude/commands/*.md` (osebni ukazi) in `~/.claude/plugins/**/slovenski-ukazi/commands/*.md` (ukazi iz plugina). Če se ime ukaza pojavi na več mestih, ga izpiši samo enkrat (prednost: projekt, osebni, plugin). Mesta, ki ne obstajajo, preskoči. Iz glave vsake datoteke vzemi `description` in `argument-hint`.
 
 Ukaze razvrsti v kategorije:
 - **Write & Edit**: proof, rewrites, clarify, openers, filler, active, human, examples, simplify, title, tone

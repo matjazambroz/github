@@ -1,0 +1,16 @@
+{
+  "name": "matjaz-plugins",
+  "owner": {
+    "name": "Matjaž Ambrož"
+  },
+  "plugins": [
+    {
+      "name": "slovenski-ukazi",
+      "source": "./plugins/slovenski-ukazi",
+      "description": "98 slovenskih ukazov za pisanje, e-pošto, kariero, učenje, načrtovanje, vsebine, odločanje, brainstorming in sestanke."
+    }
+  ],
+  "metadata": {
+    "description": "Moji Claude Code plugini"
+  }
+}
