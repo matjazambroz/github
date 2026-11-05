@@ -98,9 +98,9 @@ rows = [["#", "Podjetje", "Kraj", "Prihodki €", "Čisti izid €", "Kapital �
 for i, (n, k, p, iz, kap, z, o) in enumerate(DATA, 1):
     pz = f"{p / z / 1000:.0f}" if z >= 2 else "–"
     rows.append([str(i), n, k, eur(p), eur(iz), eur(kap), f"{z:.2f}".replace(".", ","), pz, str(o)])
-table_n("Top 20 po prihodkih (iz baze ebonitete.si)", [[r[0]] + r[1:] for r in rows], [0.4, 3.9, 1.6, 1.2, 1.1, 1.1, 0.9, 1.4, 0.8])
+table_n("Top 20 po prihodkih, 2025 (ebonitete.si)", [[r[0]] + r[1:] for r in rows], [0.4, 3.9, 1.6, 1.2, 1.1, 1.1, 0.9, 1.4, 0.8])
 slide_note = prs.slides[-1].shapes.add_textbox(Inches(0.4), Inches(7.0), Inches(12.5), Inches(0.4))
-slide_note.text_frame.text = "Vir: PBA ebonitete.si (posnetek zaslona, 3.643 zadetkov, razvrščeno po prihodkih). Izkazi za 2025 (ujemanje s karticama CeFormT in GORR). Seznam ni nujno omejen na prevajalska podjetja. Prih./zaposl. je naš izračun (le pri 2+ zaposlenih)."
+slide_note.text_frame.text = "Vir: PBA ebonitete.si (posnetek zaslona, 3.643 zadetkov, razvrščeno po prihodkih). Izkazi za leto 2025 (potrjeno). Seznam ni nujno omejen na prevajalska podjetja. Prih./zaposl. je naš izračun (le pri 2+ zaposlenih)."
 slide_note.text_frame.paragraphs[0].font.size = Pt(10); slide_note.text_frame.paragraphs[0].font.color.rgb = GREY
 slide_note.text_frame.word_wrap = True
 
