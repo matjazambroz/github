@@ -47,6 +47,13 @@ bullets("Obseg in omejitve", [
     "Nepreverjeno je označeno z »za preveriti«. Številk nismo ugibali.",
 ], "Clutch.co in milengo.com se nista odprla (403/401), zato primerjalnih lestvic nismo uporabili.")
 
+sd = prs.slides.add_slide(prs.slide_layouts[5])
+sd.shapes.title.text = "Kako je nastala analiza: agentic sistem"
+sd.shapes.title.text_frame.paragraphs[0].font.size = Pt(28)
+sd.shapes.title.text_frame.paragraphs[0].font.color.rgb = DARK
+sd.shapes.add_picture("diagram_agentic_sistem.png", Inches(1.87), Inches(1.4), height=Inches(5.9))
+
+
 bullets("Slovenski trg prevajalskih storitev", [
     "Prva prevajalska podjetja so nastala 1990–1991; po vstopu v EU (2004) se je število podjetij močno povečalo.",
     "Trg je razdrobljen: v raziskavi iz 2008 je imelo 8 od 10 najuspešnejših podjetij le 4–17 zaposlenih.",
