@@ -100,7 +100,7 @@ for i, (n, k, p, iz, kap, z, o) in enumerate(DATA, 1):
     rows.append([str(i), n, k, eur(p), eur(iz), eur(kap), f"{z:.2f}".replace(".", ","), pz, str(o)])
 table_n("Top 20 po prihodkih (iz baze ebonitete.si)", [[r[0]] + r[1:] for r in rows], [0.4, 3.9, 1.6, 1.2, 1.1, 1.1, 0.9, 1.4, 0.8])
 slide_note = prs.slides[-1].shapes.add_textbox(Inches(0.4), Inches(7.0), Inches(12.5), Inches(0.4))
-slide_note.text_frame.text = "Vir: PBA ebonitete.si (posnetek zaslona, 3.643 zadetkov, razvrščeno po prihodkih). Leto izkazov ni razvidno. Seznam ni nujno omejen na prevajalska podjetja. Prih./zaposl. je naš izračun (le pri 2+ zaposlenih)."
+slide_note.text_frame.text = "Vir: PBA ebonitete.si (posnetek zaslona, 3.643 zadetkov, razvrščeno po prihodkih). Izkazi za 2025 (ujemanje s karticama CeFormT in GORR). Seznam ni nujno omejen na prevajalska podjetja. Prih./zaposl. je naš izračun (le pri 2+ zaposlenih)."
 slide_note.text_frame.paragraphs[0].font.size = Pt(10); slide_note.text_frame.paragraphs[0].font.color.rgb = GREY
 slide_note.text_frame.word_wrap = True
 
@@ -111,7 +111,7 @@ bullets("AMIDAS v primerjavi z lestvico", [
     "Čisti izid AMIDAS je 537 €, kapital 292 tis. €; Leemeta ima izid 263 tis. €, CeFormT 150 tis. € – marža je področje za razpravo.",
     "Za GORR (ni v top 20) imamo posebej kartico: 2025 prihodki 0,40 mio. €, 6,74 zaposlenih, mikro podjetje.",
     "Ciklopea in Skrivanek nista med prvimi 20 (slovenska pravna oseba Ciklopee v registru nosi drugo ime – za preveriti).",
-], "Vir: ebonitete.si. Leto izkazov ni razvidno; prihodki so lahko deloma izvozni. Zaposleni so lahko povprečje FTE.")
+], "Vir: ebonitete.si, izkazi za 2025. Prihodki so lahko deloma izvozni; zaposleni so lahko povprečje FTE.")
 
 bullets("Izhodišče: AMIDAS d.o.o. (po lastnih navedbah)", [
     "Ljubljana (Ukmarjeva ulica 2), od 1991; družinsko podjetje; prevedli so tudi Ustavo RS.",
@@ -162,6 +162,22 @@ gn.text_frame.text = "GORR d.o.o. (Brezje pri Grosupljem, vpis 2014): mikro podj
 gn.text_frame.word_wrap = True
 gn.text_frame.paragraphs[0].font.size = Pt(12); gn.text_frame.paragraphs[0].font.color.rgb = GREY
 
+table_n("CeFormT (Trzin): finančni kazalniki 2022–2025", [
+    ["Kazalnik", "2022", "2023", "2024", "2025"],
+    ["Celotni prihodki €", "937.133", "855.491", "879.012", "953.938"],
+    ["Čisti poslovni izid €", "174.058", "136.447", "117.849", "150.205"],
+    ["EBITDA €", "243.628", "207.125", "184.321", "224.503"],
+    ["Število zaposlenih", "7,11", "6,97", "6,6", "6,47"],
+    ["Sredstva €", "447.648", "344.458", "346.888", "378.192"],
+    ["Kapital €", "329.141", "291.530", "272.932", "305.288"],
+    ["Donos na kapital (ROE) %", "66,54", "43,97", "41,76", "51,95"],
+    ["Povpr. mesečna plača na zaposlenega €", "3.271", "2.901", "3.418", "3.639"],
+], [5.0, 1.8, 1.8, 1.8, 1.8], font=14, right_from=1)
+cn = prs.slides[-1].shapes.add_textbox(Inches(0.4), Inches(6.3), Inches(12.5), Inches(0.8))
+cn.text_frame.text = "CeFormT d.o.o. (Blatnica 1, Trzin, vpis 2000): mikro podjetje, bonitetna ocena 10 (»odličen subjekt«), dejavnost N74.300. Čista marža 2025 ≈ 15,7 %, prihodki na zaposlenega ≈ 147 tis. €. Vir: PBA ebonitete.si (posnetek zaslona). Ponudbe in certifikatov nismo preverjali (spletna stran ni bila dostopna)."
+cn.text_frame.word_wrap = True
+cn.text_frame.paragraphs[0].font.size = Pt(12); cn.text_frame.paragraphs[0].font.color.rgb = GREY
+
 bullets("Kaj opažamo (hipoteze za razpravo)", [
     "Certifikati: AMIDAS ima ISO 17100 in 9001, a ju spletna stran ne omenja. IOLAR in Leemeta ju kažeta; Julija in Ciklopea imata tudi ISO 18587 (post-editing) – AMIDAS ponuja Amidas MT, a 18587 ni omenjen.",
     "Cene: Julija javno objavlja ceno na besedo (0,064 € osnovni, 0,078 € premium; jezikovni par ni naveden), Leemeta ponuja pakete in hiter izračun. AMIDAS cen ne objavlja.",
@@ -179,7 +195,7 @@ bullets("Kaj vemo o cenah", [
 ])
 
 bullets("Priporočeni naslednji koraki", [
-    "1. Finančni podatki za Ciklopeo (slovenski vpis pod drugim imenom); preveriti leto izkazov na lestvici top 20.",
+    "1. Finančni podatki za Ciklopeo (slovenski vpis pod drugim imenom).",
     "2. Mystery shopping pri Leemeti, STAR, Translat, Juliji, IOLAR in GORR: ista ponudba → cene, odzivni čas.",
     "3. Certifikate konkurentov (ISO 17100, 18587, 9001) preveriti pri izdajateljih; certifikata AMIDAS objaviti na spletni strani.",
     "4. SWOT za AMIDAS z notranjimi podatki (ni v javnih virih).",
