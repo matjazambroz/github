@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#222B3A"/></marker>
+<marker id="o" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C8552D"/></marker>
+<style>
+.b{fill:#C8552D;stroke:none;rx:12}.g{fill:#8A8478;rx:12}.d{fill:#222B3A;rx:12}
+.t{fill:#fff;font-size:22px;font-weight:700;text-anchor:middle}.s{fill:#fff;font-size:14px;text-anchor:middle}
+.l{fill:#222B3A;font-size:14px;text-anchor:middle;paint-order:stroke;stroke:#F4F1EC;stroke-width:7px}.ln{stroke:#222B3A;stroke-width:2.5;fill:none;marker-end:url(#a)}
+.lo{stroke:#C8552D;stroke-width:2.5;fill:none;marker-end:url(#o)}
+</style></defs>
+<rect width="1400" height="860" fill="#F4F1EC"/>
+<text x="700" y="48" text-anchor="middle" font-size="32" font-weight="700" fill="#222B3A">Agentic sistem za analizo konkurence (AMIDAS)</text>
+<g transform="translate(0,80)">
+<rect class="d" x="40" y="100" width="220" height="80"/><text class="t" x="150" y="135">Goal (cilj)</text><text class="s" x="150" y="160">analiza + predstavitev</text>
+<rect class="g" x="310" y="100" width="220" height="80"/><text class="t" x="420" y="135">Scout</text><text class="s" x="420" y="160">--scope si / eu (neobvezno)</text>
+<rect class="b" x="580" y="100" width="220" height="80"/><text class="t" x="690" y="135">Planner</text><text class="s" x="690" y="160">3 vprašanja / konkurent</text>
+<rect class="b" x="850" y="100" width="220" height="80"/><text class="t" x="960" y="135">Executor</text><text class="s" x="960" y="160">+ web_search (tool)</text>
+<rect class="b" x="1120" y="100" width="220" height="80"/><text class="t" x="1230" y="135">Critic</text><text class="s" x="1230" y="160">vir? konkretno? odgovor?</text>
+<path class="ln" d="M260 140 H308"/><path class="ln" d="M530 140 H578"/><path class="ln" d="M800 140 H848"/><path class="ln" d="M1070 140 H1118"/>
+<path class="lo" d="M1230 98 V50 H960 V96"/><text class="l" x="1095" y="40" fill="#C8552D">ni OK → popravek (največ 2×) · Reflection loop</text>
+
+<rect class="g" x="450" y="300" width="550" height="70"/><text class="t" x="725" y="332">Memory (SQLite)</text><text class="s" x="725" y="355">ugotovitve · preference uporabnika</text>
+<path class="ln" d="M690 298 V182"/><text class="l" x="640" y="245" text-anchor="end">prebere preference</text>
+<path class="ln" d="M1230 182 V335 H1002"/><text class="l" x="1115" y="318">shrani ugotovitve</text>
+
+<rect class="b" x="450" y="520" width="220" height="80"/><text class="t" x="560" y="555">Synthesizer</text><text class="s" x="560" y="580">6–8 slide-ov (JSON)</text>
+<rect class="d" x="720" y="520" width="220" height="80"/><text class="t" x="830" y="555">Human check</text><text class="s" x="830" y="580">odobri ali napiši popravek</text>
+<rect class="g" x="990" y="520" width="220" height="80"/><text class="t" x="1100" y="555">Output</text><text class="s" x="1100" y="580">analiza_konkurence.pptx</text>
+<path class="ln" d="M560 372 V518"/><text class="l" x="550" y="450" text-anchor="end">ugotovitve + preference</text>
+<path class="ln" d="M670 560 H718"/><path class="ln" d="M940 560 H988"/><text class="l" x="964" y="545">odobri</text>
+<path class="lo" d="M830 602 V650 H560 V604"/><text class="l" x="695" y="672" fill="#C8552D">popravek → nova verzija</text>
+<path class="ln" stroke-dasharray="6 5" d="M830 518 V372"/><text class="l" x="845" y="450" text-anchor="start">popravek se shrani kot preferenca</text>
+</g>
+<text x="40" y="800" font-size="15" fill="#666">Koda: competitor-agent/agent.py (preizkušena z lažnim LLM; prave analize brez API ključa nismo zagnali).</text>
+<text x="40" y="824" font-size="15" fill="#666">Predstavitev za AMIDAS je bila sestavljena ročno po istem toku: iskanje → preverjanje → shranjevanje → sinteza → pregled.</text>
+</svg>
