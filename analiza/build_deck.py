@@ -144,6 +144,7 @@ table_n("Neposredni konkurenti: primerjava", [
     ["STAR", "0,86 mio. € / 6,6", "na naslovnici ni navedenih", "25 let v SI; skupina STAR (40 let); stalno zaposleni prevajalci", "ni", "Lastna orodja (STAR Transit, CLM); člani EUATC, ZPP"],
     ["Julija", "0,52 mio. € / 3", "ISO 17100, ISO 18587", "500+ prevajalcev; 100+ jezikov; 90 mio. besed; 200+ tolmačenj", "0,064 / 0,078 € na besedo (osnovni/premium)", "Spletno naročanje 24/7, sledenje; 17+ let"],
     ["Translat", "0,56 mio. € / 4,36", "»upoštevamo ISO 17100:2015«", "30+ jezikov (140 prek partnerjev)", "ni", "Člani ZPP, EUATC, ELIA; sodni prevodi, podnaslavljanje, DTP"],
+    ["CeFormT", "0,95 mio. € / 6,47", "ni podatka (spletna stran ni bila dostopna)", "ni podatka", "ni podatka", "Marža 15,7 %, čisti izid 150 tis. €, ROE 52 %, bonit. ocena 10; Trzin"],
     ["GORR", "0,40 mio. € / 6,74 (2025)", "ni navedenih", "50+ jezikov; 1.800+ podjetij; ELIA", "ni", "Butična agencija za rastoča podjetja; mikro podjetje; SL↔HR/SR/BS/EN/IT"],
 ], [1.1, 1.8, 1.8, 3.3, 1.8, 2.7], font=12, right_from=99)
 
