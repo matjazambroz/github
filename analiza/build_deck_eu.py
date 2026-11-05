@@ -38,7 +38,7 @@ def table(title, rows, widths):
 
 s = prs.slides.add_slide(prs.slide_layouts[0])
 s.shapes.title.text = "Analiza konkurence v EU"
-s.placeholders[1].text = "AMIDAS d.o.o. · faza 2 (EU) · prvi osnutek"
+s.placeholders[1].text = "AMIDAS d.o.o. · faza 2 (EU) · segment: mednarodne stranke v slovenščini"
 
 bullets("Obseg in omejitve", [
     "Cilj: kdo v EU konkurira AMIDAS (slovenščina, EU institucije, mednarodne stranke) in kako se razlikuje od domačih konkurentov.",
@@ -77,18 +77,50 @@ bullets("Opažanja (hipoteze)", [
     "Konsolidacija: Acolad je po lastnih navedbah del RWS; SDL v Ljubljani kaže, da globalni igralci držijo lokalne enote.",
 ], "Opažanja iz lastnih strani in povzetkov; niso ocena kakovosti.")
 
+bullets("Izbran segment: mednarodne stranke v slovenščini", [
+    "Kdo išče: tuja podjetja, ki potrebujejo prevode v slovenščino (EN→SL) ali iz nje (SL→EN, SL→druge), vključno z lokalizacijo in tolmačenjem.",
+    "Konkurenčni sloji: (1) mednarodne agencije in mreže, (2) slovenske agencije z izvozom, (3) neodvisni prevajalci (ProZ), (4) AI-samopostrežne rešitve.",
+    "Mednarodne agencije slovenščino pogosto oddajo naprej partnerjem – lokalna agencija z naravnimi govorci je zanje tudi potencialni partner, ne le konkurent.",
+    "AMIDAS ima po lastnih navedbah ISO 17100 in 9001, mrežo 300+ prevajalcev, vse tri vrste tolmačenja in angleško različico spletne strani.",
+], "Zadnja trditev je iz navedb na amidas.si; mednarodno delitev dela (partnerstva) je hipoteza za preverjanje.")
+
+table("Cene za slovenščino: kaj je javno", [
+    ["Vir", "Cena", "Opombe"],
+    ["Alphatrad (Francija, mreža 80+ agencij)", "»od 0,04 € na besedo«", "Marketinška spodnja meja (»od«), obseg in pogoji niso navedeni"],
+    ["Fasttranslator (VB)", "od 0,084 £/besedo; certificirani prevod od 0,099 £", "10.000 besed, dostava 38 ur; podatek iz povzetka iskanja"],
+    ["Julija (Slovenija)", "0,064 € (osnovni) / 0,078 € (premium) na besedo", "Jezikovni par ni naveden; DDV ni naveden"],
+    ["Neodvisni prevajalci (ProZ)", "0,06–0,10 € na besedo; specialisti do 0,15 €", "EN→SL, posamezni profili, ne agencije"],
+    ["Acolad (AI samopostrežno)", "24 €/mesec", "AI prevod, ni neposredno primerljivo s človeškim"],
+], [3.6, 3.8, 4.9])
+
+table("Ponudba za slovenščino pri mednarodnih agencijah", [
+    ["Podjetje", "Kar navajajo", "Za preveriti"],
+    ["Skrivanek (PL/CZ)", "Posebna stran za slovenščino; prevodi v slovenščino in iz slovenščine v poljščino; ponudba v 30 minutah; 100+ drugih jezikov", "Ali imajo slovenske prevajalce v hiši"],
+    ["Alphatrad (FR)", "Slovenščina s prevajalci naravnimi govorci; spletna ponudba; mreža agencij po Evropi", "Kdo dejansko prevaja (partnerji)"],
+    ["Baltic Media (Severna Evropa)", "ISO 9001:2015; 30 let; stran »Slovenian Translation Services« z omembo cene na besedo", "Konkretna cena, ISO 17100"],
+    ["Translinguo Global (Španija)", "Slovenščina↔španščina, francoščina, angleščina; navedene ISO certifikacije; 10+ let", "Katere ISO, velikost"],
+    ["Translated (IT)", "200+ jezikov; AI-first z revizijo; takojšnja ponudba", "Lastna ponudba za slovenščino"],
+], [3.0, 6.4, 2.9])
+
+bullets("Opažanja za AMIDAS (hipoteze)", [
+    "Cene: tuje spletne agencije in Julija objavljajo cene ali »od« cene; AMIDAS ne – za mednarodne stranke je hitra ponudba (v 30 minutah, spletni izračun) pogosto odločilna.",
+    "Cenovni pas za slovenščino je približno 0,06–0,10 €/besedo (neodvisni prevajalci, Julija); »od 0,04 €« pri Alphatrad je spodnja meja.",
+    "Diferenciacija: naravni govorci v obe smeri (SL→EN je jedro AMIDAS), tolmačenje, sodni prevodi, ISO 17100 – a so vidni samo v tekstu na strani.",
+    "Priložnost: partnerstvo z mednarodnimi agencijami za slovenščino (white-label), kjer so cene pritisk navzdol, kakovost pa se prodaja prek zaupanja.",
+], "Hipoteze iz javnih virov; cene niso neposredno primerljive (različni obsegi, valute, roki).")
+
 bullets("Predlagani naslednji koraki", [
-    "1. Odločiti, kateri EU segment je cilj: EU institucije, sosednje države (HR, AT, IT, HU) ali mednarodne stranke v slovenščini.",
-    "2. TED: preveriti zmagovalce slovenskih lotov (TRA/EU19 in novejši) – potreben dostop do ted.europa.eu.",
-    "3. Finančni podatki: Nimdzi 100 poročilo ali Orbis/Creditreform za izbrana podjetja.",
-    "4. Poglobiti 3–5 podjetij po istem postopku kot v fazi 1 (certifikati, cene, jeziki).",
-    "5. Mystery shopping: povpraševanje za slovenščino pri Translated, Skrivanek, Ciklopea.",
+    "1. Mystery shopping EN→SL: isto besedilo (npr. 1.000 besed) pri Alphatrad, Skrivanek, Translated, Baltic Media in Juliji → cena, čas, ponudba.",
+    "2. Preveriti, ali je angleška stran amidas.si/en dovolj za mednarodne stranke (cene, ISO, hitro povpraševanje).",
+    "3. Ugotoviti, katere mednarodne agencije oddajajo slovenščino partnerjem, in pripraviti partnersko ponudbo.",
+    "4. Finančni podatki izbranih EU agencij: Nimdzi 100 poročilo ali Orbis.",
+    "5. Po odločitvi: poglobiti 3–5 podjetij po postopku iz faze 1.",
 ])
 
 bullets("Viri", [
     "multilingual.com – Charting the Nimdzi 100 (2025)",
     "Nimdzi 100 povzetki (Acolad, Translated, Summa Linguae – prihodki po letih različni)",
-    "Spletne strani: acolad.com, translated.com, skrivanek.com, ciklopea.com, iolar.com",
+    "Spletne strani: acolad.com, translated.com, skrivanek.com/skrivanek.pl, alphatrad.com, balticmedia.com, translinguoglobal.com, ciklopea.com, iolar.com, julija.si; fasttranslator.com in ProZ (povzetek iskanja)",
     "TED / Publications Office EU (povzetki iskanja); ebonitete.si (SDL d.o.o.)",
 ])
 for sl in prs.slides:
