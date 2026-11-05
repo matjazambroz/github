@@ -109,6 +109,7 @@ bullets("AMIDAS v primerjavi z lestvico", [
     "Za AMIDAS so STAR (0,86), BIRO 2000 (0,63), Translat (0,56) in Julija (0,52 mio. €).",
     "Prihodki na zaposlenega: AMIDAS ≈ 171 tis. €; Leemeta ≈ 254 tis., IOLAR ≈ 193 tis., STAR ≈ 130 tis., Translat ≈ 129 tis. €.",
     "Čisti izid AMIDAS je 537 €, kapital 292 tis. €; Leemeta ima izid 263 tis. €, CeFormT 150 tis. € – marža je področje za razpravo.",
+    "Za GORR (ni v top 20) imamo posebej kartico: 2025 prihodki 0,40 mio. €, 6,74 zaposlenih, mikro podjetje.",
     "Ciklopea in Skrivanek nista med prvimi 20 (slovenska pravna oseba Ciklopee v registru nosi drugo ime – za preveriti).",
 ], "Vir: ebonitete.si. Leto izkazov ni razvidno; prihodki so lahko deloma izvozni. Zaposleni so lahko povprečje FTE.")
 
@@ -143,15 +144,30 @@ table_n("Neposredni konkurenti: primerjava", [
     ["STAR", "0,86 mio. € / 6,6", "na naslovnici ni navedenih", "25 let v SI; skupina STAR (40 let); stalno zaposleni prevajalci", "ni", "Lastna orodja (STAR Transit, CLM); člani EUATC, ZPP"],
     ["Julija", "0,52 mio. € / 3", "ISO 17100, ISO 18587", "500+ prevajalcev; 100+ jezikov; 90 mio. besed; 200+ tolmačenj", "0,064 / 0,078 € na besedo (osnovni/premium)", "Spletno naročanje 24/7, sledenje; 17+ let"],
     ["Translat", "0,56 mio. € / 4,36", "»upoštevamo ISO 17100:2015«", "30+ jezikov (140 prek partnerjev)", "ni", "Člani ZPP, EUATC, ELIA; sodni prevodi, podnaslavljanje, DTP"],
-    ["GORR", "ni podatka (ni v top 20)", "ni navedenih", "50+ jezikov; 1.800+ podjetij; ELIA", "ni", "Butična agencija za rastoča podjetja; SL↔HR/SR/BS/EN/IT"],
+    ["GORR", "0,40 mio. € / 6,74 (2025)", "ni navedenih", "50+ jezikov; 1.800+ podjetij; ELIA", "ni", "Butična agencija za rastoča podjetja; mikro podjetje; SL↔HR/SR/BS/EN/IT"],
 ], [1.1, 1.8, 1.8, 3.3, 1.8, 2.7], font=12, right_from=99)
+
+table_n("GORR: finančni kazalniki 2022–2025", [
+    ["Kazalnik", "2022", "2023", "2024", "2025"],
+    ["Celotni prihodki €", "432.397", "381.644", "450.566", "398.148"],
+    ["Čisti poslovni izid €", "24.657", "-19.233", "21.490", "-52.883"],
+    ["Število zaposlenih", "4,25", "4,25", "5,99", "6,74"],
+    ["Sredstva €", "143.002", "113.964", "154.314", "115.022"],
+    ["Kapital €", "82.159", "62.927", "84.416", "31.533"],
+    ["Kratkoročni koef. likvidnosti", "1,95", "1,77", "1,88", "1,10"],
+    ["Povpr. mesečna plača na zaposlenega €", "2.059", "2.029", "1.795", "1.762"],
+], [5.0, 1.8, 1.8, 1.8, 1.8], font=14, right_from=1)
+gn = prs.slides[-1].shapes.add_textbox(Inches(0.4), Inches(6.2), Inches(12.5), Inches(0.8))
+gn.text_frame.text = "GORR d.o.o. (Brezje pri Grosupljem, vpis 2014): mikro podjetje, lastnik 100 % direktor; bonitetna ocena 4 (»visoko tveganje«). Prihodki na zaposlenega 2025 ≈ 59 tis. €. Vir: PBA ebonitete.si (posnetek zaslona)."
+gn.text_frame.word_wrap = True
+gn.text_frame.paragraphs[0].font.size = Pt(12); gn.text_frame.paragraphs[0].font.color.rgb = GREY
 
 bullets("Kaj opažamo (hipoteze za razpravo)", [
     "Certifikati: AMIDAS ima ISO 17100 in 9001, a ju spletna stran ne omenja. IOLAR in Leemeta ju kažeta; Julija in Ciklopea imata tudi ISO 18587 (post-editing) – AMIDAS ponuja Amidas MT, a 18587 ni omenjen.",
     "Cene: Julija javno objavlja ceno na besedo (0,064 € osnovni, 0,078 € premium; jezikovni par ni naveden), Leemeta ponuja pakete in hiter izračun. AMIDAS cen ne objavlja.",
     "Velikost: IOLAR je začel istega leta kot AMIDAS (1991), a ima ≈3,9× več prihodkov, 650+ lingvistov in širi se v AI in upravljanje vsebine.",
     "Kjer AMIDAS izstopa: tradicija od 1991, naravni govorci (SL→EN), polna paleta storitev (sodni prevodi, tolmačenje, MT) in prihodki na zaposlenega nad STAR in Translat.",
-    "GORR: butična agencija z 1.800+ podjetji; finančnih podatkov nimamo.",
+    "GORR: manjša butična agencija – prihodki 2025 so 0,40 mio. € (AMIDAS ≈2,5× več), izguba 53 tis. €, kapital pade na 32 tis. €, bonitetna ocena 4 (visoko tveganje).",
 ], "To so opažanja iz lastnih spletnih strani in bonitetnih podatkov, ne ocene kakovosti.")
 
 bullets("Kaj vemo o cenah", [
@@ -163,7 +179,7 @@ bullets("Kaj vemo o cenah", [
 ])
 
 bullets("Priporočeni naslednji koraki", [
-    "1. Finančni podatki za GORR (v ebonitete ni bil med prvimi 20) in Ciklopeo; osvežiti leto izkazov.",
+    "1. Finančni podatki za Ciklopeo (slovenski vpis pod drugim imenom); preveriti leto izkazov na lestvici top 20.",
     "2. Mystery shopping pri Leemeti, STAR, Translat, Juliji, IOLAR in GORR: ista ponudba → cene, odzivni čas.",
     "3. Certifikate konkurentov (ISO 17100, 18587, 9001) preveriti pri izdajateljih; certifikata AMIDAS objaviti na spletni strani.",
     "4. SWOT za AMIDAS z notranjimi podatki (ni v javnih virih).",
