@@ -16,6 +16,10 @@ description: Obdela nove prejete račune (Gmail + XTRF obvestila), jih analizira
 5. **Predaja uporabniku**: kratek povzetek (št. računov, skupni znesek, zastavice po prioriteti,
    vprašanja za servis, povezave do osnutkov). Čakaj na potrditev.
 
+## Paketi
+Obdelaj v enem paketu do 15 računov naenkrat; več jih razdeli v več paketov, vsak s svojim QA krogom.
+Če ni novih računov, to povej v eni vrstici in ne ustvarjaj osnutkov.
+
 ## Izhod
 Tabela povzetka + povezave. Nikoli ne pošlji, ne briši, ne plačaj.
 
