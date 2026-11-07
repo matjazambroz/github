@@ -12,7 +12,8 @@ Delaš za Matjaža Ambroža (matjaz.ambroz@amidas.si).
 # Izhod
 - Evidenca prejetih računov v Google Sheets (dobavitelj, št. računa, datum, valuta, neto, DDV, bruto,
   konto, projekt XTRF, status, opombe).
-- Mesečni paket za računovodski servis (CSV + PDF-ji v Drive mapi) kot OSNUTEK e-pošte.
+- Sprotni (dnevni) delni paketi za računovodski servis (CSV + PDF-ji v Drive mapi) kot OSNUTEK e-pošte.
+  Končni rok servisa za mesec: 18. v mesecu (ob vikendu prejšnji delovnik).
 
 # Samostojnost (POMEMBNO, odločitev uporabnika)
 SAMO PRIPRAVA. Vse potrdi Matjaž. Agent:

@@ -16,8 +16,17 @@ Prilepi v Claude Code:
 > Rezultat (povzetek + zastavice) naj pripravi kot osnutek e-pošte meni (matjaz.ambroz@amidas.si);
 > ničesar ne pošilja nikomur drugemu.
 
-## 2. Mesečno, 2. delovni dan
-> Ustvari Claude Routine, ki 2. delovni dan v mesecu ob 8:00 (Europe/Ljubljana) zaključi pretekli mesec:
-> preveri, da so vsi računi v evidenci pripravljeni, sestavi paket za računovodski servis
-> (CSV + PDF v Drive mapi Računi/YYYY-MM) in pripravi OSNUTEK e-pošte servisu zame v pregled.
-> Ne pošiljaj.
+## 2. Opomnik pred rokom: 12. v mesecu ob 8:00 (Europe/Ljubljana)
+Servis prejema račune sproti, končni rok za mesec je 18. Če 18. pade na vikend, je rok prejšnji delovnik.
+
+> Ustvari Claude Routine, ki 12. v mesecu ob 8:00 (Europe/Ljubljana) preveri evidenco prejetih računov
+> za tekoči in pretekli mesec: kateri računi imajo status PRIPRAVLJENO, a jih še nisem poslal servisu
+> (status ni POSLANO SERVISU), kateri imajo odprte zastavice in kateri izvajalci še niso oddali računa.
+> Pripravi OSNUTEK e-pošte servisu z manjkajočimi računi in meni kratek opomnik. Ne pošiljaj.
+
+## 3. Rok servisa: 16. v mesecu ob 8:00 (Europe/Ljubljana)
+Dva dni rezerve pred rokom 18.
+
+> Ustvari Claude Routine, ki 16. v mesecu ob 8:00 (Europe/Ljubljana) preveri, da je vse za pretekli mesec
+> poslano servisu. Če kaj manjka, pripravi osnutek e-pošte z zadnjimi računi in meni označi, kaj je
+> še nerešeno (zastavice). Ne pošiljaj.

@@ -11,8 +11,8 @@ Si Graditelj. Izvedeš delo na podlagi JSON izhoda agenta `racuni-strateg`. Nič
    št. računa, datum računa, zapadlost, valuta, neto, DDV, bruto, IBAN, konto, XTRF projekt,
    status, zastavice, povezava do PDF).
 2. Dodaj Gmail oznako `Računi/Obdelano` ali `Računi/Zastavica` (oznake so dovoljene, ne brisanje).
-3. Mesečni paket: CSV za servis + seznam PDF v Drive mapi `Računi/YYYY-MM`.
-4. Osnutki (draft) e-pošte: (a) servisu s paketom, (b) izvajalcu pri zastavici (manjkajoč podatek).
+3. Sprotni paket za servis (servis prejema račune sproti): CSV + PDF-ji v Drive mapi `Računi/YYYY-MM`; vsak dnevni paket je delni (številčen: `paket-01`, `paket-02`...). Računov z zastavico ne vključi.
+4. Osnutki (draft) e-pošte: (a) servisu s sprotnim paketom (rok za mesec je 18.), (b) izvajalcu pri zastavici (manjkajoč podatek).
    NIKOLI ne pošlji; samo `create_draft`.
 
 ## Pravila

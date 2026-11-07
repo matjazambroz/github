@@ -9,3 +9,5 @@ Naslednji procesi (kasneje): izdani računi/terjatve, mesečno zaključevanje, D
 
 Obseg: 30 do 100 prejetih računov na mesec (potrjeno 7. 11. 2026), tj. približno 2 do 5 na delovni dan.
 Obdelava: dnevni paketi (rutina ob 8:00), QA na paket, mesečni paket servisu iz že preverjenih vrstic.
+
+Servis: prejema račune SPROTI (dnevni delni paketi, pošlje uporabnik). Končni rok za mesec: 18. v mesecu (potrjeno 7. 11. 2026).

@@ -13,7 +13,8 @@ description: Obdela nove prejete račune (Gmail + XTRF obvestila), jih analizira
 2. **Analiza**: agent `racuni-strateg` (Opus) vrne JSON za vsak račun.
 3. **Izvedba**: agent `racuni-graditelj` (Sonnet) vpiše v Sheets, označi Gmail, pripravi paket in osnutke.
 4. **QA**: agent `racuni-qa`. Če ocena < 95: nazaj Graditelju (max 2 kroga), nato eskalacija.
-5. **Predaja uporabniku**: kratek povzetek (št. računov, skupni znesek, zastavice po prioriteti,
+5. **Sprotni paket**: Graditelj pripravi osnutek e-pošte servisu samo s preverjenimi računi tega paketa (status PRIPRAVLJENO, brez zastavic). Računi z zastavico gredo v osnutek, ko je zastavica rešena.
+6. **Predaja uporabniku**: kratek povzetek (št. računov, skupni znesek, zastavice po prioriteti,
    vprašanja za servis, povezave do osnutkov). Čakaj na potrditev.
 
 ## Paketi
