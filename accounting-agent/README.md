@@ -1,0 +1,31 @@
+# Računovodski agent Amidas (prejeti računi)
+
+Zgrajen po šestih korakih iz infografike "Build an AI Agent in 10 Minutes".
+
+| Korak | Datoteka | Namen |
+|---|---|---|
+| 1. Claude Code | (namestitev) | `npm i -g @anthropic-ai/claude-code` |
+| 2. Kontekst | `CLAUDE.md` | vloga, glas, prepovedane besede, privzete nastavitve, pravila samostojnosti |
+| 3. Spomin | `memory/` | popravki -> .md datoteke, indeks `MEMORY.md` |
+| 4. Skill | `skills/prejeti-racuni/SKILL.md` | ukaz `/prejeti-racuni` |
+| 5. Agenti | `agents/` | Strateg (Opus) -> Graditelj (Sonnet) -> QA vrata 95/100 |
+| 6. Autopilot | `routines.md` | dnevna in mesečna rutina v oblaku |
+
+## Potek
+Gmail + XTRF obvestila -> **Strateg** (analiza, zastavice) -> **Graditelj** (Sheets, oznake, paket, osnutki)
+-> **QA** (>= 95/100) -> vi potrdite -> paket odide računovodskemu servisu (e-računi) z vaše strani.
+
+## Varnost
+Samo priprava: agent ne pošilja, ne briše, ne plačuje, ne piše v XTRF. IBAN, ki se razlikuje od zgodovine, je rdeča zastavica.
+
+## Namestitev
+```bash
+./accounting-agent/install.sh
+```
+Nato ročno vpišite Sheets ID, Drive mapo in kontakt servisa v `memory/reference_viri.md`.
+Povežite konektorje Gmail, Google Drive, Google Sheets in MCP `mcp-xtrf` (glej `../mcp-xtrf/README.md`).
+
+## Odprto (dopolnimo skupaj)
+- Kontni načrt (seznam kontov za predloge kontiranja).
+- Format uvoza, ki ga želi servis (stolpci CSV).
+- Obravnava izvajalcev: s.p. / d.o.o. / tujina / fizične osebe.
