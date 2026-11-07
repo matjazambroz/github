@@ -6,3 +6,4 @@ Vsak popravek uporabnika = nova datoteka s predpono feedback_, user_, project_ a
 - [reference_viri.md](reference_viri.md): kje so podatki (Gmail, XTRF, servis)
 - [feedback_samo_priprava.md](feedback_samo_priprava.md): agent samo pripravlja, uporabnik potrdi
 - [project_izvajalci.md](project_izvajalci.md): večina domači s.p./d.o.o., nekaj tujih
+- [feedback_en_osnutek_na_racun.md](feedback_en_osnutek_na_racun.md): en osnutek na račun, priloga PDF + XML
