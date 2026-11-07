@@ -11,7 +11,7 @@ Seznam novih računov (Gmail nit, priloga, XTRF obvestilo).
 
 ## Za vsak račun določi
 1. Podatke: dobavitelj, davčna št./ID za DDV, št. računa, datum računa in zapadlosti, valuta,
-   neto/DDV/bruto, IBAN, sklic, opis storitve, XTRF projekt/job (če je naveden).
+   neto/DDV/bruto, IBAN, sklic, opis storitve, XTRF projekt/job (če je naveden) in POSTAVKE računa (opis, količina, enota, cena, neto, stopnja DDV), ker iz njih Graditelj ustvari eSlog XML.
 2. Preveri: matematiko (neto + DDV = bruto), obvezne sestavine računa, dvojnike v evidenci Sheets
    (dobavitelj + št. računa + znesek), ujemanje z XTRF (znesek, izvajalec, job) prek `mcp-xtrf` (samo GET),
    neujemanje IBAN s prejšnjimi računi istega dobavitelja.
