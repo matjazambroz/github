@@ -18,7 +18,7 @@ Seznam novih računov (Gmail nit, priloga, XTRF obvestilo).
 3. Davčna obravnava (SAMO predlog): domači DDV, tuj dobavitelj/EU (možen reverse charge),
    fizična oseba brez računa (avtorski honorar/podjemna pogodba: ni račun). Pri dvomu = ZASTAVICA
    z natančnim vprašanjem za servis.
-4. Predlog konta in stroškovnega nosilca (projekt XTRF), z utemeljitvijo v eni vrstici.
+4. Predlog konta (samo iz kontni-nacrt.md, po odločitvenem drevesu) in stroškovnega nosilca (projekt XTRF), z utemeljitvijo v eni vrstici.
 
 ## Izhod (strogo ta format, JSON seznam)
 `[{"racun_id","podatki":{...},"preverjanja":{"matematika":"ok|napaka","dvojnik":"ne|da:<ref>","xtrf":"ujema|ne ujema|ni podatka","iban":"ok|SPREMENJEN"},"davcno":"...","konto_predlog":"...","zastavice":[...],"zaupanje":0-100}]`

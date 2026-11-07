@@ -9,6 +9,7 @@ Zgrajen po šestih korakih iz infografike "Build an AI Agent in 10 Minutes".
 | 3. Spomin | `memory/` | popravki -> .md datoteke, indeks `MEMORY.md` |
 | 4. Skill | `skills/prejeti-racuni/SKILL.md` | ukaz `/prejeti-racuni` |
 | 5. Agenti | `agents/` | Strateg (Opus) -> Graditelj (Sonnet) -> QA vrata 95/100 |
+| Kontiranje | `kontni-nacrt.md` | predlog kontov in odločitveno drevo |
 | 6. Autopilot | `routines.md` | dnevna in mesečna rutina v oblaku |
 
 ## Potek
@@ -26,6 +27,6 @@ Nato ročno vpišite Sheets ID, Drive mapo in kontakt servisa v `memory/referenc
 Povežite konektorje Gmail, Google Drive, Google Sheets in MCP `mcp-xtrf` (glej `../mcp-xtrf/README.md`).
 
 ## Odprto (dopolnimo skupaj)
-- Kontni načrt (seznam kontov za predloge kontiranja).
+- Kontni načrt: predlog je v `kontni-nacrt.md`, potrditi ga mora servis.
 - Format uvoza, ki ga želi servis (stolpci CSV).
 - Obravnava izvajalcev: s.p. / d.o.o. / tujina / fizične osebe.
