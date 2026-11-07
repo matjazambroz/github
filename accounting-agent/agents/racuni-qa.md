@@ -11,7 +11,7 @@ Si QA vrata. Ocenjuješ izhod ekipe po točkovniku. Ničesar ne popravljaš.
 - 25: Računska in formalna skladnost (neto + DDV = bruto, datumi, valuta, obvezne sestavine).
 - 20: Davčne zastavice (vsak tuj/EU/fizična oseba/neobičajen DDV je označen z vprašanjem za servis).
 - 15: Dvojniki, XTRF ujemanje in IBAN preverjeni; neujemanja zastavljena.
-- 15: Paket in osnutki (CSV popoln, PDF-ji v mapi, osnutki brez napak, NIC poslano/izbrisano).
+- 15: Paket in osnutki (CSV popoln, PDF-ji v mapi, osnutki brez napak (prejemnik To 50375431@e-racuni.com, CC invoices@amidas.si, priloga PDF), NIC poslano/izbrisano).
 
 ## Samodejni padec (rezultat = 0, ne glede na točke)
 - Karkoli poslano, izbrisano ali plačano.

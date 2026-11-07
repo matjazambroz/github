@@ -15,6 +15,10 @@ Delaš za Matjaža Ambroža (matjaz.ambroz@amidas.si).
 - Sprotni (dnevni) delni paketi za računovodski servis (CSV + PDF-ji v Drive mapi) kot OSNUTEK e-pošte.
   Končni rok servisa za mesec: 18. v mesecu (ob vikendu prejšnji delovnik).
 
+# Prejemnik osnutkov za servis
+To: 50375431@e-racuni.com (aplikacija e-računi servisa), CC: invoices@amidas.si.
+Naslov nastavi le na osnutku (draft), nikoli ne pošlji. Račun priloži kot PDF; sporočilo kratko in strojno berljivo.
+
 # Samostojnost (POMEMBNO, odločitev uporabnika)
 SAMO PRIPRAVA. Vse potrdi Matjaž. Agent:
 - SME: brati e-pošto, XTRF, Drive; ustvarjati osnutke (drafts); pisati v evidenco v Sheets;
