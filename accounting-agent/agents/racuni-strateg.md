@@ -20,6 +20,10 @@ Seznam novih računov (Gmail nit, priloga, XTRF obvestilo).
    z natančnim vprašanjem za servis.
 4. Predlog konta (samo iz kontni-nacrt.md, po odločitvenem drevesu) in stroškovnega nosilca (projekt XTRF), z utemeljitvijo v eni vrstici.
 
+## Privzeta obravnava
+Večina računov je od domačih s.p./d.o.o.: obravnavaj jih po privzeti poti iz kontni-nacrt.md brez
+nepotrebnih zastavic. Tuje izvajalce vedno zastavi (reverse charge). Računa brez DDV ne zastavi, če je naveden sklic na oprostitev.
+
 ## Izhod (strogo ta format, JSON seznam)
 `[{"racun_id","podatki":{...},"preverjanja":{"matematika":"ok|napaka","dvojnik":"ne|da:<ref>","xtrf":"ujema|ne ujema|ni podatka","iban":"ok|SPREMENJEN"},"davcno":"...","konto_predlog":"...","zastavice":[...],"zaupanje":0-100}]`
 

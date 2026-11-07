@@ -41,6 +41,13 @@ Agent konta samo PREDLAGA. Če račun ne sodi v nobeno vrstico, zapiše "KONTO: 
 5. **Vse drugo** -> 4190 + zastavica "nejasen konto".
 6. Pri mešanih računih (več postavk) razbij po postavkah in navedi konto za vsako.
 
+## Profil izvajalcev (potrjeno): večinoma domači s.p. in d.o.o., nekaj tujih
+- Domači s.p./d.o.o. = privzeta pot: 4100/4101 + 220 + 160, brez zastavice, če so podatki in DDV v redu.
+- s.p. brez DDV je običajen (račun brez DDV s sklicem na oprostitev za male zavezance, npr. 94. člen ZDDV-1:
+  preveri z servisom). Ni napaka, samo zabeleži "brez DDV, oprostitev" in preveri, da je sklic na računu.
+- Tuj izvajalec = vedno ZASTAVICA (4102 + 221, reverse charge preveri servis); zbiraj jih v ločen razdelek paketa.
+- Preveri tudi, da je domači dobavitelj aktiven in ima veljaven ID za DDV (če je zavezanec).
+
 ## DDV pravila za agenta (samo označevanje, ne odločanje)
 - Izvajalec ni zavezanec za DDV (račun brez DDV, sklic na oprostitev): 160 = 0, označi.
 - Račun z DDV: preveri stopnjo (22 %, 9,5 %, 5 %) in da DDV = neto x stopnja (toleranca 0,02 EUR).
