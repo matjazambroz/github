@@ -5,7 +5,10 @@ SRC="$(cd "$(dirname "$0")" && pwd)"
 PROJECT="${1:-amidas-racunovodstvo}"
 mkdir -p ~/.claude/agents ~/.claude/skills/prejeti-racuni ~/.claude/projects/"$PROJECT"/memory
 cp "$SRC"/agents/*.md ~/.claude/agents/
-mkdir -p ~/.claude/eslog && cp -r "$SRC"/eslog/. ~/.claude/eslog/
+mkdir -p ~/.claude/eslog ~/.claude/testni-podatki ~/.claude/skills/preizkus-racunov
+cp -r "$SRC"/eslog/. ~/.claude/eslog/
+cp -r "$SRC"/testni-podatki/. ~/.claude/testni-podatki/
+cp "$SRC"/skills/preizkus-racunov/SKILL.md ~/.claude/skills/preizkus-racunov/
 cp "$SRC"/evidenca-*.* ~/.claude/
 cp "$SRC"/kontni-nacrt.md ~/.claude/kontni-nacrt.md
 cp "$SRC"/skills/prejeti-racuni/SKILL.md ~/.claude/skills/prejeti-racuni/

@@ -10,6 +10,9 @@ preveri **Stratega** (branje PDF in sestava JSON), **preslikavo** in **skripto z
 | `racun-3-tuj-izvajalec.pdf` | nemški izvajalec, reverse charge | ZASTAVICA (tuj izvajalec, reverse charge za servis), konto 4102, osnutka za servis ni |
 | `racun-4-racunska-napaka.pdf` | skupni znesek 71,00 namesto 61,00 | zastavica, `preverjanja.matematika` = napaka, skripta zavrne XML (koda 1) |
 
+## Bližnjica
+V Claude Code: `/preizkus-racunov` (skill `skills/preizkus-racunov/SKILL.md`) naredi korake 1 do 3 sam in poroča. Spodaj ročni postopek.
+
 ## Koraki
 1. **Strateg bere PDF-je** (v Claude Code, v korenu repozitorija):
    > Uporabi agenta racuni-strateg na PDF-jih `accounting-agent/testni-podatki/racun-*.pdf`. Bere naj samo te lokalne datoteke

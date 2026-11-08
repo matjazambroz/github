@@ -10,7 +10,7 @@ Zgrajen po šestih korakih iz infografike "Build an AI Agent in 10 Minutes".
 | 4. Skill | `skills/prejeti-racuni/SKILL.md` | ukaz `/prejeti-racuni` |
 | 5. Agenti | `agents/` | Strateg (`claude-opus-5-5`) -> Graditelj (`claude-sonnet-5-5`) -> QA vrata 95/100 (`claude-opus-5-5`) |
 | Evidenca | `evidenca-prejeti-racuni.csv`, `evidenca-navodilo.md` | predloga za Google Sheets (glava, stolpci, statusi) |
-| Preizkus | `testni-podatki/` | 4 izmišljeni računi, pričakovani rezultati, preverjalnik Strategovega izhoda |
+| Preizkus | `testni-podatki/`, `skills/preizkus-racunov/` | 4 izmišljeni računi, preverjalnik Strategovega izhoda, ukaz `/preizkus-racunov` |
 | Kontiranje | `kontni-nacrt.md` | predlog kontov in odločitveno drevo |
 | 6. Autopilot | `routines.md` | dnevna rutina + opomnika 12. in 16. v mesecu (rok servisa 18.) |
 
