@@ -339,7 +339,11 @@ export async function computeYtdPaidTurnover() {
   const counts = {};
   for (const id of invoiceIds) {
     let entry = clientInvoiceCache.get(id);
-    if (entry && entry.totalGross !== undefined) {
+    // `status` must be cached too: this shares clientInvoiceCache with
+    // computeRangeFromInvoices (which needs it), so an entry written here
+    // without it would be refetched there and could be missed by anything
+    // reading the cache file directly.
+    if (entry && entry.totalGross !== undefined && entry.status !== undefined) {
       cacheHits++;
     } else {
       const invoice = await xtrfRequest("GET", `/accounting/customers/invoices/${id}`);
@@ -349,6 +353,7 @@ export async function computeYtdPaidTurnover() {
         totalNetto: invoice?.totalNetto,
         totalGross: invoice?.totalGross,
         dateMs: invoice?.dates?.invoiceDate?.time ?? null,
+        status: invoice?.status,
       };
       clientInvoiceCache.set(id, entry);
     }
