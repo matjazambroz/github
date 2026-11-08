@@ -42,6 +42,9 @@ Preizkus skripte: `python3 ustvari_xml.py primer-racun.json /tmp/test.xml` (z iz
 Redno zaženi `~/.claude/eslog/preveri-verzijo.sh`: sporoči, ali je ePOS izdal drug paket. Ob izhodu 1 prenesi nov paket ročno
 v brskalniku (https://epos.si/eslog; strežnik ima zaščito pred boti) in zamenjaj datoteke.
 
+## 6a. Preizkus na izmišljenih računih (brez Gmaila)
+Glej `testni-podatki/NAVODILO.md`: 4 izmišljeni PDF-ji, `preveri_strateg.py` primerja Strategov izhod s pričakovanim. Naredi pred pravim zagonom.
+
 ## 6. Prvi zagon (en račun)
 1. V Claude Code: `/prejeti-racuni` (obdobje: zadnjih 7 dni).
 2. Preveri, česa se agent loti: ali najde obvestilo XTRF, ali vpiše vrstico v Sheets, ali ustvari **osnutek** (ne pošlje).

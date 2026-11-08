@@ -1,0 +1,74 @@
+{
+  "2026-014": {
+    "konto": "4100",
+    "zastavice_prazne": true,
+    "xml_koda": 0,
+    "podatki": {
+      "st_racuna": "2026-014",
+      "datum_racuna": "2026-11-05",
+      "valuta": "EUR",
+      "dobavitelj.naziv": "Primer Prevajalec s.p.",
+      "skupaj.neto": "150.00",
+      "skupaj.ddv": "33.00",
+      "skupaj.bruto": "183.00",
+      "dobavitelj.id_za_ddv": "SI12345678"
+    },
+    "datoteka": "racun-1-domaci-ddv22.pdf"
+  },
+  "L-2026/07": {
+    "konto": "4100",
+    "zastavice_prazne": true,
+    "xml_koda": 0,
+    "podatki": {
+      "st_racuna": "L-2026/07",
+      "datum_racuna": "2026-11-03",
+      "valuta": "EUR",
+      "dobavitelj.naziv": "Testna Lektorica s.p.",
+      "skupaj.neto": "240.00",
+      "skupaj.ddv": "0.00",
+      "skupaj.bruto": "240.00",
+      "postavke.0.stopnja_ddv": 0
+    },
+    "datoteka": "racun-2-sp-brez-ddv.pdf"
+  },
+  "RE-2026-0391": {
+    "konto": "4102",
+    "zastavice_vsebuje": [
+      "reverse",
+      "tuj",
+      "obrnjen"
+    ],
+    "xml_koda": null,
+    "podatki": {
+      "st_racuna": "RE-2026-0391",
+      "datum_racuna": "2026-11-02",
+      "valuta": "EUR",
+      "dobavitelj.naziv": "Beispiel Übersetzungen GmbH",
+      "skupaj.neto": "300.00",
+      "skupaj.ddv": "0.00",
+      "skupaj.bruto": "300.00",
+      "dobavitelj.drzava": "DE"
+    },
+    "datoteka": "racun-3-tuj-izvajalec.pdf"
+  },
+  "2026-099": {
+    "konto": "4100",
+    "zastavice_vsebuje": [
+      "matemat",
+      "znesek",
+      "bruto"
+    ],
+    "matematika": "napaka",
+    "xml_koda": 1,
+    "podatki": {
+      "st_racuna": "2026-099",
+      "datum_racuna": "2026-11-04",
+      "valuta": "EUR",
+      "dobavitelj.naziv": "Računski Test s.p.",
+      "skupaj.neto": "50.00",
+      "skupaj.ddv": "11.00",
+      "skupaj.bruto": "71.00"
+    },
+    "datoteka": "racun-4-racunska-napaka.pdf"
+  }
+}
