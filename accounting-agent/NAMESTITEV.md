@@ -35,12 +35,10 @@ Registracija v Claude Code: po navodilu v `mcp-xtrf/README.md` (razdelek z `clau
 `dist/index.js` je pri tebi). Ključ naj bo samo za branje, če ga XTRF tako podpira.
 
 ## 5. Shema in vzorec XML (eSLOG 2.0)
-1. V brskalniku odpri https://epos.si/eslog in prenesi paket **e-SLOG-2.0-08-2020-SL.zip** (zadnji znani, glej `eslog/VERZIJA.txt`).
-   Strežnik ePOS ima zaščito pred boti, zato prenosa ne bo opravil skript.
-2. Razširi paket, XSD za račun shrani kot `~/.claude/eslog/eslog.xsd`, vzorec računa kot `vzorec.xml`.
-   Če v paketu ni vzorca, ga zahtevaj od servisa (`eslog/vprasanje-servisu.md`).
-3. Redno zaženi `~/.claude/eslog/preveri-verzijo.sh`: sporoči, ali je izšla novejša različica.
-Do takrat so osnutki označeni `[XML NEPREVERJEN]` (to je pričakovano).
+`eslog.xsd`, `vzorec.xml` in `xmldsig-core-schema.xsd` so že v `accounting-agent/eslog/` in jih `install.sh` kopira v `~/.claude/eslog/`.
+Preverjeno: `~/.claude/eslog/validate.sh ~/.claude/eslog/vzorec.xml` vrne 0 (potreben `xmllint`).
+Redno zaženi `~/.claude/eslog/preveri-verzijo.sh`: sporoči, ali je ePOS izdal drug paket. Ob izhodu 1 prenesi nov paket ročno
+v brskalniku (https://epos.si/eslog; strežnik ima zaščito pred boti) in zamenjaj datoteke.
 
 ## 6. Prvi zagon (en račun)
 1. V Claude Code: `/prejeti-racuni` (obdobje: zadnjih 7 dni).

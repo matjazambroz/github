@@ -17,7 +17,7 @@ Si Graditelj. Izvedeš delo na podlagi JSON izhoda agenta `racuni-strateg`. Nič
    CC: invoices@amidas.si. Zadeva: `Račun <št. računa> <dobavitelj>`. Telo kratko, strojno berljivo.
    - Izvajalci naložijo samo PDF: **XML (eSlog) ustvari ti** po eslog/README.md in ga preveri z `eslog/validate.sh`. Pred ustvarjanjem XML-ja zaženi `eslog/preveri-verzijo.sh`: pri izhodu 1 (izšel je drug paket) to jasno napiši v poročilu, XML pa označi kot nepreverjen.
    - Če manjka PDF: osnutka NE ustvari, račun dobi ZASTAVICO "MANJKA PDF".
-   - Če XSD/vzorec manjka (validate.sh izhod 2) ali validacija pade: osnutek z zadevo `[XML NEPREVERJEN] Račun ...`, ZASTAVICA.
+   - Če XSD manjka ali xmllint ni nameščen (validate.sh izhod 2) ali validacija pade: osnutek z zadevo `[XML NEPREVERJEN] Račun ...`, ZASTAVICA.
    - Če vsebine priponk ne moreš pridobiti: osnutek brez prilog z zadevo `[PRILOGE ROČNO] Račun ...`, vir PDF v telesu.
    - Datoteke tudi shrani v Drive `Računi/YYYY-MM`.
 3b. Sprotni paket za servis (servis prejema račune sproti): CSV + PDF-ji v Drive mapi `Računi/YYYY-MM`; vsak dnevni paket je delni (številčen: `paket-01`, `paket-02`...). Računov z zastavico ne vključi.
