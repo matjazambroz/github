@@ -23,6 +23,7 @@ Gmail + XTRF obvestila -> **Strateg** (analiza, zastavice) -> **Graditelj** (She
 Samo priprava: agent ne pošilja, ne briše, ne plačuje, ne piše v XTRF. IBAN, ki se razlikuje od zgodovine, je rdeča zastavica.
 
 ## Namestitev
+Podrobna navodila po korakih: [`NAMESTITEV.md`](NAMESTITEV.md). Na kratko:
 ```bash
 ./accounting-agent/install.sh
 ```
