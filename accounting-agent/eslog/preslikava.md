@@ -37,7 +37,7 @@ Strateg račun označi z zastavico in `podatki` ne sestavi popolno. Skripta vsak
 - **Enota:** na računu je lahko `prev. stran`, `projekt`, `ura`; v `enota` pride koda UN/ECE (`C62` kos/stran/projekt, `HUR` ura), polno ime enote v `opis` ni potrebno.
 - **Popust (stolpec R%):** `cena_neto` je cena PO popustu (24,00 s 50 % popustom -> `12.00`), tako da količina × cena da neto postavke.
 - **Obdobje storitve** (`01.03.2025-31.03.2025`): `datum_storitve` = zadnji dan obdobja; obdobje samo se zaenkrat ne prenese v XML.
-- **Sklic:** zapiši, kot je na računu (`12 2025000223809`).
+- **Sklic:** zapiši, kot je na računu (npr. `12 2026000000007`).
 - **Neto postavke in skupaj morata ustrezati računu** (`skupaj` s PDF-ja); skripta DDV računa na vsoti osnov in ga ob drugačnem zaokroževanju
   dobavitelja (do 0,02, ena stopnja) prevzame s PDF-ja.
 
