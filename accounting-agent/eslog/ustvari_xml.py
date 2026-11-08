@@ -5,7 +5,8 @@ Uporaba:
     ./ustvari_xml.py racun.json izhod.xml [--kupec kupec.json]
 
 Vhod (JSON, glej primer-racun.json): podatki, ki jih je razpoznal Strateg. Zneske računa izračuna skripta iz postavk;
-če JSON vsebuje "skupaj" (neto, ddv, bruto s PDF-ja), se morajo ujemati z izračunom (toleranca 0,02), sicer napaka.
+če JSON vsebuje "skupaj" (neto, ddv, bruto s PDF-ja), se morajo ujemati z izračunom; DDV se računa na vsoti osnov po stopnji
+(ne po postavkah). Razlika v DDV do 0,02 pri eni sami stopnji (drugačno zaokroževanje dobavitelja) se razreši v korist PDF-ja; večja je napaka.
 
 Izhodne kode: 0 = XML ustvarjen in veljaven proti eslog.xsd
               1 = napaka v vhodnih podatkih (nič ni zapisano)
@@ -188,19 +189,28 @@ def izracun(r):
         ddv = q2(neto * stopnja / 100)
         vrstice.append(dict(opis=p["opis"], kol=kol, cena=cena, enota=p.get("enota", "C62"),
                             neto=neto, ddv=ddv, stopnja=stopnja, kat=kat))
-    skupine = {}
+    # Pravilo DDV: ddv se računa na VSOTI osnov po stopnji (kategoriji), ne kot vsota zaokroženih DDV po postavkah.
+    # (Vsota po postavkah se lahko razlikuje za nekaj centov; račun in XML morata imeti DDV od osnove.)
+    # Zneski DDV pri postavkah (MOA 124/38) so informativni in se lahko razlikujejo od deleža v skupini.
+    osnove = {}
     for v in vrstice:
-        k = (v["kat"], v["stopnja"])
-        s = skupine.setdefault(k, [Decimal(0), Decimal(0)])
-        s[0] += v["neto"]
-        s[1] += v["ddv"]
+        osnove[(v["kat"], v["stopnja"])] = osnove.get((v["kat"], v["stopnja"]), Decimal(0)) + v["neto"]
+    skupine = {k: [osn, q2(osn * k[1] / 100)] for k, osn in osnove.items()}
     neto = sum((v["neto"] for v in vrstice), Decimal(0))
     ddv = sum((s[1] for s in skupine.values()), Decimal(0))
-    bruto = neto + ddv
     sk = r.get("skupaj")
+    # Dobavitelj lahko DDV zaokroži drugače (npr. po postavkah). Če je razlika samo zaokroževalna (do 0,02) in je ena sama
+    # skupina, v XML prepišemo DDV s PDF-ja: XML mora ustrezati računu. Pri večji razliki je to napaka (možna napaka pri branju).
+    if sk and "ddv" in sk:
+        pdf_ddv = q2(dec(sk["ddv"], "skupaj.ddv"))
+        if pdf_ddv != ddv and abs(pdf_ddv - ddv) <= TOL and len(skupine) == 1:
+            kljuc = next(iter(skupine))
+            skupine[kljuc][1] = pdf_ddv
+            ddv = pdf_ddv
+    bruto = neto + ddv
     if sk:
         for ime, izr in (("neto", neto), ("ddv", ddv), ("bruto", bruto)):
-            if ime in sk and abs(q2(dec(sk[ime], f"skupaj.{ime}")) - izr) > TOL:
+            if ime in sk and abs(q2(dec(sk[ime], f"skupaj.{ime}")) - izr) > Decimal("0.005"):
                 raise Napaka(f"skupaj.{ime} s PDF ({sk[ime]}) se ne ujema z izračunom ({izr})")
     return vrstice, skupine, neto, ddv, bruto
 

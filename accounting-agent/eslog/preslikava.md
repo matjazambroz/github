@@ -28,6 +28,15 @@ Strateg vrne seznam objektov (glej `agents/racuni-strateg.md`, primer: `strateg-
 **Pravilo "MANJKA":** Strateg v `podatki` nikoli ne piše "MANJKA". Neobvezno polje, ki ga ni, se izpusti. Če manjka obvezno polje,
 Strateg račun označi z zastavico in `podatki` ne sestavi popolno. Skripta vsak niz "MANJKA" zavrne (koda 1), da ne pride v XML.
 
+## Pasti pri branju pravih računov (iz računa e-računov, preverjeno 8. 11. 2026)
+- **Decimalna vejica in pika za tisočice:** `1,63` -> `"1.63"`, `1.013,50` -> `"1013.50"`.
+- **Enota:** na računu je lahko `prev. stran`, `projekt`, `ura`; v `enota` pride koda UN/ECE (`C62` kos/stran/projekt, `HUR` ura), polno ime enote v `opis` ni potrebno.
+- **Popust (stolpec R%):** `cena_neto` je cena PO popustu (24,00 s 50 % popustom -> `12.00`), tako da količina × cena da neto postavke.
+- **Obdobje storitve** (`01.03.2025-31.03.2025`): `datum_storitve` = zadnji dan obdobja; obdobje samo se zaenkrat ne prenese v XML.
+- **Sklic:** zapiši, kot je na računu (`12 2025000223809`).
+- **Neto postavke in skupaj morata ustrezati računu** (`skupaj` s PDF-ja); skripta DDV računa na vsoti osnov in ga ob drugačnem zaokroževanju
+  dobavitelja (do 0,02, ena stopnja) prevzame s PDF-ja.
+
 ## B) Izhodna koda skripte -> ukrep
 | Koda | Pomen | Status v evidenci | Osnutek za servis |
 |---|---|---|---|

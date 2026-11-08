@@ -122,6 +122,45 @@ class Testi(unittest.TestCase):
         r["sklic"] = "MANJKA"
         self.assertEqual(self.zazeni(r)[0], 1)
 
+    # --- DDV po osnovi, ne po postavkah (napaka, najdena na pravem računu: vsota po postavkah je dala +0,02) ---
+    NETO = ["15.13", "69.99", "13.12", "41.22", "12.63", "26.81", "52.44"]  # izmišljeno; vsota 231,34
+
+    def racun_zaokrozevanje(self, ddv_pdf, bruto_pdf):
+        r = primer()
+        r["postavke"] = [{"opis": f"Postavka {i}", "kolicina": 1, "cena_neto": n, "stopnja_ddv": 22} for i, n in enumerate(self.NETO, 1)]
+        r["skupaj"] = {"neto": "231.34", "ddv": ddv_pdf, "bruto": bruto_pdf}
+        return r
+
+    def test_ddv_je_na_vsoti_osnov_in_ne_na_vsoti_postavk(self):
+        # vsota zaokroženih DDV po postavkah = 50,91; DDV od osnove 231,34 x 22 % = 50,89
+        koda, izhod = self.zazeni(self.racun_zaokrozevanje("50.89", "282.23"))
+        self.assertEqual(koda, 0)
+        xml = izhod.read_text(encoding="utf-8")
+        self.assertIn("<D_5004>50.89</D_5004>", xml)
+        self.assertIn("<D_5004>282.23</D_5004>", xml)
+        self.assertNotIn("<D_5004>50.91</D_5004>", xml.split("<S_UNS>")[1])
+
+    def test_zaokrozevalna_razlika_dobavitelja_se_razresi_v_korist_pdf(self):
+        # dobavitelj je DDV sešteval po postavkah (50,91): ena stopnja, razlika 0,02 -> XML ima znesek s PDF-ja
+        koda, izhod = self.zazeni(self.racun_zaokrozevanje("50.91", "282.25"))
+        self.assertEqual(koda, 0)
+        xml = izhod.read_text(encoding="utf-8")
+        self.assertIn("<D_5004>282.25</D_5004>", xml)
+        self.assertIn("<D_5004>50.91</D_5004>", xml.split("<S_UNS>")[1])
+
+    def test_vecja_razlika_ddv_je_napaka(self):
+        koda, izhod = self.zazeni(self.racun_zaokrozevanje("50.92", "282.26"))
+        self.assertEqual(koda, 1)
+        self.assertFalse(izhod.exists())
+
+    def test_pri_vec_stopnjah_se_razlika_ne_razresuje_samodejno(self):
+        r = primer()
+        r["postavke"][1]["stopnja_ddv"] = 9.5   # 90,00 x 22 % + 60,00 x 9,5 % = 19,80 + 5,70 = 25,50
+        r["skupaj"] = {"neto": "150.00", "ddv": "25.51", "bruto": "175.51"}
+        self.assertEqual(self.zazeni(r)[0], 1)
+        r["skupaj"] = {"neto": "150.00", "ddv": "25.50", "bruto": "175.50"}
+        self.assertEqual(self.zazeni(r)[0], 0)
+
     def test_datum_v_napacni_obliki(self):
         r = primer()
         r["datum_racuna"] = "5. 11. 2026"

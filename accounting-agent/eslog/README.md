@@ -30,7 +30,10 @@ XML ustvari deterministična skripta (samo standardna knjižnica Pythona), ne pr
 4. Izhodna koda: 0 = XML veljaven proti XSD; 1 = napaka vhoda (npr. `skupaj` se ne ujema z izračunom iz postavk: nič se ne zapiše,
    račun dobi ZASTAVICO); 2 = XML zapisan a nepreverjen (manjka `xmllint`/XSD); 3 = validacija pade; 4 = `kupec.json` še ni izpolnjen.
 5. Pripni XML in PDF osnutku. Pri kodah 2 in 3 osnutek dobi zadevo `[XML NEPREVERJEN] Račun ...` in zastavico.
-Skripta znesek računa izračuna iz postavk in ga primerja s PDF (toleranca 0,02), zato napaka pri branju PDF-ja ne pride v XML.
+Skripta znesek računa izračuna iz postavk in ga primerja s PDF, zato napaka pri branju PDF-ja ne pride v XML.
+**DDV se računa na vsoti osnov po stopnji, ne kot vsota DDV po postavkah** (to je dalo napačne 2 centa na pravem računu; zdaj pokrito s testi).
+Če dobavitelj DDV zaokroži drugače (razlika do 0,02, ena stopnja), XML prevzame DDV s PDF-ja; pri več stopnjah ali večji razliki je to napaka (koda 1).
+DDV pri posameznih postavkah (MOA 124/38) je informativen in se lahko od deleža v skupini razlikuje za cent.
 Testi: `python3 -m unittest -v test_ustvari_xml` (v tej mapi, 12 testov).
 **Kode, ki jih servis mora potrditi:** kategorija DDV (privzeto `S` pri stopnji > 0, `E` pri 0 %; reverse charge `AE` ipd. se nastavi
 ročno v postavki `kategorija`), kvalifikatorji zneskov (79, 389, 388, 9, 176) in `FTX AAI`. Povzeti so po `vzorec.xml`; ujemanje
