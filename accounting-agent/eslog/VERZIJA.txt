@@ -1,0 +1,20 @@
+# Zadnji znani paket eSLOG 2.0 na uradni strani ePOS (Center za ePoslovanje Slovenije, GZS)
+# Stran: https://epos.si/eslog
+# Preverjeno: 2026-11-08
+paket_sl=e-SLOG-2.0-08-2020-SL.zip
+paket_en=e-SLOG-2.0-08-2020-EN.zip
+# Povezave (prenos v brskalniku, strežnik ima zaščito pred boti):
+#   https://epos.si/assets/docs/e-SLOG-2.0-08-2020-SL.zip
+#   https://epos.si/assets/docs/e-SLOG-2.0-08-2020-EN.zip
+# Povezana pojasnila na strani: skupina za DDV v eSLOG 2.0 (15. 7. 2026, dopolnjeno 3. 8. 2026);
+# nova verzija standarda EN 16931-1:2026 (27. 3. 2026): možna prihodnja sprememba eSLOG.
+
+# --- Datoteke v tej mapi (dodano 2026-11-08) ---
+# eslog.xsd  = eSLOG20_INVOIC_v200.xsd, ki ga je dostavil uporabnik (targetNamespace urn:eslog:2.00).
+#              sha256 cc6cd50a390e0f5db72f42a532e2fc6947d7346c52f71c54be86db0c0f9c9fce
+#              Ni preverjeno, ali je identična shemi v paketu ePOS e-SLOG-2.0-08-2020 (paketa ni bilo mogoče prenesti).
+# vzorec.xml = sample_eSLOG20_INVOIC_v200.xml (uporabnik). sha256 cd909162e84fdd584e4a9beb6ed83bf3fb64c864944d77d3e51d2d1edecd6ee0
+#              Primer iz standarda (tuji dobavitelj, EN 16931), ne slovenskega izvajalca: kaže strukturo, ne slovenskih podatkov.
+# xmldsig-core-schema.xsd = W3C shema za digitalni podpis, ki jo eslog.xsd uvaža (xsd:import). Prenos 2026-11-08 z
+#              https://www.w3.org/TR/xmldsig-core/xmldsig-core-schema.xsd, sha256 d102ad3df7664c307e0c2c776ba4a90513b1969974d8a940bae1a77f9f21e15d
+# Preverjeno: ./validate.sh vzorec.xml -> veljaven; namerno pokvarjen vzorec -> pade.

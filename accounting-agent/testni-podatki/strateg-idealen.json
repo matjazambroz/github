@@ -1,0 +1,210 @@
+[
+  {
+    "racun_id": "IZMISLJEN-2026-014",
+    "prejeto": "2026-11-06",
+    "xml_izvirnik": null,
+    "podatki": {
+      "st_racuna": "2026-014",
+      "datum_racuna": "2026-11-05",
+      "datum_storitve": "2026-10-31",
+      "zapadlost": "2026-12-05",
+      "valuta": "EUR",
+      "sklic": "SI00 2026-014",
+      "dobavitelj": {
+        "naziv": "Primer Prevajalec s.p.",
+        "naslov": "Testna ulica 1",
+        "mesto": "Ljubljana",
+        "posta": "1000",
+        "drzava": "SI",
+        "id_za_ddv": "SI12345678",
+        "iban": "SI56 0000 0000 0000 000",
+        "bic": "TESTSI2X"
+      },
+      "postavke": [
+        {
+          "opis": "Prevod SL-EN, 1500 besed (XTRF 86652)",
+          "kolicina": "1500",
+          "enota": "C62",
+          "cena_neto": "0.06",
+          "stopnja_ddv": 22
+        },
+        {
+          "opis": "Lektoriranje",
+          "kolicina": "2",
+          "enota": "HUR",
+          "cena_neto": "30.00",
+          "stopnja_ddv": 22
+        }
+      ],
+      "skupaj": {
+        "neto": "150.00",
+        "ddv": "33.00",
+        "bruto": "183.00"
+      },
+      "xtrf_projekt": "86652"
+    },
+    "preverjanja": {
+      "matematika": "ok",
+      "dvojnik": "ne",
+      "xtrf": "ni podatka",
+      "iban": "ok"
+    },
+    "davcno": "preslikano iz izmišljenega računa",
+    "konto_predlog": "4100",
+    "zastavice": [],
+    "zaupanje": 95
+  },
+  {
+    "racun_id": "IZMISLJEN-L-2026/07",
+    "prejeto": "2026-11-06",
+    "xml_izvirnik": null,
+    "podatki": {
+      "st_racuna": "L-2026/07",
+      "datum_racuna": "2026-11-03",
+      "datum_storitve": "2026-10-31",
+      "zapadlost": "2026-11-18",
+      "valuta": "EUR",
+      "sklic": "SI00 07-2026",
+      "dobavitelj": {
+        "naziv": "Testna Lektorica s.p.",
+        "naslov": "Izmišljena pot 12",
+        "mesto": "Celje",
+        "posta": "3000",
+        "drzava": "SI",
+        "iban": "SI56 1111 1111 1111 111"
+      },
+      "postavke": [
+        {
+          "opis": "Lektoriranje slovenskega besedila (XTRF 86701)",
+          "kolicina": "8",
+          "enota": "HUR",
+          "cena_neto": "30.00",
+          "stopnja_ddv": 0
+        }
+      ],
+      "skupaj": {
+        "neto": "240.00",
+        "ddv": "0.00",
+        "bruto": "240.00"
+      },
+      "xtrf_projekt": "86701"
+    },
+    "preverjanja": {
+      "matematika": "ok",
+      "dvojnik": "ne",
+      "xtrf": "ni podatka",
+      "iban": "ok"
+    },
+    "davcno": "preslikano iz izmišljenega računa",
+    "konto_predlog": "4100",
+    "zastavice": [],
+    "zaupanje": 95
+  },
+  {
+    "racun_id": "IZMISLJEN-RE-2026-0391",
+    "prejeto": "2026-11-06",
+    "xml_izvirnik": null,
+    "podatki": {
+      "st_racuna": "RE-2026-0391",
+      "datum_racuna": "2026-11-02",
+      "datum_storitve": "2026-10-30",
+      "zapadlost": "2026-12-02",
+      "valuta": "EUR",
+      "sklic": "RE-2026-0391",
+      "dobavitelj": {
+        "naziv": "Beispiel Übersetzungen GmbH",
+        "naslov": "Musterstraße 7",
+        "mesto": "Berlin",
+        "posta": "10115",
+        "drzava": "DE",
+        "id_za_ddv": "DE123456789",
+        "iban": "DE89 3704 0044 0532 0130 00",
+        "bic": "COBADEFFXXX"
+      },
+      "postavke": [
+        {
+          "opis": "Übersetzung DE-SL, 3000 Wörter (XTRF 86733)",
+          "kolicina": "3000",
+          "enota": "C62",
+          "cena_neto": "0.08",
+          "stopnja_ddv": 0
+        },
+        {
+          "opis": "Projektmanagement",
+          "kolicina": "1",
+          "enota": "C62",
+          "cena_neto": "60.00",
+          "stopnja_ddv": 0
+        }
+      ],
+      "skupaj": {
+        "neto": "300.00",
+        "ddv": "0.00",
+        "bruto": "300.00"
+      },
+      "xtrf_projekt": "86733"
+    },
+    "preverjanja": {
+      "matematika": "ok",
+      "dvojnik": "ne",
+      "xtrf": "ni podatka",
+      "iban": "ok"
+    },
+    "davcno": "preslikano iz izmišljenega računa",
+    "konto_predlog": "4102",
+    "zastavice": [
+      "TUJ IZVAJALEC (DE)",
+      "REVERSE CHARGE: obravnavo potrdi servis"
+    ],
+    "zaupanje": 95
+  },
+  {
+    "racun_id": "IZMISLJEN-2026-099",
+    "prejeto": "2026-11-06",
+    "xml_izvirnik": null,
+    "podatki": {
+      "st_racuna": "2026-099",
+      "datum_racuna": "2026-11-04",
+      "datum_storitve": "2026-10-31",
+      "zapadlost": "2026-12-04",
+      "valuta": "EUR",
+      "sklic": "SI00 2026-099",
+      "dobavitelj": {
+        "naziv": "Računski Test s.p.",
+        "naslov": "Napačna ulica 3",
+        "mesto": "Koper",
+        "posta": "6000",
+        "drzava": "SI",
+        "id_za_ddv": "SI55555555",
+        "iban": "SI56 2222 2222 2222 222"
+      },
+      "postavke": [
+        {
+          "opis": "Prevod EN-SL, 100 besed (XTRF 86750)",
+          "kolicina": "100",
+          "enota": "C62",
+          "cena_neto": "0.50",
+          "stopnja_ddv": 22
+        }
+      ],
+      "skupaj": {
+        "neto": "50.00",
+        "ddv": "11.00",
+        "bruto": "71.00"
+      },
+      "xtrf_projekt": "86750"
+    },
+    "preverjanja": {
+      "matematika": "napaka",
+      "dvojnik": "ne",
+      "xtrf": "ni podatka",
+      "iban": "ok"
+    },
+    "davcno": "preslikano iz izmišljenega računa",
+    "konto_predlog": "4100",
+    "zastavice": [
+      "MATEMATIKA: neto + DDV (61.00) ne ustreza skupnemu znesku na računu (71.00)"
+    ],
+    "zaupanje": 95
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "_opomba": "IZMIŠLJENI podatki; kot bi jih Strateg razbral iz PDF-ja računa v fixtures/izvirnik-eracuni.xml.",
+  "st_racuna": "2026-00007", "datum_racuna": "2026-10-15", "datum_storitve": "2026-09-30", "zapadlost": "2026-10-30",
+  "valuta": "EUR", "sklic": "12 2026000000007",
+  "dobavitelj": {"naziv": "Primer Izvajalka s.p.", "naslov": "Testna ulica 99", "mesto": "Testno mesto", "posta": "3999",
+                 "drzava": "SI", "id_za_ddv": "SI12345678", "iban": "SI56 0000 0000 0000 099"},
+  "postavke": [
+    {"opis": "Prevod s sodno overitvijo SLO-AN (projekt TEST-01)", "kolicina": "3.10", "enota": "C62", "cena_neto": "21.50", "stopnja_ddv": 22},
+    {"opis": "Prevod s sodno overitvijo SLO-AN (projekt TEST-02)", "kolicina": "4.25", "enota": "C62", "cena_neto": "18.40", "stopnja_ddv": 22}
+  ],
+  "skupaj": {"neto": "144.85", "ddv": "31.87", "bruto": "176.72"}
+}

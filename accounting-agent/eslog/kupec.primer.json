@@ -1,0 +1,8 @@
+{
+  "naziv": "VPISI polno ime podjetja Amidas",
+  "naslov": "VPISI ulica in hišna številka",
+  "mesto": "VPISI mesto",
+  "posta": "VPISI poštna številka",
+  "drzava": "SI",
+  "id_za_ddv": "VPISI ID za DDV (SI + 8 številk)"
+}

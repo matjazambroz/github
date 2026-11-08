@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "xtrf": {
+      "command": "node",
+      "args": ["${CLAUDE_PROJECT_DIR:-.}/mcp-xtrf/dist/index.js"],
+      "env": {
+        "XTRF_BASE_URL": "https://xtrf.amidas.si",
+        "XTRF_API_BASE_PATH": "/home-api",
+        "XTRF_AUTH_MODE": "apikey",
+        "XTRF_API_KEY": "${XTRF_API_KEY}"
+      }
+    }
+  }
+}
