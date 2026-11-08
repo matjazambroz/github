@@ -1,6 +1,7 @@
 import { xtrfRequest } from "./xtrfClient.js";
 import { dateOnlyToEpochMs, todayDateString } from "./dateUtils.js";
 import { createInvoiceCache } from "./invoiceCache.js";
+import { ecbRateAt } from "./fxRates.js";
 
 const timeZone = process.env.XTRF_TIMEZONE ?? "Europe/Ljubljana";
 
@@ -37,6 +38,33 @@ async function resolveEurExchangeRate(isoCode) {
   const result = { rate, date: dateMs ? new Date(dateMs).toISOString() : null };
   exchangeRateCache.set(isoCode, result);
   return result;
+}
+
+// Converts an invoice amount to EUR at the rate of the invoice's own date
+// (ECB reference rate), which is how XTRF's reports convert foreign-currency
+// invoices. Using today's rate for a whole year's invoices overstated USD/GBP
+// invoices by ~0.4% YTD. Falls back to XTRF's current rate when the ECB has
+// no rate for that date or can't be reached.
+async function toEurAtDate(currencyId, amount, dateMs) {
+  const code = await resolveCurrency(currencyId);
+  if (code === "EUR") {
+    return amount;
+  }
+  const rate = (await ecbRateAt(code, dateMs, timeZone)) ?? (await resolveEurExchangeRate(code)).rate;
+  return rate ? amount / rate : amount;
+}
+
+// Running EUR total for invoice-based figures (same result shape as
+// combineIntoEur; no per-currency rates are listed because every invoice
+// uses its own).
+function eurAccumulator() {
+  const acc = { amount: 0, count: 0, rates: [] };
+  acc.add = async (currencyId, amount, dateMs) => {
+    acc.amount += await toEurAtDate(currencyId, amount, dateMs);
+    acc.count++;
+  };
+  acc.result = () => ({ amount: acc.amount, count: acc.count, rates: acc.rates });
+  return acc;
 }
 
 function addToTotals(totals, currencyId, amount) {
@@ -199,8 +227,7 @@ async function computeRangeFromInvoices({
   await cache.load();
   let cacheHits = 0;
 
-  const totals = {};
-  const counts = {};
+  const sum = eurAccumulator();
   for (const id of invoiceIds) {
     let entry = cache.get(id);
     // Cache entries must have `status` cached (older entries from before
@@ -230,14 +257,13 @@ async function computeRangeFromInvoices({
     if (requireStatus && status !== requireStatus) {
       continue;
     }
-    addToTotals(totals, currencyId, totalNetto);
-    counts[currencyId] = (counts[currencyId] ?? 0) + 1;
+    await sum.add(currencyId, totalNetto, dateMs);
   }
 
   await cache.saveIfDirty();
   console.log(`${label}: ${invoiceIds.length} invoices, ${cacheHits} from cache, ${invoiceIds.length - cacheHits} fetched.`);
 
-  return combineIntoEur(totals, counts);
+  return sum.result();
 }
 
 // This year, Jan 1 through the end of today.
@@ -335,8 +361,7 @@ export async function computeYtdPaidTurnover() {
   let cacheHits = 0;
   let paymentChecks = 0;
 
-  const totals = {};
-  const counts = {};
+  const sum = eurAccumulator();
   for (const id of invoiceIds) {
     let entry = clientInvoiceCache.get(id);
     // `status` must be cached too: this shares clientInvoiceCache with
@@ -379,8 +404,7 @@ export async function computeYtdPaidTurnover() {
     }
 
     if (isFullyPaid) {
-      addToTotals(totals, currencyId, totalNetto);
-      counts[currencyId] = (counts[currencyId] ?? 0) + 1;
+      await sum.add(currencyId, totalNetto, dateMs);
     }
   }
 
@@ -389,8 +413,7 @@ export async function computeYtdPaidTurnover() {
     `YTD plačano: ${invoiceIds.length} računov, ${cacheHits} osnovnih podatkov iz cache, ${paymentChecks} preverjenih plačil.`
   );
 
-  const combined = await combineIntoEur(totals, counts);
-  return { year, amount: combined.amount, count: combined.count, rates: combined.rates };
+  return { year, ...sum.result() };
 }
 
 // YTD costs from vendor (provider) invoices - the accounts-payable
@@ -415,8 +438,7 @@ export async function computeYtdPaidCosts() {
   let cacheHits = 0;
   let fetched = 0;
 
-  const totals = {};
-  const counts = {};
+  const sum = eurAccumulator();
   for (const id of invoiceIds) {
     let entry = vendorInvoiceCache.get(id);
     // Require `status` to be cached too (not just paymentStatus) so this
@@ -456,15 +478,13 @@ export async function computeYtdPaidCosts() {
     if (paymentStatus !== "FULLY_PAID") {
       continue;
     }
-    addToTotals(totals, currencyId, totalNetto);
-    counts[currencyId] = (counts[currencyId] ?? 0) + 1;
+    await sum.add(currencyId, totalNetto, dateMs);
   }
 
   await vendorInvoiceCache.saveIfDirty();
   console.log(`YTD plačani stroški: ${invoiceIds.length} računov, ${cacheHits} iz cache, ${fetched} preverjenih.`);
 
-  const combined = await combineIntoEur(totals, counts);
-  return { year, amount: combined.amount, count: combined.count, rates: combined.rates };
+  return { year, ...sum.result() };
 }
 
 // Same period last year (Jan 1 - same calendar day), for YoY comparison.
