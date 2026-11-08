@@ -3,6 +3,7 @@ import copy
 import json
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -102,7 +103,7 @@ class Testi(unittest.TestCase):
         pokvarjen = izhod.read_text(encoding="utf-8").replace("<D_0065>INVOIC</D_0065>", "<D_0065>INVOIC</D_0065><NAPAKA/>")
         pot = self.tmp / "pokvarjen.xml"
         pot.write_text(pokvarjen, encoding="utf-8")
-        self.assertNotEqual(subprocess.run([str(HERE / "validate.sh"), str(pot)], capture_output=True).returncode, 0)
+        self.assertNotEqual(subprocess.run(["bash", str(HERE / "validate.sh"), str(pot)] if sys.platform == "win32" else [str(HERE / "validate.sh"), str(pot)], capture_output=True).returncode, 0)
 
     def test_strategov_primer_deluje_v_skripti(self):
         """Pogodba: `podatki` iz Strategovega izhoda je neposreden vhod skripte (eslog/preslikava.md)."""

@@ -300,7 +300,11 @@ def zgradi(r, kupec):
 
 def validiraj(pot):
     try:
-        p = subprocess.run([str(HERE / "validate.sh"), str(pot)], capture_output=True, text=True, timeout=60)
+        # .sh se v Windows ne zažene neposredno (WinError 193): zaženi prek bash
+        ukaz = [str(HERE / "validate.sh"), str(pot)]
+        if sys.platform == "win32":
+            ukaz.insert(0, "bash")
+        p = subprocess.run(ukaz, capture_output=True, text=True, timeout=60)
     except Exception as e:  # noqa: BLE001
         return 2, str(e)
     return p.returncode, (p.stdout + p.stderr).strip()
