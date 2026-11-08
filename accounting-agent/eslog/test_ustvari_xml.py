@@ -161,6 +161,15 @@ class Testi(unittest.TestCase):
         r["skupaj"] = {"neto": "150.00", "ddv": "25.50", "bruto": "175.50"}
         self.assertEqual(self.zazeni(r)[0], 0)
 
+    def test_kupec_json_je_izpolnjen(self):
+        """Podatki Amidas v eslog/kupec.json morajo biti izpolnjeni (brez VPISI) in v obliki, ki jo skripta potrebuje."""
+        kupec = json.loads((HERE / "kupec.json").read_text(encoding="utf-8"))
+        for k in ("naziv", "naslov", "mesto", "posta", "drzava", "id_za_ddv"):
+            self.assertTrue(kupec.get(k), k)
+        self.assertFalse(any(str(v).upper().startswith("VPISI") for v in kupec.values()))
+        import re
+        self.assertRegex(kupec["id_za_ddv"], r"^SI\d{8}$")
+
     def test_datum_v_napacni_obliki(self):
         r = primer()
         r["datum_racuna"] = "5. 11. 2026"

@@ -32,7 +32,7 @@ Testi: `python3 -m unittest -v test_preveri_izvirni_xml` (19 testov; anonimizira
 
 ## Ustvarjanje lastnega XML (samo če izvirnika ni): skripta `ustvari_xml.py`
 XML ustvari deterministična skripta (samo standardna knjižnica Pythona), ne prosto pisanje.
-1. Enkrat: `cp kupec.primer.json kupec.json` in vpiši podatke Amidas (naziv, naslov, ID za DDV). `kupec.json` ni v gitu.
+1. `kupec.json` s podatki Amidas (naziv, naslov, ID za DDV, matična) je že izpolnjen in v gitu (javni podatki podjetja, povzeti po računu iz e-računov 8. 11. 2026). Ob spremembi podatkov popravi to datoteko; `kupec.primer.json` je samo predloga.
 2. Strategov izhod za račun pretvori v JSON po vzorcu `primer-racun.json` (dobavitelj, datumi, postavke, neto/DDV/bruto s PDF-ja v `skupaj`).
 3. `./ustvari_xml.py racun.json Računi/LLLL-MM/<št. računa>.xml`
 4. Izhodna koda: 0 = XML veljaven proti XSD; 1 = napaka vhoda (npr. `skupaj` se ne ujema z izračunom iz postavk: nič se ne zapiše,
