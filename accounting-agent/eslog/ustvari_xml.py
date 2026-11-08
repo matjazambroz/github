@@ -140,7 +140,27 @@ def nad(parent, vloga, o, z_ddv_in_banka):
         rff(g3, "VA", o["id_za_ddv"])
 
 
+def poisci_manjka(v, pot=""):
+    """Vrne pot prve vrednosti 'MANJKA' (Strateg tako označi podatek, ki ga ni); ta beseda ne sme v XML."""
+    if isinstance(v, str):
+        return pot if v.strip().upper().startswith("MANJKA") else None
+    if isinstance(v, dict):
+        items = v.items()
+    elif isinstance(v, list):
+        items = enumerate(v)
+    else:
+        return None
+    for k, x in items:
+        r = poisci_manjka(x, f"{pot}.{k}" if pot else str(k))
+        if r:
+            return r
+    return None
+
+
 def preveri_vhod(r):
+    m = poisci_manjka(r)
+    if m:
+        raise Napaka(f"'{m}' je MANJKA: neobvezno polje izpusti iz JSON-a, pri obveznem računa ne pretvarjaj (ZASTAVICA)")
     for k in ("st_racuna", "datum_racuna", "valuta", "dobavitelj", "postavke"):
         if k not in r or r[k] in (None, "", []):
             raise Napaka(f"manjka polje '{k}'")

@@ -24,7 +24,18 @@ Seznam novih računov (Gmail nit, priloga, XTRF obvestilo).
 Večina računov je od domačih s.p./d.o.o.: obravnavaj jih po privzeti poti iz kontni-nacrt.md brez
 nepotrebnih zastavic. Tuje izvajalce vedno zastavi (reverse charge). Računa brez DDV ne zastavi, če je naveden sklic na oprostitev.
 
-## Izhod (strogo ta format, JSON seznam)
-`[{"racun_id","podatki":{...},"preverjanja":{"matematika":"ok|napaka","dvojnik":"ne|da:<ref>","xtrf":"ujema|ne ujema|ni podatka","iban":"ok|SPREMENJEN"},"davcno":"...","konto_predlog":"...","zastavice":[...],"zaupanje":0-100}]`
+## Izhod (strogo ta format, JSON seznam; polja in preslikava: eslog/preslikava.md)
+```
+[{"racun_id": "<Gmail nit ali XTRF ID>", "prejeto": "LLLL-MM-DD",
+  "podatki": {"st_racuna", "datum_racuna", "datum_storitve", "zapadlost", "valuta", "sklic",
+              "dobavitelj": {"naziv","naslov","mesto","posta","drzava","id_za_ddv","iban","bic"},
+              "postavke": [{"opis","kolicina","enota","cena_neto","stopnja_ddv"}],
+              "skupaj": {"neto","ddv","bruto"},
+              "xtrf_projekt": "...", "opomba": "..."},
+  "preverjanja": {"matematika":"ok|napaka","dvojnik":"ne|da:<ref>","xtrf":"ujema|ne ujema|ni podatka","iban":"ok|SPREMENJEN"},
+  "davcno": "...", "konto_predlog": "...", "zastavice": [...], "zaupanje": 0-100}]
+```
+`podatki` je hkrati vhod skripte `eslog/ustvari_xml.py`. Neobvezna polja, ki jih na računu ni, IZPUSTI (ne piši "MANJKA" v `podatki`:
+skripta to zavrne). Datumi LLLL-MM-DD, zneski kot besedilo s piko ("183.00").
 
-Ne ugibaj. Manjkajoče podatke zapiši "MANJKA".
+Ne ugibaj. Manjkajoč podatek zapiši kot "MANJKA" samo v `zastavice` in `davcno`, nikoli v `podatki` (tam polje izpusti).

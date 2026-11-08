@@ -104,6 +104,24 @@ class Testi(unittest.TestCase):
         pot.write_text(pokvarjen, encoding="utf-8")
         self.assertNotEqual(subprocess.run([str(HERE / "validate.sh"), str(pot)], capture_output=True).returncode, 0)
 
+    def test_strategov_primer_deluje_v_skripti(self):
+        """Pogodba: `podatki` iz Strategovega izhoda je neposreden vhod skripte (eslog/preslikava.md)."""
+        strateg = json.loads((HERE / "strateg-primer.json").read_text(encoding="utf-8"))
+        for racun in strateg:
+            for kljuc in ("racun_id", "prejeto", "podatki", "preverjanja", "konto_predlog", "zastavice", "zaupanje"):
+                self.assertIn(kljuc, racun)
+            koda, izhod = self.zazeni(racun["podatki"])
+            self.assertEqual(koda, 0)
+
+    def test_niz_manjka_je_zavrnjen(self):
+        for polje in ("iban", "id_za_ddv", "naziv"):
+            r = primer()
+            r["dobavitelj"][polje] = "MANJKA"
+            self.assertEqual(self.zazeni(r)[0], 1, polje)
+        r = primer()
+        r["sklic"] = "MANJKA"
+        self.assertEqual(self.zazeni(r)[0], 1)
+
     def test_datum_v_napacni_obliki(self):
         r = primer()
         r["datum_racuna"] = "5. 11. 2026"
