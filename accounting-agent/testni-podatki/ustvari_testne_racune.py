@@ -156,7 +156,7 @@ def strateg_izhod(r):
         zastavice = ["MATEMATIKA: neto + DDV (61.00) ne ustreza skupnemu znesku na računu (71.00)"]
         matematika = "napaka"
     return {
-        "racun_id": f"IZMISLJEN-{r['st']}", "prejeto": "2026-11-06",
+        "racun_id": f"IZMISLJEN-{r['st']}", "prejeto": "2026-11-06", "xml_izvirnik": None,
         "podatki": {"st_racuna": r["st"], "datum_racuna": r["datum"], "datum_storitve": r["storitev"], "zapadlost": r["zapadlost"],
                     "valuta": "EUR", "sklic": r["sklic"], "dobavitelj": dob,
                     "postavke": [{"opis": o, "kolicina": format(k.normalize(), "f"), "enota": e, "cena_neto": format(c, "f"),

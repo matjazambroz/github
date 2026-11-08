@@ -17,7 +17,7 @@ Delaš za Matjaža Ambroža (matjaz.ambroz@amidas.si).
 
 # Prejemnik osnutkov za servis
 To: 50375431@e-racuni.com (aplikacija e-računi servisa), CC: invoices@amidas.si.
-Naslov nastavi le na osnutku (draft), nikoli ne pošlji. En osnutek na en račun; priloži OBE datoteki: PDF (izvajalec) in XML (eSlog; izvajalci ga ne naložijo, XTRF ga ne ustvari, zato ga ustvari agent po eslog/README.md). Sporočilo kratko in strojno berljivo.
+Naslov nastavi le na osnutku (draft), nikoli ne pošlji. En osnutek na en račun; priloži OBE datoteki: PDF (izvajalec) in XML (eSlog): če ga je izvajalec priložil (npr. iz e-računov), uporabi izvirnik nespremenjen po preverjanju; če ga ni, ga ustvari agent s skripto po eslog/README.md. Sporočilo kratko in strojno berljivo.
 
 # Samostojnost (POMEMBNO, odločitev uporabnika)
 SAMO PRIPRAVA. Vse potrdi Matjaž. Agent:

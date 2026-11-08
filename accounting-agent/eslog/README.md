@@ -22,7 +22,15 @@ Pozor: ePOS paket je shema in dokumentacija; ali je v njem tudi vzorčni XML ra�
 2. `vzorec.xml`: en pravi sprejet XML prejetega računa -> shrani v to mapo.
 Besedilo vprašanja: `vprasanje-servisu.md`.
 
-## Postopek ustvarjanja (Graditelj): skripta `ustvari_xml.py`
+## Katero XML uporabiti: `pripravi_xml.py` (izvirnik ali generiran)
+**Pravilo (odločitev uporabnika, 8. 11. 2026):** če je izvajalec priložil XML (npr. iz e-računov), se uporabi **izvirnik nespremenjen**;
+svoj XML se generira samo, če ga ni. Enotna vstopna točka: `./pripravi_xml.py racun.json izhod.xml [--izvirnik izvirnik.xml]`.
+Izvirnik se preveri s `preveri_izvirni_xml.py` (shema, notranja skladnost, ujemanje s PDF, kupec = Amidas; zavrne DOCTYPE/ENTITY in
+datoteke nad 5 MB) in se prekopira bajt za bajtom. Neskladen ali neveljaven izvirnik se **ne** zamenja tiho z generiranim: ZASTAVICA.
+Izhodne kode (0, 10, 11, 12, 20, 21, 30) so v glavi `pripravi_xml.py` in v `agents/racuni-graditelj.md`.
+Testi: `python3 -m unittest -v test_preveri_izvirni_xml` (19 testov; anonimiziran vzorec iz e-računov v `fixtures/`).
+
+## Ustvarjanje lastnega XML (samo če izvirnika ni): skripta `ustvari_xml.py`
 XML ustvari deterministična skripta (samo standardna knjižnica Pythona), ne prosto pisanje.
 1. Enkrat: `cp kupec.primer.json kupec.json` in vpiši podatke Amidas (naziv, naslov, ID za DDV). `kupec.json` ni v gitu.
 2. Strategov izhod za račun pretvori v JSON po vzorcu `primer-racun.json` (dobavitelj, datumi, postavke, neto/DDV/bruto s PDF-ja v `skupaj`).

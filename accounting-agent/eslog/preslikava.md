@@ -5,6 +5,10 @@ Strateg vrne seznam objektov (glej `agents/racuni-strateg.md`, primer: `strateg-
 2. požene `./ustvari_xml.py racun.json <izhod.xml>` in prebere izhodno kodo,
 3. vpiše vrstico v evidenco po spodnji tabeli.
 
+## A0) Izven `podatki`: `xml_izvirnik`
+Če je izvajalec priložil XML (Gmail priloga ali XTRF), Strateg to zapiše v `xml_izvirnik: {"vir": "gmail:<id>/<ime>"}`, sicer `null`.
+`podatki` se vedno razberejo iz PDF-ja. Graditelj nato zažene `pripravi_xml.py ... [--izvirnik <XML>]` (izvirnik, če obstaja).
+
 ## A) `podatki` -> vhod skripte (kopija, brez prevajanja)
 | Polje v `podatki` | Obvezno | Pravilo |
 |---|---|---|
@@ -37,7 +41,10 @@ Strateg račun označi z zastavico in `podatki` ne sestavi popolno. Skripta vsak
 - **Neto postavke in skupaj morata ustrezati računu** (`skupaj` s PDF-ja); skripta DDV računa na vsoti osnov in ga ob drugačnem zaokroževanju
   dobavitelja (do 0,02, ena stopnja) prevzame s PDF-ja.
 
-## B) Izhodna koda skripte -> ukrep
+## B) Izhodna koda `pripravi_xml.py` -> ukrep (podrobno: `agents/racuni-graditelj.md`)
+(0 veljaven; 10 izvirnik ni skladen s PDF; 11 izvirnik neveljaven; 12 nepreverjen; 20 napaka vhoda; 21 generiran neveljaven; 30 kupec ni izpolnjen.)
+
+Starejša tabela za `ustvari_xml.py` (kode 0 do 4) velja samo, kadar se skripta kliče neposredno:
 | Koda | Pomen | Status v evidenci | Osnutek za servis |
 |---|---|---|---|
 | 0 | XML veljaven | PREVERJENO -> PRIPRAVLJENO po QA | da, PDF + XML |

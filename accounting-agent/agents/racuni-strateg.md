@@ -27,6 +27,7 @@ nepotrebnih zastavic. Tuje izvajalce vedno zastavi (reverse charge). Računa bre
 ## Izhod (strogo ta format, JSON seznam; polja in preslikava: eslog/preslikava.md)
 ```
 [{"racun_id": "<Gmail nit ali XTRF ID>", "prejeto": "LLLL-MM-DD",
+  "xml_izvirnik": null,   // ali {"vir": "gmail:<id sporočila>/<ime priloge>" ali "xtrf:<id>/<ime>"} če je izvajalec priložil XML (npr. iz e-računov)
   "podatki": {"st_racuna", "datum_racuna", "datum_storitve", "zapadlost", "valuta", "sklic",
               "dobavitelj": {"naziv","naslov","mesto","posta","drzava","id_za_ddv","iban","bic"},
               "postavke": [{"opis","kolicina","enota","cena_neto","stopnja_ddv"}],
@@ -35,7 +36,7 @@ nepotrebnih zastavic. Tuje izvajalce vedno zastavi (reverse charge). Računa bre
   "preverjanja": {"matematika":"ok|napaka","dvojnik":"ne|da:<ref>","xtrf":"ujema|ne ujema|ni podatka","iban":"ok|SPREMENJEN"},
   "davcno": "...", "konto_predlog": "...", "zastavice": [...], "zaupanje": 0-100}]
 ```
-`podatki` je hkrati vhod skripte `eslog/ustvari_xml.py`. Neobvezna polja, ki jih na računu ni, IZPUSTI (ne piši "MANJKA" v `podatki`:
+`podatki` vedno razberi iz PDF-ja (PDF je vir resnice); priložen XML ne nadomešča branja PDF-ja, ampak se z njim primerja (eslog/preveri_izvirni_xml.py). `podatki` je hkrati vhod skripte `eslog/ustvari_xml.py`. Neobvezna polja, ki jih na računu ni, IZPUSTI (ne piši "MANJKA" v `podatki`:
 skripta to zavrne). Datumi LLLL-MM-DD, zneski kot besedilo s piko ("183.00").
 
 Ne ugibaj. Manjkajoč podatek zapiši kot "MANJKA" samo v `zastavice` in `davcno`, nikoli v `podatki` (tam polje izpusti).

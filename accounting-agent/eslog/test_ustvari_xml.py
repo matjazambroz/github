@@ -108,7 +108,7 @@ class Testi(unittest.TestCase):
         """Pogodba: `podatki` iz Strategovega izhoda je neposreden vhod skripte (eslog/preslikava.md)."""
         strateg = json.loads((HERE / "strateg-primer.json").read_text(encoding="utf-8"))
         for racun in strateg:
-            for kljuc in ("racun_id", "prejeto", "podatki", "preverjanja", "konto_predlog", "zastavice", "zaupanje"):
+            for kljuc in ("racun_id", "prejeto", "xml_izvirnik", "podatki", "preverjanja", "konto_predlog", "zastavice", "zaupanje"):
                 self.assertIn(kljuc, racun)
             koda, izhod = self.zazeni(racun["podatki"])
             self.assertEqual(koda, 0)

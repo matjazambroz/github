@@ -2,6 +2,7 @@
   {
     "racun_id": "IZMISLJEN-2026-014",
     "prejeto": "2026-11-06",
+    "xml_izvirnik": null,
     "podatki": {
       "st_racuna": "2026-014",
       "datum_racuna": "2026-11-05",
@@ -56,6 +57,7 @@
   {
     "racun_id": "IZMISLJEN-L-2026/07",
     "prejeto": "2026-11-06",
+    "xml_izvirnik": null,
     "podatki": {
       "st_racuna": "L-2026/07",
       "datum_racuna": "2026-11-03",
@@ -101,6 +103,7 @@
   {
     "racun_id": "IZMISLJEN-RE-2026-0391",
     "prejeto": "2026-11-06",
+    "xml_izvirnik": null,
     "podatki": {
       "st_racuna": "RE-2026-0391",
       "datum_racuna": "2026-11-02",
@@ -158,6 +161,7 @@
   {
     "racun_id": "IZMISLJEN-2026-099",
     "prejeto": "2026-11-06",
+    "xml_izvirnik": null,
     "podatki": {
       "st_racuna": "2026-099",
       "datum_racuna": "2026-11-04",

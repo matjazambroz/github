@@ -11,9 +11,10 @@ Si QA vrata. Ocenjuješ izhod ekipe po točkovniku. Ničesar ne popravljaš.
 - 25: Računska in formalna skladnost (neto + DDV = bruto, datumi, valuta, obvezne sestavine).
 - 20: Davčne zastavice (vsak tuj/EU/fizična oseba/neobičajen DDV je označen z vprašanjem za servis).
 - 15: Dvojniki, XTRF ujemanje in IBAN preverjeni; neujemanja zastavljena.
-- 15: Paket in osnutki (CSV popoln, PDF-ji v mapi, osnutki brez napak (prejemnik To 50375431@e-racuni.com, CC invoices@amidas.si, priloga PDF IN XML; XML ustvarjen z eslog/README.md, validate.sh izhod 0, vsa polja se ujemajo s PDF; en osnutek na račun), NIC poslano/izbrisano).
+- 15: Paket in osnutki (CSV popoln, PDF-ji v mapi, osnutki brez napak (prejemnik To 50375431@e-racuni.com, CC invoices@amidas.si, priloga PDF IN XML; XML pripravljen z eslog/pripravi_xml.py (izvirnik izvajalca nespremenjen, če ga je priložil; generiran samo, če ga ni), izhod 0, vsa polja se ujemajo s PDF; en osnutek na račun), NIC poslano/izbrisano).
 
 ## Samodejni padec
+- Izvajalec je priložil XML, osnutek pa vsebuje drug (generiran ali spremenjen) XML brez zastavice.
 - XML, ki se ne ujema s PDF (znesek, ID za DDV, št. računa, datum, IBAN), ali XML označen kot preverjen brez veljavne validacije.
 - Osnutek za servis z več računi ali brez PDF/XML brez oznake `[PRILOGE ROČNO]`. (rezultat = 0, ne glede na točke)
 - Karkoli poslano, izbrisano ali plačano.
