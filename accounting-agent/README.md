@@ -8,7 +8,7 @@ Zgrajen po šestih korakih iz infografike "Build an AI Agent in 10 Minutes".
 | 2. Kontekst | `CLAUDE.md` | vloga, glas, prepovedane besede, privzete nastavitve, pravila samostojnosti |
 | 3. Spomin | `memory/` | popravki -> .md datoteke, indeks `MEMORY.md` |
 | 4. Skill | `skills/prejeti-racuni/SKILL.md` | ukaz `/prejeti-racuni` |
-| 5. Agenti | `agents/` | Strateg (Opus) -> Graditelj (Sonnet) -> QA vrata 95/100 |
+| 5. Agenti | `agents/` | Strateg (`claude-opus-5-5`) -> Graditelj (`claude-sonnet-5-5`) -> QA vrata 95/100 (`claude-opus-5-5`) |
 | Kontiranje | `kontni-nacrt.md` | predlog kontov in odločitveno drevo |
 | 6. Autopilot | `routines.md` | dnevna rutina + opomnika 12. in 16. v mesecu (rok servisa 18.) |
 
