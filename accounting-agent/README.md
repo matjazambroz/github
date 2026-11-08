@@ -31,7 +31,7 @@ Nato ročno vpišite Sheets ID, Drive mapo in kontakt servisa v `memory/referenc
 Povežite konektorje Gmail, Google Drive, Google Sheets in MCP `mcp-xtrf` (glej `../mcp-xtrf/README.md`).
 
 ## Odprto (dopolnimo skupaj)
-- **eSlog XSD + vzorčni XML od servisa** v `eslog/` (besedilo vprašanja: `eslog/vprasanje-servisu.md`). Brez njiju so osnutki označeni `[XML NEPREVERJEN]`.
+- **eSlog XSD + vzorčni XML od servisa** v `eslog/` (besedilo vprašanja: `eslog/vprasanje-servisu.md`). XSD in vzorec sta v mapi; XML ustvari `eslog/ustvari_xml.py` in ga validira (glej `eslog/README.md`).
 - Kontni načrt: predlog je v `kontni-nacrt.md`, potrditi ga mora servis.
 - Format uvoza, ki ga želi servis (stolpci CSV).
 - Obravnava izvajalcev: s.p. / d.o.o. / tujina / fizične osebe.

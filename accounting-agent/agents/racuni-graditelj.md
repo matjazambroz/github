@@ -15,9 +15,12 @@ Si Graditelj. Izvedeš delo na podlagi JSON izhoda agenta `racuni-strateg`. Nič
 3. Osnutek za servis: **en osnutek na en račun**, obvezno obe datoteki: PDF (original izvajalca) in XML (eSlog, ki ga ustvariš) kot priponki
    (`attachments`, base64, `mimeType` application/pdf in application/xml). To: 50375431@e-racuni.com,
    CC: invoices@amidas.si. Zadeva: `Račun <št. računa> <dobavitelj>`. Telo kratko, strojno berljivo.
-   - Izvajalci naložijo samo PDF: **XML (eSlog) ustvari ti** po eslog/README.md in ga preveri z `eslog/validate.sh`. Pred ustvarjanjem XML-ja zaženi `eslog/preveri-verzijo.sh`: pri izhodu 1 (izšel je drug paket) to jasno napiši v poročilu, XML pa označi kot nepreverjen.
+   - Izvajalci naložijo samo PDF: **XML ustvari s skripto** `eslog/ustvari_xml.py <racun.json> <izhod.xml>` (JSON sestavi iz Strategovega
+     izhoda po `eslog/primer-racun.json`; v `skupaj` vpiši neto/DDV/bruto s PDF-ja). Ne piši XML-ja na roke. Pred tem zaženi `eslog/preveri-verzijo.sh`:
+     pri izhodu 1 (izšel je drug paket) to napiši v poročilu.
+   - Izhodna koda skripte: 0 = veljaven; 1 = napaka vhoda (ZASTAVICA, osnutka NE ustvari, napiši razlog); 2 ali 3 = nepreverjen/neveljaven
+     (osnutek z zadevo `[XML NEPREVERJEN] Račun ...`, ZASTAVICA); 4 = `kupec.json` ni izpolnjen (ustavi in obvesti uporabnika).
    - Če manjka PDF: osnutka NE ustvari, račun dobi ZASTAVICO "MANJKA PDF".
-   - Če XSD manjka ali xmllint ni nameščen (validate.sh izhod 2) ali validacija pade: osnutek z zadevo `[XML NEPREVERJEN] Račun ...`, ZASTAVICA.
    - Če vsebine priponk ne moreš pridobiti: osnutek brez prilog z zadevo `[PRILOGE ROČNO] Račun ...`, vir PDF v telesu.
    - Datoteke tudi shrani v Drive `Računi/YYYY-MM`.
 3b. Sprotni paket za servis (servis prejema račune sproti): CSV + PDF-ji v Drive mapi `Računi/YYYY-MM`; vsak dnevni paket je delni (številčen: `paket-01`, `paket-02`...). Računov z zastavico ne vključi.

@@ -37,6 +37,8 @@ Registracija v Claude Code: po navodilu v `mcp-xtrf/README.md` (razdelek z `clau
 ## 5. Shema in vzorec XML (eSLOG 2.0)
 `eslog.xsd`, `vzorec.xml` in `xmldsig-core-schema.xsd` so že v `accounting-agent/eslog/` in jih `install.sh` kopira v `~/.claude/eslog/`.
 Preverjeno: `~/.claude/eslog/validate.sh ~/.claude/eslog/vzorec.xml` vrne 0 (potreben `xmllint`).
+Enkrat: `cd ~/.claude/eslog && cp kupec.primer.json kupec.json` in vpiši podatke Amidas (naziv, naslov, ID za DDV).
+Preizkus skripte: `python3 ustvari_xml.py primer-racun.json /tmp/test.xml` (z izpolnjenim kupcem) mora izpisati "VELJAVEN proti eslog.xsd".
 Redno zaženi `~/.claude/eslog/preveri-verzijo.sh`: sporoči, ali je ePOS izdal drug paket. Ob izhodu 1 prenesi nov paket ročno
 v brskalniku (https://epos.si/eslog; strežnik ima zaščito pred boti) in zamenjaj datoteke.
 

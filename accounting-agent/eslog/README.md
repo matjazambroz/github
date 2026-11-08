@@ -22,13 +22,19 @@ Pozor: ePOS paket je shema in dokumentacija; ali je v njem tudi vzorčni XML ra�
 2. `vzorec.xml`: en pravi sprejet XML prejetega računa -> shrani v to mapo.
 Besedilo vprašanja: `vprasanje-servisu.md`.
 
-## Postopek ustvarjanja (Graditelj)
-1. Vzemi strukturirane podatke iz Strategovega JSON (vključno s postavkami računa).
-2. Oblikuj XML po `vzorec.xml` (ista struktura, imenski prostori, kode). Ne izmišljaj polj, ki jih vzorec nima.
-3. Preveri: `./eslog/validate.sh <datoteka.xml>`. Izhod 0 = veljaven proti XSD.
-4. Shrani `Računi/YYYY-MM/<št. računa>.xml` in pripni osnutku.
-5. Če `eslog.xsd` ali `vzorec.xml` v mapi ni: XML se vseeno ustvari kot predlog, a osnutek dobi zadevo
-   `[XML NEPREVERJEN] Račun ...` in račun status ZASTAVICA ("XML ni preverjen proti XSD").
+## Postopek ustvarjanja (Graditelj): skripta `ustvari_xml.py`
+XML ustvari deterministična skripta (samo standardna knjižnica Pythona), ne prosto pisanje.
+1. Enkrat: `cp kupec.primer.json kupec.json` in vpiši podatke Amidas (naziv, naslov, ID za DDV). `kupec.json` ni v gitu.
+2. Strategov izhod za račun pretvori v JSON po vzorcu `primer-racun.json` (dobavitelj, datumi, postavke, neto/DDV/bruto s PDF-ja v `skupaj`).
+3. `./ustvari_xml.py racun.json Računi/LLLL-MM/<št. računa>.xml`
+4. Izhodna koda: 0 = XML veljaven proti XSD; 1 = napaka vhoda (npr. `skupaj` se ne ujema z izračunom iz postavk: nič se ne zapiše,
+   račun dobi ZASTAVICO); 2 = XML zapisan a nepreverjen (manjka `xmllint`/XSD); 3 = validacija pade; 4 = `kupec.json` še ni izpolnjen.
+5. Pripni XML in PDF osnutku. Pri kodah 2 in 3 osnutek dobi zadevo `[XML NEPREVERJEN] Račun ...` in zastavico.
+Skripta znesek računa izračuna iz postavk in ga primerja s PDF (toleranca 0,02), zato napaka pri branju PDF-ja ne pride v XML.
+Testi: `python3 -m unittest -v test_ustvari_xml` (v tej mapi, 12 testov).
+**Kode, ki jih servis mora potrditi:** kategorija DDV (privzeto `S` pri stopnji > 0, `E` pri 0 %; reverse charge `AE` ipd. se nastavi
+ročno v postavki `kategorija`), kvalifikatorji zneskov (79, 389, 388, 9, 176) in `FTX AAI`. Povzeti so po `vzorec.xml`; ujemanje
+z zahtevami e-računov ni preverjeno, preverjena je samo veljavnost proti shemi.
 
 ## Pravila skladnosti XML <-> PDF
 Dobavitelj, ID za DDV, št. računa, datumi, valuta, neto, DDV, bruto, IBAN in sklic v XML se morajo
