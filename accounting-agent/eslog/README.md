@@ -3,6 +3,12 @@
 Izvajalci naložijo samo PDF, XTRF XML ne ustvari. Zato XML za vsak račun ustvari agent (Graditelj)
 iz podatkov, ki jih je razpoznal Strateg, in ga priloži osnutku skupaj s PDF.
 
+## Stanje (8. 11. 2026)
+V mapi so `eslog.xsd`, `vzorec.xml` in `xmldsig-core-schema.xsd` (glej `VERZIJA.txt` za izvor in kontrolne vsote).
+`./validate.sh vzorec.xml` vrne 0, kar pomeni, da validacija deluje. Pri novem XML-ju torej ne velja več `[XML NEPREVERJEN]`,
+če `validate.sh` vrne 0. Shema preverja strukturo, ne vsebinske pravilnosti za Slovenijo (npr. pravilne kode, ID za DDV):
+te preveri QA z vzorcem in servis.
+
 ## Vir (uradni) in posodabljanje
 Uradni paket (XSD, dokumentacija) objavlja ePOS: https://epos.si/eslog. Zadnji znani paket je zapisan v `VERZIJA.txt`
 (trenutno `e-SLOG-2.0-08-2020-SL.zip`, preverjeno 8. 11. 2026). Strežnik ima zaščito pred boti, zato paket prenesete
