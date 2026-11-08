@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(python3 accounting-agent/eslog/ustvari_xml.py *)",
+      "Bash(python3 accounting-agent/eslog/pripravi_xml.py *)",
+      "Bash(python3 accounting-agent/eslog/preveri_izvirni_xml.py *)",
+      "Bash(accounting-agent/eslog/validate.sh *)",
+      "Bash(accounting-agent/eslog/preveri-verzijo.sh)",
+      "Bash(python3 accounting-agent/testni-podatki/preveri_strateg.py *)"
+    ]
+  }
+}

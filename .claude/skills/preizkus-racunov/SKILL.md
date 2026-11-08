@@ -7,13 +7,13 @@ description: Preizkusi verigo prejetih računov na 4 izmišljenih PDF računih (
 Preizkus brez pravih podatkov. **Ne uporabljaj** Gmaila, XTRF, Sheets ali Drive; ničesar ne pošiljaj, ne ustvarjaj osnutkov.
 
 ## 1. Poišči mapo s preizkusnimi podatki
-Prva obstoječa od: `accounting-agent/testni-podatki/` (v trenutnem repozitoriju), `~/.claude/testni-podatki/`. Mora vsebovati
-`racun-1..4-*.pdf`, `pricakovano.json`, `preveri_strateg.py` in `kupec-testni.json`; poleg nje mora biti `eslog/` z `ustvari_xml.py`.
-Če mape ni, povej, kaj manjka (`install.sh` jo kopira), in ustavi.
+Mapa `accounting-agent/testni-podatki/` v tem repozitoriju. Mora vsebovati `racun-1..4-*.pdf`, `pricakovano.json`, `preveri_strateg.py`
+in `kupec-testni.json`; poleg nje mora biti `accounting-agent/eslog/` z `ustvari_xml.py`. Če česa manjka, povej, kaj, in ustavi
+(po potrebi `python3 accounting-agent/testni-podatki/ustvari_testne_racune.py` znova ustvari račune).
 
 ## 2. Strateg
 Zaženi agenta `racuni-strateg` (Agent tool) z navodilom: preberi samo 4 lokalne PDF-je iz te mape, vrni **samo** JSON seznam po
-`eslog/preslikava.md` (en objekt na račun, `prejeto` = današnji datum). Ne dodajaj opomb zunaj JSON-a. Ne pošiljaj mu datoteke
+`accounting-agent/eslog/preslikava.md` (en objekt na račun, `prejeto` = današnji datum). Ne dodajaj opomb zunaj JSON-a. Ne pošiljaj mu datoteke
 `pricakovano.json` ali `strateg-idealen.json`: preizkus mora preveriti, kaj Strateg ugotovi sam.
 
 ## 3. Shrani izhod

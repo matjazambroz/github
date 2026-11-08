@@ -6,7 +6,7 @@ description: Obdela nove prejete račune (Gmail + XTRF obvestila), jih analizira
 
 ## Vhodi (vprašaj samo, česar ni)
 - Obdobje (privzeto: od zadnje obdelave oz. zadnjih 7 dni).
-- Nastavitve iz memory/reference_viri.md (Sheets ID, Drive mapa, kontakt servisa).
+- Nastavitve iz accounting-agent/memory/reference_viri.md (Sheets ID, Drive mapa, kontakt servisa).
 
 ## Potek
 1. **Zbiranje**: Gmail iskanje (obvestila XTRF, priponke PDF/XML, oznaka `Računi/Novo`). Podvojenih niti ne obdelaj dvakrat.
@@ -25,4 +25,4 @@ Obdelaj v enem paketu do 15 računov naenkrat; več jih razdeli v več paketov, 
 Tabela povzetka + povezave. Nikoli ne pošlji, ne briši, ne plačaj.
 
 ## Po povratni informaciji
-Vsak popravek uporabnika zapiši v memory/feedback_*.md in dodaj v MEMORY.md.
+Vsak popravek uporabnika zapiši v accounting-agent/memory/feedback_*.md in dodaj v MEMORY.md.

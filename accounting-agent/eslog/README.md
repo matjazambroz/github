@@ -27,7 +27,7 @@ Besedilo vprašanja: `vprasanje-servisu.md`.
 svoj XML se generira samo, če ga ni. Enotna vstopna točka: `./pripravi_xml.py racun.json izhod.xml [--izvirnik izvirnik.xml]`.
 Izvirnik se preveri s `preveri_izvirni_xml.py` (shema, notranja skladnost, ujemanje s PDF, kupec = Amidas; zavrne DOCTYPE/ENTITY in
 datoteke nad 5 MB) in se prekopira bajt za bajtom. Neskladen ali neveljaven izvirnik se **ne** zamenja tiho z generiranim: ZASTAVICA.
-Izhodne kode (0, 10, 11, 12, 20, 21, 30) so v glavi `pripravi_xml.py` in v `agents/racuni-graditelj.md`.
+Izhodne kode (0, 10, 11, 12, 20, 21, 30) so v glavi `pripravi_xml.py` in v `.claude/agents/racuni-graditelj.md`.
 Testi: `python3 -m unittest -v test_preveri_izvirni_xml` (19 testov; anonimiziran vzorec iz e-računov v `fixtures/`).
 
 ## Ustvarjanje lastnega XML (samo če izvirnika ni): skripta `ustvari_xml.py`
