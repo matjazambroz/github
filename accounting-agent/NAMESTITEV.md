@@ -34,8 +34,12 @@ npm run build
 Registracija v Claude Code: po navodilu v `mcp-xtrf/README.md` (razdelek z `claude mcp add` ali `.mcp.json`; pot do
 `dist/index.js` je pri tebi). Ključ naj bo samo za branje, če ga XTRF tako podpira.
 
-## 5. Shema in vzorec XML od servisa
-Pošlji servisu besedilo iz `eslog/vprasanje-servisu.md`. Prejeta `eslog.xsd` in `vzorec.xml` gresta v `~/.claude/eslog/`.
+## 5. Shema in vzorec XML (eSLOG 2.0)
+1. V brskalniku odpri https://epos.si/eslog in prenesi paket **e-SLOG-2.0-08-2020-SL.zip** (zadnji znani, glej `eslog/VERZIJA.txt`).
+   Strežnik ePOS ima zaščito pred boti, zato prenosa ne bo opravil skript.
+2. Razširi paket, XSD za račun shrani kot `~/.claude/eslog/eslog.xsd`, vzorec računa kot `vzorec.xml`.
+   Če v paketu ni vzorca, ga zahtevaj od servisa (`eslog/vprasanje-servisu.md`).
+3. Redno zaženi `~/.claude/eslog/preveri-verzijo.sh`: sporoči, ali je izšla novejša različica.
 Do takrat so osnutki označeni `[XML NEPREVERJEN]` (to je pričakovano).
 
 ## 6. Prvi zagon (en račun)

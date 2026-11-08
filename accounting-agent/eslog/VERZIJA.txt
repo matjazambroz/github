@@ -1,0 +1,10 @@
+# Zadnji znani paket eSLOG 2.0 na uradni strani ePOS (Center za ePoslovanje Slovenije, GZS)
+# Stran: https://epos.si/eslog
+# Preverjeno: 2026-11-08
+paket_sl=e-SLOG-2.0-08-2020-SL.zip
+paket_en=e-SLOG-2.0-08-2020-EN.zip
+# Povezave (prenos v brskalniku, strežnik ima zaščito pred boti):
+#   https://epos.si/assets/docs/e-SLOG-2.0-08-2020-SL.zip
+#   https://epos.si/assets/docs/e-SLOG-2.0-08-2020-EN.zip
+# Povezana pojasnila na strani: skupina za DDV v eSLOG 2.0 (15. 7. 2026, dopolnjeno 3. 8. 2026);
+# nova verzija standarda EN 16931-1:2026 (27. 3. 2026): možna prihodnja sprememba eSLOG.

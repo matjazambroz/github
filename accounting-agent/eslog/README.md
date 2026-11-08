@@ -3,7 +3,15 @@
 Izvajalci naložijo samo PDF, XTRF XML ne ustvari. Zato XML za vsak račun ustvari agent (Graditelj)
 iz podatkov, ki jih je razpoznal Strateg, in ga priloži osnutku skupaj s PDF.
 
-## Potrebno od računovodskega servisa (brez tega XML NI preverjen)
+## Vir (uradni) in posodabljanje
+Uradni paket (XSD, dokumentacija) objavlja ePOS: https://epos.si/eslog. Zadnji znani paket je zapisan v `VERZIJA.txt`
+(trenutno `e-SLOG-2.0-08-2020-SL.zip`, preverjeno 8. 11. 2026). Strežnik ima zaščito pred boti, zato paket prenesete
+**ročno v brskalniku** in ga razširite v to mapo (XSD kot `eslog.xsd`, vzorec računa kot `vzorec.xml`).
+Skripta `./preveri-verzijo.sh` prebere javno stran in sporoči, ali je izšel drug paket kot zapisan (izhod 0 = enako,
+1 = drugače, 2 = ni mogoče preveriti). Graditelj jo zaženi pred ustvarjanjem XML-ja in ob izhodu 1 to napiše v osnutku/poročilu.
+Pozor: ePOS paket je shema in dokumentacija; ali je v njem tudi vzorčni XML računa, ni preverjeno. Če ga ni, vzorec dobite od servisa.
+
+## Potrebno od računovodskega servisa (če v paketu ePOS ni vzorca ali če sprejemajo drugačno različico)
 1. `eslog.xsd` (shema, ki jo sprejme aplikacija e-računi) -> shrani v to mapo.
 2. `vzorec.xml`: en pravi sprejet XML prejetega računa -> shrani v to mapo.
 Besedilo vprašanja: `vprasanje-servisu.md`.
