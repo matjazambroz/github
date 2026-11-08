@@ -6,6 +6,7 @@ PROJECT="${1:-amidas-racunovodstvo}"
 mkdir -p ~/.claude/agents ~/.claude/skills/prejeti-racuni ~/.claude/projects/"$PROJECT"/memory
 cp "$SRC"/agents/*.md ~/.claude/agents/
 mkdir -p ~/.claude/eslog && cp -r "$SRC"/eslog/. ~/.claude/eslog/
+cp "$SRC"/evidenca-*.* ~/.claude/
 cp "$SRC"/kontni-nacrt.md ~/.claude/kontni-nacrt.md
 cp "$SRC"/skills/prejeti-racuni/SKILL.md ~/.claude/skills/prejeti-racuni/
 cp -n "$SRC"/memory/*.md ~/.claude/projects/"$PROJECT"/memory/
