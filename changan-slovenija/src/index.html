@@ -57,6 +57,7 @@ input,select,textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px
 textarea{min-height:100px;resize:vertical}
 label.chk{display:flex;gap:10px;font-size:.85rem;color:var(--mut);align-items:flex-start}
 label.chk input{width:auto;margin-top:4px}
+#msg{font-size:.95rem}#msg.ok{color:var(--acc2)}#msg.err{color:#ff7a7a}
 footer{border-top:1px solid var(--line);padding:32px 0;color:var(--mut);font-size:.85rem}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 </style>
@@ -127,7 +128,9 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <select name="model"><option>Deepal S07</option><option>Deepal L07</option><option>Changan UNI</option><option>Še ne vem</option></select>
       <textarea name="sporocilo" placeholder="Sporočilo (neobvezno)"></textarea>
       <label class="chk"><input type="checkbox" required> Strinjam se z obdelavo osebnih podatkov za namen odgovora na povpraševanje.</label>
+      <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
       <button class="btn" type="submit">Pošlji povpraševanje</button>
+      <p id="msg" role="status"></p>
     </form>
   </div>
 </div></section>
@@ -137,11 +140,18 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
 <script>
 document.getElementById('y').textContent=new Date().getFullYear();
-document.getElementById('f').addEventListener('submit',function(e){
+document.getElementById('f').addEventListener('submit',async function(e){
   e.preventDefault();
-  var d=new FormData(this);
-  var body=['Ime: '+d.get('ime'),'E-pošta: '+d.get('email'),'Telefon: '+d.get('tel'),'Model: '+d.get('model'),'',d.get('sporocilo')].join('\n');
-  location.href='mailto:info@changan-slovenija.si?subject='+encodeURIComponent('Povpraševanje: testna vožnja')+'&body='+encodeURIComponent(body);
+  var form=this,btn=form.querySelector('button'),msg=document.getElementById('msg');
+  var d=Object.fromEntries(new FormData(form).entries());
+  btn.disabled=true;msg.className='';msg.textContent='Pošiljam …';
+  try{
+    var r=await fetch('/api/contact',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)});
+    var j=await r.json();
+    if(!j.ok)throw new Error(j.error);
+    form.reset();msg.className='ok';msg.textContent='Hvala! Povpraševanje je poslano, odzvali se bomo v enem delovnem dnevu.';
+  }catch(err){msg.className='err';msg.textContent=err.message||'Pošiljanje ni uspelo.';}
+  btn.disabled=false;
 });
 </script>
 </body>

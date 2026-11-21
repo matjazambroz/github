@@ -2,5 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "changan-slovenija",
   "main": "src/index.js",
-  "compatibility_date": "2025-11-01"
+  "compatibility_date": "2025-11-01",
+  "vars": {
+    "TO_EMAIL": "matjaz.ambroz@amidas.si",
+    "FROM_EMAIL": "Changan Slovenija <onboarding@resend.dev>"
+  }
 }
