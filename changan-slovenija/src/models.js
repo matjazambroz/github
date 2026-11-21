@@ -1,5 +1,7 @@
 // Podatki o modelih (vir: changanslovenija.si/model/...) in izris strani posameznega modela.
 
+import COLORS from "./colors.json";
+
 const SITE = "https://changan-slovenija.matjaz-ambroz.workers.dev";
 
 export const MODELS = {
@@ -143,10 +145,22 @@ export function renderModel(slug, home) {
         .map(([n, d]) => `<div class="feat"><h3>${esc(n)}</h3><p style="color:var(--mut)">${esc(d)}</p></div>`)
         .join("")}</div></div></section>`
     : "";
-  const gallery = m.gallery.length
-    ? `<div class="wrap"><img class="wide" src="${m.gallery[0]}" alt="${esc(m.name)}" loading="lazy"></div>`
-    : "";
-  const colors = m.colors.map((c) => `<span class="pill">${esc(c)}</span>`).join(" ");
+  const gallery = `<div class="wrap" style="display:grid;gap:22px"><img class="wide" src="${m.img}" alt="${esc(m.name)}" loading="lazy">${m.gallery
+    .map((g) => `<img class="wide" src="${g}" alt="${esc(m.name)}" loading="lazy">`)
+    .join("")}</div>`;
+  const cfg = COLORS[slug] || { ext: [], int: [] };
+  const sw = (list, kind) =>
+    list
+      .map(
+        (c, i) =>
+          `<button type="button" class="sw" data-k="${kind}" data-i="${i}" style="--c:${c.hex}" aria-label="${esc(c.n)}" aria-pressed="${i === 0 ? "true" : "false"}" title="${esc(c.n)}"></button>`
+      )
+      .join("");
+  const viewer = `<div class="viewer" id="viewer"><img id="vimg" src="${cfg.ext[0].img}" alt="${esc(m.name)}"></div>
+    ${cfg.int.length ? `<div class="tabs" role="tablist"><button type="button" class="tab on" data-v="ext">Zunanjost</button><button type="button" class="tab" data-v="int">Notranjost</button></div>` : ""}
+    <div class="pick"><div class="lbl">Barva zunanjosti: <b id="en">${esc(cfg.ext[0].n)}</b></div><div class="sws">${sw(cfg.ext, "ext")}</div></div>
+    ${cfg.int.length ? `<div class="pick"><div class="lbl">Barva notranjosti: <b id="in">${esc(cfg.int[0].n)}</b></div><div class="sws">${sw(cfg.int, "int")}</div></div>` : ""}
+    <p class="note" style="margin:10px 0 0">Prikaz je ilustrativen; barve na zaslonu se lahko razlikujejo od dejanskih.</p>`;
   const docs = [["Več na uradni strani", m.official], ...m.docs]
     .map(([t, h]) => `<a class="btn ghost" href="${h}" rel="noopener" target="_blank">${esc(t)}</a>`)
     .join("");
@@ -192,6 +206,18 @@ img.wide{border-radius:var(--r);border:1px solid var(--line);height:auto;aspect-
 .row2{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
 .note{color:var(--mut);font-size:.82rem;margin-top:22px}
 a.card{display:block}
+.viewer{position:relative;aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:radial-gradient(120% 90% at 50% 30%,#fff,#dfe5ec)}
+.viewer img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:5%;mix-blend-mode:multiply;transition:opacity .3s}
+.viewer.int{background:#111}.viewer.int img{object-fit:cover;padding:0;mix-blend-mode:normal}
+.viewer img.out{opacity:0}
+.tabs{display:flex;gap:8px;margin:14px 0 4px}
+.tab{padding:8px 18px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--mut);font:inherit;font-size:.9rem;cursor:pointer}
+.tab.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.pick{margin-top:14px}.lbl{color:var(--mut);font-size:.9rem;margin-bottom:8px}.lbl b{color:var(--fg)}
+.sws{display:flex;gap:12px;flex-wrap:wrap}
+.sw{width:36px;height:36px;border-radius:50%;background:var(--c);border:2px solid var(--line);cursor:pointer;padding:0;box-shadow:inset 0 0 0 2px var(--bg);transition:transform .2s,border-color .2s}
+.sw:hover{transform:scale(1.1)}.sw[aria-pressed=true]{border-color:var(--acc);box-shadow:inset 0 0 0 2px var(--bg),0 0 0 3px rgba(47,123,255,.25)}
+.sw:focus-visible,.tab:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
 </style>
 </head>
 <body>
@@ -202,20 +228,25 @@ ${header}
   <div class="row">
     <div><span class="pill">${esc(m.tag)}</span><h1>${esc(m.name)}</h1><p class="l"><b style="color:var(--fg)">${esc(m.title)}</b> ${esc(m.lead)}</p>
       <div class="row2"><a class="btn" href="/?model=${slug}#kontakt">Rezerviraj testno vožnjo</a></div></div>
-    <div class="photo"><img src="${m.img}" alt="${esc(m.name)}"></div>
+    <div>${viewer}</div>
   </div>
   <div class="stats">${specs}</div>
 </div></div>
 ${gallery}
 <section><div class="wrap"><h2>Poudarki</h2><p class="lead">Kaj izpostavlja model ${esc(m.name)}.</p><ul class="hl">${hl}</ul></div></section>
 ${variants}
-<section><div class="wrap"><h2>Barve</h2><p class="lead">Na voljo v več barvnih odtenkih.</p><div class="row2">${colors}</div>
-<p class="note">${esc(m.note)} Slike so ilustrativne, oprema in možnosti se lahko razlikujejo glede na izvedbo. Podatki: <a href="${m.official}" rel="noopener" style="text-decoration:underline">changanslovenija.si</a>.</p>
+<section><div class="wrap"><h2>Dodatne informacije</h2>
+<p class="note" style="margin-top:0">${esc(m.note)} Slike so ilustrativne, oprema in možnosti se lahko razlikujejo glede na izvedbo. Podatki: <a href="${m.official}" rel="noopener" style="text-decoration:underline">changanslovenija.si</a>.</p>
 <div class="row2" style="margin-top:22px">${docs}</div></div></section>
 <section class="alt"><div class="wrap"><h2>Poglejte še</h2><div class="grid" style="margin-top:24px">${more}</div></div></section>
 </main>
 ${footer}
 <script>
+(function(){var C=${JSON.stringify(cfg)};var viewer=document.getElementById('viewer'),img=document.getElementById('vimg');var st={v:'ext',ext:0,int:0};
+function show(){var l=st.v==='ext'?C.ext:C.int;var src=l[st[st.v]].img;viewer.classList.toggle('int',st.v==='int');if(img.getAttribute('src')===src)return;img.classList.add('out');var n=new Image();n.onload=function(){img.src=src;img.classList.remove('out')};n.onerror=function(){img.src=src;img.classList.remove('out')};n.src=src}
+document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){st.v=b.dataset.v;document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t===b)});show()})});
+document.querySelectorAll('.sw').forEach(function(b){b.addEventListener('click',function(){var k=b.dataset.k,i=+b.dataset.i;st[k]=i;st.v=k;document.querySelectorAll('.sw[data-k='+k+']').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});document.getElementById(k==='ext'?'en':'in').textContent=C[k][i].n;document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.dataset.v===k)});show()})});
+C.ext.concat(C.int).forEach(function(c){var p=new Image();p.src=c.img})})();
 document.getElementById('tt').addEventListener('click',function(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}});
 document.getElementById('y').textContent=new Date().getFullYear();
 (function(){var els=[].slice.call(document.querySelectorAll('section h2,section .lead,.card,.feat,.stats>div,.hl li'));

@@ -1,0 +1,154 @@
+{
+ "deepal-s05": {
+  "ext": [
+   {
+    "n": "Blue",
+    "img": "/img/gen/s05-blue.jpg",
+    "hex": "#3b8ed0"
+   },
+   {
+    "n": "Silver",
+    "img": "/img/gen/s05-silver.jpg",
+    "hex": "#c8c4ba"
+   },
+   {
+    "n": "Comet White",
+    "img": "/img/gen/s05-white.jpg",
+    "hex": "#f1f3f5"
+   },
+   {
+    "n": "Eclipse Black",
+    "img": "/img/gen/s05-black.jpg",
+    "hex": "#26292e"
+   },
+   {
+    "n": "Gray",
+    "img": "/img/gen/s05-gray.jpg",
+    "hex": "#7a7d84"
+   }
+  ],
+  "int": [
+   {
+    "n": "Črna",
+    "img": "/img/gen/s05-int-black.jpg",
+    "hex": "#1d1f23"
+   },
+   {
+    "n": "Oranžna",
+    "img": "/img/gen/s05-int-orange.jpg",
+    "hex": "#c8683a"
+   }
+  ]
+ },
+ "deepal-s07": {
+  "ext": [
+   {
+    "n": "Sunset Orange",
+    "img": "/img/gen/s07-orange.jpg",
+    "hex": "#e8552d"
+   },
+   {
+    "n": "Comet White",
+    "img": "/img/gen/s07-white.jpg",
+    "hex": "#f0f2f4"
+   },
+   {
+    "n": "Eclipse Black",
+    "img": "/img/gen/s07-black.jpg",
+    "hex": "#17181a"
+   },
+   {
+    "n": "Lunar Gray",
+    "img": "/img/gen/s07-gray.jpg",
+    "hex": "#7b7d80"
+   },
+   {
+    "n": "Nebula Green",
+    "img": "/img/gen/s07-green.jpg",
+    "hex": "#3f8e97"
+   }
+  ],
+  "int": [
+   {
+    "n": "Oranžna",
+    "img": "/img/gen/s07-int-orange.jpg",
+    "hex": "#c2622f"
+   },
+   {
+    "n": "Bela",
+    "img": "/img/gen/s07-int-white.jpg",
+    "hex": "#e6e4df"
+   },
+   {
+    "n": "Črna",
+    "img": "/img/gen/s07-int-black.jpg",
+    "hex": "#1d1f23"
+   }
+  ]
+ },
+ "cs55-plus": {
+  "ext": [
+   {
+    "n": "Fluoritno siva",
+    "img": "/img/gen/cs55-1.jpg",
+    "hex": "#a7aaad"
+   },
+   {
+    "n": "Diamantno grafitna",
+    "img": "/img/gen/cs55-2.jpg",
+    "hex": "#4a4d52"
+   },
+   {
+    "n": "Zvezdno črna",
+    "img": "/img/gen/cs55-3.jpg",
+    "hex": "#17181a"
+   },
+   {
+    "n": "Lunina belina",
+    "img": "/img/gen/cs55-4.jpg",
+    "hex": "#eceef0"
+   },
+   {
+    "n": "Šampanjski sijaj",
+    "img": "/img/gen/cs55-5.jpg",
+    "hex": "#a89a8c"
+   }
+  ],
+  "int": []
+ },
+ "cs75-plus": {
+  "ext": [
+   {
+    "n": "Svetlo siva Atom",
+    "img": "/img/gen/cs75-1.jpg",
+    "hex": "#b5b9bd"
+   },
+   {
+    "n": "Kristalno bela",
+    "img": "/img/gen/cs75-2.jpg",
+    "hex": "#f0f2f4"
+   },
+   {
+    "n": "Azurno modra",
+    "img": "/img/gen/cs75-3.jpg",
+    "hex": "#7fa3ad"
+   },
+   {
+    "n": "Šampanjski sijaj",
+    "img": "/img/gen/cs75-4.jpg",
+    "hex": "#a99d8d"
+   },
+   {
+    "n": "Siva Andes",
+    "img": "/img/gen/cs75-5.jpg",
+    "hex": "#5d5f63"
+   },
+   {
+    "n": "Plemenito črna",
+    "img": "/img/gen/cs75-6.jpg",
+    "hex": "#1f2022"
+   }
+  ],
+  "int": []
+ }
+}

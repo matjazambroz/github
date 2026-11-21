@@ -1,5 +1,6 @@
 import html from "./index.html";
 import { renderModel } from "./models.js";
+import { GEN } from "./assets.js";
 import s05 from "./img/deepal-s05.jpg";
 import s07 from "./img/deepal-s07.jpg";
 import cs55 from "./img/cs55-plus.jpg";
@@ -77,6 +78,11 @@ export default {
       if (!page) return new Response("Ni najdeno", { status: 404 });
       return new Response(page, {
         headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" },
+      });
+    }
+    if (GEN[pathname]) {
+      return new Response(GEN[pathname], {
+        headers: { "content-type": "image/jpeg", "cache-control": "public, max-age=604800" },
       });
     }
     if (IMAGES[pathname]) {
