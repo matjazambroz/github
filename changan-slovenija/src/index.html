@@ -60,6 +60,23 @@ label.chk input{width:auto;margin-top:4px}
 #msg{font-size:.95rem}#msg.ok{color:var(--acc2)}#msg.err{color:#ff7a7a}
 footer{border-top:1px solid var(--line);padding:32px 0;color:var(--mut);font-size:.85rem}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+.hero .tag,.hero h1,.hero p,.hero .cta{opacity:0;transform:translateY(18px);animation:up .8s cubic-bezier(.2,.7,.2,1) forwards}
+.hero h1{animation-delay:.12s}.hero p{animation-delay:.24s}.hero .cta{animation-delay:.36s}
+@keyframes up{to{opacity:1;transform:none}}
+.scene{position:relative;height:190px;margin-top:56px;overflow:hidden;border-radius:var(--r);background:linear-gradient(180deg,rgba(47,123,255,.08),rgba(25,211,197,.05));border:1px solid var(--line)}
+.scene .stars{position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 20px 30px,#fff8,transparent),radial-gradient(1px 1px at 90px 60px,#fff6,transparent),radial-gradient(1.5px 1.5px at 160px 20px,#fff7,transparent);background-size:200px 90px;opacity:.5;animation:drift 40s linear infinite}
+.scene .city{position:absolute;left:0;bottom:48px;width:200%;height:70px;background:repeating-linear-gradient(90deg,#10202f 0 34px,transparent 34px 44px,#0d1a27 44px 90px,transparent 90px 98px);opacity:.8;-webkit-mask:linear-gradient(transparent,#000 40%);mask:linear-gradient(transparent,#000 40%);animation:drift 16s linear infinite}
+.scene .road{position:absolute;left:0;right:0;bottom:0;height:48px;background:#0a1118;border-top:2px solid var(--line)}
+.scene .road i{position:absolute;top:22px;left:0;width:200%;height:4px;background:repeating-linear-gradient(90deg,#9aa7b8 0 36px,transparent 36px 84px);animation:drift .9s linear infinite}
+.scene .vehicle{position:absolute;left:50%;bottom:30px;width:230px;margin-left:-115px;animation:bob 1.6s ease-in-out infinite}
+.scene .vehicle svg{width:100%;display:block;overflow:visible}
+.scene .glow{position:absolute;left:100%;top:46%;width:240px;height:60px;margin-left:-8px;background:linear-gradient(90deg,rgba(255,244,200,.55),transparent);clip-path:polygon(0 35%,100% 0,100% 100%,0 65%);filter:blur(2px)}
+.wheel{transform-box:fill-box;transform-origin:center;animation:spin .6s linear infinite}
+@keyframes drift{to{transform:translateX(-50%)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bob{50%{transform:translateY(-2px)}}
+@media(prefers-reduced-motion:reduce){.hero *,.scene *{animation:none!important;opacity:1!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -77,6 +94,21 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   <h1>Prihodnost vožnje je že tu.</h1>
   <p>Sodobna električna in hibridna vozila Changan z bogato opremo, dolgo garancijo in lokalno podporo. Pridite na testno vožnjo in se prepričajte sami.</p>
   <div class="cta"><a class="btn" href="#kontakt">Rezerviraj testno vožnjo</a><a class="btn ghost" href="#modeli">Poglej modele</a></div>
+  <div class="scene" aria-hidden="true">
+    <div class="stars"></div><div class="city"></div>
+    <div class="road"><i></i></div>
+    <div class="vehicle">
+      <div class="glow"></div>
+      <svg viewBox="0 0 230 70" fill="none">
+        <path d="M6 46c0-8 6-11 16-13l32-16c10-5 26-8 46-8s36 3 50 10l28 11c18 2 38 5 46 13v10H6z" fill="#16314f" stroke="#6fb1ff" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M62 24l22-9c14-3 36-3 50 3l16 8z" fill="#0d1b2b" stroke="#6fb1ff" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M14 42h200" stroke="#19d3c5" stroke-width="1.5" opacity=".8"/>
+        <rect x="208" y="36" width="12" height="5" rx="2.5" fill="#fff4c8"/>
+        <g class="wheel"><circle cx="66" cy="56" r="11" fill="#0a1118" stroke="#9aa7b8" stroke-width="3"/><path d="M66 46v20M56 56h20M59 49l14 14M73 49L59 63" stroke="#6fb1ff" stroke-width="1.5"/></g>
+        <g class="wheel"><circle cx="170" cy="56" r="11" fill="#0a1118" stroke="#9aa7b8" stroke-width="3"/><path d="M170 46v20M160 56h20M163 49l14 14M177 49l-14 14" stroke="#6fb1ff" stroke-width="1.5"/></g>
+      </svg>
+    </div>
+  </div>
   <div class="stats">
     <div><b>EV + PHEV</b><span>električni in hibridni pogoni</span></div>
     <div><b>Garancija</b><span>do 7 let* na vozilo</span></div>
