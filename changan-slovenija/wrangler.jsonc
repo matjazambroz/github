@@ -3,6 +3,7 @@
   "name": "changan-slovenija",
   "main": "src/index.js",
   "compatibility_date": "2025-11-01",
+  "rules": [{ "type": "Data", "globs": ["**/*.jpg"], "fallthrough": true }],
   "vars": {
     "TO_EMAIL": "matjaz.ambroz@amidas.si",
     "FROM_EMAIL": "Changan Slovenija <onboarding@resend.dev>"

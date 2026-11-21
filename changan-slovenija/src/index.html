@@ -40,7 +40,9 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
 .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 section.alt .card{background:var(--bg)}
-.car{height:170px;display:grid;place-items:center;background:linear-gradient(160deg,#16314f,#0d1b2b)}
+.car{aspect-ratio:4/3;overflow:hidden;background:#0d1b2b}
+.car img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.card:hover .car img{transform:scale(1.05)}
 .car svg{width:78%;opacity:.95}
 .card .body{padding:22px}
 .card h3{margin-bottom:6px}
@@ -121,14 +123,14 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   <h2>Naši modeli</h2>
   <p class="lead">Izbor vozil, ki so na voljo za naročilo in testno vožnjo. Točne tehnične podatke in cene vam pripravimo ob povpraševanju.</p>
   <div class="grid">
-    <article class="card"><div class="car"><svg viewBox="0 0 200 70" fill="none" stroke="#6fb1ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 48c0-8 6-10 14-12l24-14c8-4 20-6 34-6s30 2 42 8l22 10c14 2 30 4 40 12v8"/><circle cx="52" cy="52" r="9"/><circle cx="148" cy="52" r="9"/><path d="M61 52h78"/></svg></div>
+    <article class="card"><div class="car"><img src="/img/deepal-s07.jpg" alt="Deepal S07" loading="lazy" decoding="async"></div>
       <div class="body"><span class="pill">SUV · električni / EREV</span><h3>Deepal S07</h3><p>Prostoren družinski SUV z naprednimi pomožnimi sistemi in veliko zaslonsko opremo.</p></div></article>
-    <article class="card"><div class="car"><svg viewBox="0 0 200 70" fill="none" stroke="#6fb1ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 50c0-6 4-9 12-11l30-12c10-4 24-6 40-6s28 3 40 9l26 9c14 2 30 4 40 10v8"/><circle cx="50" cy="52" r="9"/><circle cx="150" cy="52" r="9"/><path d="M59 52h82"/></svg></div>
+    <article class="card"><div class="car"><img src="/img/deepal-l07.jpg" alt="Deepal L07" loading="lazy" decoding="async"></div>
       <div class="body"><span class="pill">Limuzina · električni</span><h3>Deepal L07</h3><p>Eleganten športni sedan z dolgim dosegom in udobno notranjostjo.</p></div></article>
-    <article class="card"><div class="car"><svg viewBox="0 0 200 70" fill="none" stroke="#6fb1ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 50c0-7 5-10 12-12l22-13c9-4 22-6 36-6s28 2 38 7l20 10c12 2 26 4 34 11v9"/><circle cx="54" cy="52" r="9"/><circle cx="146" cy="52" r="9"/><path d="M63 52h74"/></svg></div>
-      <div class="body"><span class="pill">Kompaktni SUV · hibrid</span><h3>Changan UNI</h3><p>Dinamičen kompaktni crossover za mesto in vikend izlete.</p></div></article>
+    <article class="card"><div class="car"><img src="/img/changan-uni-t.jpg" alt="Changan UNI-T" loading="lazy" decoding="async"></div>
+      <div class="body"><span class="pill">Coupé SUV</span><h3>Changan UNI-T</h3><p>Športen coupé SUV izrazitega videza za mesto in vikend izlete.</p></div></article>
   </div>
-  <p style="color:var(--mut);font-size:.8rem;margin-top:18px">* Ponudba modelov in garancijski pogoji se lahko razlikujejo. Informativno, ni zavezujoča ponudba.</p>
+  <p style="color:var(--mut);font-size:.8rem;margin-top:18px">Fotografije: <a href="https://commons.wikimedia.org/wiki/File:Deepal_S07_IAA_2025_DSC_1897.jpg" rel="noopener" style="text-decoration:underline">Alexander Migl</a> (CC BY-SA 4.0), <a href="https://commons.wikimedia.org/wiki/File:Deepal_L07_001.jpg" rel="noopener" style="text-decoration:underline">JustAnotherCarDesigner</a> (CC0), <a href="https://commons.wikimedia.org/wiki/File:Changan_UNI-T_IMG01.jpg" rel="noopener" style="text-decoration:underline">Quzhouliulian</a> (CC BY-SA 4.0), Wikimedia Commons. Slike so ilustrativne; vozila na njih niso nujno v slovenski izvedbi.<br>* Ponudba modelov in garancijski pogoji se lahko razlikujejo. Informativno, ni zavezujoča ponudba.</p>
 </div></section>
 
 <section id="prednosti" class="alt"><div class="wrap">
@@ -157,7 +159,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <input name="ime" placeholder="Ime in priimek" required>
       <input name="email" type="email" placeholder="E-pošta" required>
       <input name="tel" type="tel" placeholder="Telefon">
-      <select name="model"><option>Deepal S07</option><option>Deepal L07</option><option>Changan UNI</option><option>Še ne vem</option></select>
+      <select name="model"><option>Deepal S07</option><option>Deepal L07</option><option>Changan UNI-T</option><option>Še ne vem</option></select>
       <textarea name="sporocilo" placeholder="Sporočilo (neobvezno)"></textarea>
       <label class="chk"><input type="checkbox" required> Strinjam se z obdelavo osebnih podatkov za namen odgovora na povpraševanje.</label>
       <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">

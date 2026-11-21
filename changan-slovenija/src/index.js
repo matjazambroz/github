@@ -1,4 +1,13 @@
 import html from "./index.html";
+import s07 from "./img/deepal-s07.jpg";
+import l07 from "./img/deepal-l07.jpg";
+import unit from "./img/changan-uni-t.jpg";
+
+const IMAGES = {
+  "/img/deepal-s07.jpg": s07,
+  "/img/deepal-l07.jpg": l07,
+  "/img/changan-uni-t.jpg": unit,
+};
 
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -47,6 +56,11 @@ export default {
     if (pathname === "/api/contact") {
       if (request.method !== "POST") return json({ ok: false, error: "Metoda ni dovoljena." }, 405);
       return handleContact(request, env);
+    }
+    if (IMAGES[pathname]) {
+      return new Response(IMAGES[pathname], {
+        headers: { "content-type": "image/jpeg", "cache-control": "public, max-age=86400" },
+      });
     }
     if (pathname !== "/" && pathname !== "/index.html") return new Response("Ni najdeno", { status: 404 });
     return new Response(html, {
