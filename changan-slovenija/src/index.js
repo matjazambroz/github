@@ -3,12 +3,21 @@ import s05 from "./img/deepal-s05.jpg";
 import s07 from "./img/deepal-s07.jpg";
 import cs55 from "./img/cs55-plus.jpg";
 import cs75 from "./img/cs75-plus.jpg";
+import og from "./img/og.jpg";
+import fav32 from "./img/favicon-32.png";
+import touch from "./img/apple-touch-icon.png";
+import icon192 from "./img/icon-192.png";
 
 const IMAGES = {
-  "/img/deepal-s05.jpg": s05,
-  "/img/deepal-s07.jpg": s07,
-  "/img/cs55-plus.jpg": cs55,
-  "/img/cs75-plus.jpg": cs75,
+  "/img/deepal-s05.jpg": [s05, "image/jpeg"],
+  "/img/deepal-s07.jpg": [s07, "image/jpeg"],
+  "/img/cs55-plus.jpg": [cs55, "image/jpeg"],
+  "/img/cs75-plus.jpg": [cs75, "image/jpeg"],
+  "/og.jpg": [og, "image/jpeg"],
+  "/favicon.png": [fav32, "image/png"],
+  "/favicon.ico": [fav32, "image/png"],
+  "/apple-touch-icon.png": [touch, "image/png"],
+  "/icon-192.png": [icon192, "image/png"],
 };
 
 const esc = (s) =>
@@ -60,8 +69,8 @@ export default {
       return handleContact(request, env);
     }
     if (IMAGES[pathname]) {
-      return new Response(IMAGES[pathname], {
-        headers: { "content-type": "image/jpeg", "cache-control": "public, max-age=86400" },
+      return new Response(IMAGES[pathname][0], {
+        headers: { "content-type": IMAGES[pathname][1], "cache-control": "public, max-age=86400" },
       });
     }
     if (pathname !== "/" && pathname !== "/index.html") return new Response("Ni najdeno", { status: 404 });
