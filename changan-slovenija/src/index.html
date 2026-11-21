@@ -97,6 +97,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
 .js .rv{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
 .js .rv.in{opacity:1;transform:none}
+a.card{display:block}
 .card{transition:transform .3s,border-color .3s,box-shadow .3s}
 .card:hover{border-color:var(--acc);box-shadow:0 12px 36px rgba(47,123,255,.18)}
 .js .card.rv.in:hover{transform:translateY(-6px)}
@@ -156,14 +157,14 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   <h2>Naši modeli</h2>
   <p class="lead">Aktualna ponudba Changan v Sloveniji. Točne tehnične podatke, akcijske cene in razpoložljivost vam pripravimo ob povpraševanju.</p>
   <div class="grid">
-    <article class="card"><div class="car"><img style="--pos:68% 50%" src="/img/deepal-s05.jpg" alt="Deepal S05" loading="lazy" decoding="async"></div>
-      <div class="body"><span class="pill">SUV · električni / hibrid</span><h3>Deepal S05</h3><p>Kompaktni SUV, ki na novo opredeljuje doseg in inovacije. Na voljo tudi kot Ultra-Hybrid (PHEV).</p></div></article>
-    <article class="card"><div class="car"><img style="--pos:45% 50%" src="/img/deepal-s07.jpg" alt="Deepal S07" loading="lazy" decoding="async"></div>
-      <div class="body"><span class="pill">SUV · električni</span><h3>Deepal S07</h3><p>Novi električni SUV: zanesljiv, zabaven in poln pametnih rešitev.</p></div></article>
-    <article class="card"><div class="car"><img style="--pos:40% 55%" src="/img/cs55-plus.jpg" alt="Changan CS55 PLUS" loading="lazy" decoding="async"></div>
-      <div class="body"><span class="pill">SUV · bencinski</span><h3>Changan CS55 PLUS</h3><p>Razkošje brez doplačil: bogata serijska oprema v kompaktnem SUV.</p></div></article>
-    <article class="card"><div class="car"><img style="--pos:40% 60%" src="/img/cs75-plus.jpg" alt="Changan CS75 PLUS" loading="lazy" decoding="async"></div>
-      <div class="body"><span class="pill">SUV · bencinski</span><h3>Changan CS75 PLUS</h3><p>Prostornejši družinski SUV z bogato serijsko opremo.</p></div></article>
+    <a class="card" href="/modeli/deepal-s05"><div class="car"><img style="--pos:68% 50%" src="/img/deepal-s05.jpg" alt="Deepal S05" loading="lazy" decoding="async"></div>
+      <div class="body"><span class="pill">SUV · električni / hibrid</span><h3>Deepal S05</h3><p>Kompaktni SUV, ki na novo opredeljuje doseg in inovacije. Na voljo tudi kot Ultra-Hybrid (PHEV).</p></div></a>
+    <a class="card" href="/modeli/deepal-s07"><div class="car"><img style="--pos:45% 50%" src="/img/deepal-s07.jpg" alt="Deepal S07" loading="lazy" decoding="async"></div>
+      <div class="body"><span class="pill">SUV · električni</span><h3>Deepal S07</h3><p>Novi električni SUV: zanesljiv, zabaven in poln pametnih rešitev.</p></div></a>
+    <a class="card" href="/modeli/cs55-plus"><div class="car"><img style="--pos:40% 55%" src="/img/cs55-plus.jpg" alt="Changan CS55 PLUS" loading="lazy" decoding="async"></div>
+      <div class="body"><span class="pill">SUV · bencinski</span><h3>Changan CS55 PLUS</h3><p>Razkošje brez doplačil: bogata serijska oprema v kompaktnem SUV.</p></div></a>
+    <a class="card" href="/modeli/cs75-plus"><div class="car"><img style="--pos:40% 60%" src="/img/cs75-plus.jpg" alt="Changan CS75 PLUS" loading="lazy" decoding="async"></div>
+      <div class="body"><span class="pill">SUV · bencinski</span><h3>Changan CS75 PLUS</h3><p>Prostornejši družinski SUV z bogato serijsko opremo.</p></div></a>
   </div>
   <p style="color:var(--mut);font-size:.8rem;margin-top:18px">Fotografije vozil: <a href="https://changanslovenija.si" rel="noopener" style="text-decoration:underline">changanslovenija.si</a>. Slike so ilustrativne in ne prikazujejo nujno vozil v slovenski izvedbi.<br>* Ponudba modelov in garancijski pogoji se lahko razlikujejo. Informativno, ni zavezujoča ponudba.</p>
 </div></section>
@@ -212,6 +213,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
 <script>
 document.getElementById('tt').addEventListener('click',function(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}});
+(function(){var m=new URLSearchParams(location.search).get('model');if(!m)return;var map={'deepal-s05':'Deepal S05','deepal-s07':'Deepal S07','cs55-plus':'Changan CS55 PLUS','cs75-plus':'Changan CS75 PLUS'};var sel=document.querySelector('select[name=model]');if(sel&&map[m])sel.value=map[m]})();
 document.getElementById('y').textContent=new Date().getFullYear();
 document.getElementById('f').addEventListener('submit',async function(e){
   e.preventDefault();

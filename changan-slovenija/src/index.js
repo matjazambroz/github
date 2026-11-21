@@ -1,8 +1,10 @@
 import html from "./index.html";
+import { renderModel } from "./models.js";
 import s05 from "./img/deepal-s05.jpg";
 import s07 from "./img/deepal-s07.jpg";
 import cs55 from "./img/cs55-plus.jpg";
 import cs75 from "./img/cs75-plus.jpg";
+import s05p from "./img/deepal-s05-phev.jpg";
 import og from "./img/og.jpg";
 import fav32 from "./img/favicon-32.png";
 import touch from "./img/apple-touch-icon.png";
@@ -13,6 +15,7 @@ const IMAGES = {
   "/img/deepal-s07.jpg": [s07, "image/jpeg"],
   "/img/cs55-plus.jpg": [cs55, "image/jpeg"],
   "/img/cs75-plus.jpg": [cs75, "image/jpeg"],
+  "/img/deepal-s05-phev.jpg": [s05p, "image/jpeg"],
   "/og.jpg": [og, "image/jpeg"],
   "/favicon.png": [fav32, "image/png"],
   "/favicon.ico": [fav32, "image/png"],
@@ -67,6 +70,14 @@ export default {
     if (pathname === "/api/contact") {
       if (request.method !== "POST") return json({ ok: false, error: "Metoda ni dovoljena." }, 405);
       return handleContact(request, env);
+    }
+    const mm = pathname.match(/^\/modeli\/([a-z0-9-]+)\/?$/);
+    if (mm) {
+      const page = renderModel(mm[1], html);
+      if (!page) return new Response("Ni najdeno", { status: 404 });
+      return new Response(page, {
+        headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" },
+      });
     }
     if (IMAGES[pathname]) {
       return new Response(IMAGES[pathname][0], {
