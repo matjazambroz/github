@@ -1,12 +1,14 @@
 import html from "./index.html";
+import s05 from "./img/deepal-s05.jpg";
 import s07 from "./img/deepal-s07.jpg";
-import l07 from "./img/deepal-l07.jpg";
-import unit from "./img/changan-uni-t.jpg";
+import cs55 from "./img/cs55-plus.jpg";
+import cs75 from "./img/cs75-plus.jpg";
 
 const IMAGES = {
+  "/img/deepal-s05.jpg": s05,
   "/img/deepal-s07.jpg": s07,
-  "/img/deepal-l07.jpg": l07,
-  "/img/changan-uni-t.jpg": unit,
+  "/img/cs55-plus.jpg": cs55,
+  "/img/cs75-plus.jpg": cs75,
 };
 
 const esc = (s) =>
