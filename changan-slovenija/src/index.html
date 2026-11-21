@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="sl">
 <head>
+<script>document.documentElement.classList.add('js')</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Changan Slovenija – pooblaščeni prodajalec</title>
@@ -79,6 +80,13 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes bob{50%{transform:translateY(-2px)}}
 @media(prefers-reduced-motion:reduce){.hero *,.scene *{animation:none!important;opacity:1!important;transform:none!important}}
+
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+.card{transition:transform .3s,border-color .3s,box-shadow .3s}
+.card:hover{border-color:var(--acc);box-shadow:0 12px 36px rgba(47,123,255,.18)}
+.js .card.rv.in:hover{transform:translateY(-6px)}
+@media(prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
@@ -187,6 +195,17 @@ document.getElementById('f').addEventListener('submit',async function(e){
   }catch(err){msg.className='err';msg.textContent=err.message||'Pošiljanje ni uspelo.';}
   btn.disabled=false;
 });
+
+(function(){
+  var els=[].slice.call(document.querySelectorAll('section h2,section .lead,.card,.feat,.stats>div,.contact>*'));
+  els.forEach(function(el){el.classList.add('rv')});
+  document.querySelectorAll('.grid,.stats,.contact').forEach(function(g){
+    [].slice.call(g.children).forEach(function(c,i){c.style.setProperty('--d',(i*0.1)+'s')});
+  });
+  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(function(el){io.observe(el)});
+})();
 </script>
 </body>
 </html>
