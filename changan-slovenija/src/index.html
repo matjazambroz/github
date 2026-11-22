@@ -81,12 +81,12 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .hero .tag,.hero h1,.hero p,.hero .cta{opacity:0;transform:translateY(18px);animation:up .8s cubic-bezier(.2,.7,.2,1) forwards}
 .hero h1{animation-delay:.12s}.hero p{animation-delay:.24s}.hero .cta{animation-delay:.36s}
 @keyframes up{to{opacity:1;transform:none}}
-.scene{position:relative;height:190px;margin-top:56px;overflow:hidden;border-radius:var(--r);background:linear-gradient(180deg,rgba(47,123,255,.08),rgba(25,211,197,.05));border:1px solid var(--line)}
+.scene{position:relative;height:230px;margin-top:56px;overflow:hidden;border-radius:var(--r);background:linear-gradient(180deg,rgba(47,123,255,.08),rgba(25,211,197,.05));border:1px solid var(--line)}
 .scene .stars{position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 20px 30px,#fff8,transparent),radial-gradient(1px 1px at 90px 60px,#fff6,transparent),radial-gradient(1.5px 1.5px at 160px 20px,#fff7,transparent);background-size:200px 90px;opacity:.5;animation:drift 40s linear infinite}
-.scene .city{position:absolute;left:0;bottom:48px;width:200%;height:70px;background:repeating-linear-gradient(90deg,#10202f 0 34px,transparent 34px 44px,#0d1a27 44px 90px,transparent 90px 98px);opacity:.8;-webkit-mask:linear-gradient(transparent,#000 40%);mask:linear-gradient(transparent,#000 40%);animation:drift 16s linear infinite}
-.scene .road{position:absolute;left:0;right:0;bottom:0;height:48px;background:#0a1118;border-top:2px solid var(--line)}
-.scene .road i{position:absolute;top:22px;left:0;width:200%;height:4px;background:repeating-linear-gradient(90deg,#9aa7b8 0 36px,transparent 36px 84px);animation:drift .9s linear infinite}
-.scene .vehicle{position:absolute;left:50%;bottom:20px;width:360px;margin-left:-180px;animation:bob 1.6s ease-in-out infinite}
+.scene .city{position:absolute;left:0;bottom:64px;width:200%;height:70px;background:repeating-linear-gradient(90deg,#10202f 0 34px,transparent 34px 44px,#0d1a27 44px 90px,transparent 90px 98px);opacity:.8;-webkit-mask:linear-gradient(transparent,#000 40%);mask:linear-gradient(transparent,#000 40%);animation:drift 16s linear infinite}
+.scene .road{position:absolute;left:0;right:0;bottom:0;height:64px;background:#0a1118;border-top:2px solid var(--line)}
+.scene .road i{position:absolute;top:34px;left:0;width:200%;height:4px;background:repeating-linear-gradient(90deg,#9aa7b8 0 36px,transparent 36px 84px);animation:drift .9s linear infinite}
+.scene .vehicle{position:absolute;left:0;right:0;margin:0 auto;bottom:48px;width:min(440px,92%);animation:bob 1.6s ease-in-out infinite}
 .cars{position:relative;aspect-ratio:760/231;transform:scaleX(-1)}.cl{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;filter:drop-shadow(0 10px 14px rgba(0,0,0,.5))}.cl.on{opacity:1}.cl img{position:absolute;inset:0;width:100%;height:100%;display:block}.wh{position:absolute;aspect-ratio:1;width:12.673%;border-radius:50%;background-image:var(--img);background-size:789.06% auto;background-repeat:no-repeat;animation:wspin .45s linear infinite}.wh.f{left:16.040%;top:56.680%;background-position:18.367% 97.214%}.wh.r{left:69.802%;top:56.680%;background-position:79.932% 97.214%}@keyframes wspin{to{transform:rotate(-360deg)}}@media(prefers-reduced-motion:reduce){.wh{animation:none}}
 .scene .glow{position:absolute;left:100%;top:50%;width:260px;height:60px;margin-left:-40px;background:linear-gradient(90deg,rgba(255,244,200,.5),transparent);clip-path:polygon(0 35%,100% 0,100% 100%,0 65%);filter:blur(2px)}
 .wheel{transform-box:fill-box;transform-origin:center;animation:spin .6s linear infinite}
@@ -110,6 +110,7 @@ a.card{display:block}
 .car{aspect-ratio:16/10}.car img{object-position:var(--pos,50% 50%)}
 .btn,.btn:hover{color:#04111f}:root[data-theme=light] .btn,:root[data-theme=light] .btn:hover{color:#fff}.btn.ghost,.btn.ghost:hover{color:var(--fg)!important}
 .scene{background:linear-gradient(180deg,#0f2238,#0a1626)!important;border-color:#22344a!important}
+@media(max-width:520px){.scene{height:190px}.scene .vehicle{bottom:40px}.scene .road{height:52px}.scene .city{bottom:52px}.scene .road i{top:26px}}
 </style>
 </head>
 <body>
