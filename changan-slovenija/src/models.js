@@ -156,7 +156,7 @@ export function renderModel(slug, home) {
           `<button type="button" class="sw" data-k="${kind}" data-i="${i}" style="--c:${c.hex}" aria-label="${esc(c.n)}" aria-pressed="${i === 0 ? "true" : "false"}" title="${esc(c.n)}"></button>`
       )
       .join("");
-  const viewer = `<div class="viewer" id="viewer"><img id="vimg" src="${cfg.ext[0].img}" alt="${esc(m.name)}"></div>
+  const viewer = `<div class="viewer" id="viewer"><div class="layer on"><img src="${cfg.ext[0].img}" alt="${esc(m.name)}"></div></div>
     ${cfg.int.length ? `<div class="tabs" role="tablist"><button type="button" class="tab on" data-v="ext">Zunanjost</button><button type="button" class="tab" data-v="int">Notranjost</button></div>` : ""}
     <div class="pick"><div class="lbl">Barva zunanjosti: <b id="en">${esc(cfg.ext[0].n)}</b></div><div class="sws">${sw(cfg.ext, "ext")}</div></div>
     ${cfg.int.length ? `<div class="pick"><div class="lbl">Barva notranjosti: <b id="in">${esc(cfg.int[0].n)}</b></div><div class="sws">${sw(cfg.int, "int")}</div></div>` : ""}
@@ -206,10 +206,12 @@ img.wide{border-radius:var(--r);border:1px solid var(--line);height:auto;aspect-
 .row2{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
 .note{color:var(--mut);font-size:.82rem;margin-top:22px}
 a.card{display:block}
-.viewer{position:relative;aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:radial-gradient(120% 90% at 50% 30%,#fff,#dfe5ec)}
-.viewer img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:5%;mix-blend-mode:multiply;transition:opacity .3s}
-.viewer.int{background:#111}.viewer.int img{object-fit:cover;padding:0;mix-blend-mode:normal}
-.viewer img.out{opacity:0}
+.viewer{position:relative;aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:#e9edf2}
+.layer{position:absolute;inset:0;opacity:0;transform:scale(1.025);isolation:isolate;background:radial-gradient(120% 90% at 50% 30%,#fff,#dfe5ec);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
+.layer.on{opacity:1;transform:none}
+.layer img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:5%;mix-blend-mode:multiply}
+.layer.int{background:#111}.layer.int img{object-fit:cover;padding:0;mix-blend-mode:normal}
+@media(prefers-reduced-motion:reduce){.layer{transition:none;transform:none}}
 .tabs{display:flex;gap:8px;margin:14px 0 4px}
 .tab{padding:8px 18px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--mut);font:inherit;font-size:.9rem;cursor:pointer}
 .tab.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -242,8 +244,11 @@ ${variants}
 </main>
 ${footer}
 <script>
-(function(){var C=${JSON.stringify(cfg)};var viewer=document.getElementById('viewer'),img=document.getElementById('vimg');var st={v:'ext',ext:0,int:0};
-function show(){var l=st.v==='ext'?C.ext:C.int;var src=l[st[st.v]].img;viewer.classList.toggle('int',st.v==='int');if(img.getAttribute('src')===src)return;img.classList.add('out');var n=new Image();n.onload=function(){img.src=src;img.classList.remove('out')};n.onerror=function(){img.src=src;img.classList.remove('out')};n.src=src}
+(function(){var C=${JSON.stringify(cfg)};var viewer=document.getElementById('viewer');var st={v:'ext',ext:0,int:0},cur=C.ext[0].img,tok=0;
+function show(){var l=st.v==='ext'?C.ext:C.int;var src=l[st[st.v]].img;if(src===cur)return;cur=src;var my=++tok;var isInt=st.v==='int';
+var n=new Image();function go(){if(my!==tok)return;var layer=document.createElement('div');layer.className='layer'+(isInt?' int':'');var im=document.createElement('img');im.src=src;im.alt='';layer.appendChild(im);viewer.appendChild(layer);void layer.offsetWidth;
+var olds=[].slice.call(viewer.querySelectorAll('.layer.on'));layer.classList.add('on');olds.forEach(function(o){o.classList.remove('on');setTimeout(function(){o.remove()},1000)})}
+n.onload=go;n.onerror=go;n.src=src}
 document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){st.v=b.dataset.v;document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t===b)});show()})});
 document.querySelectorAll('.sw').forEach(function(b){b.addEventListener('click',function(){var k=b.dataset.k,i=+b.dataset.i;st[k]=i;st.v=k;document.querySelectorAll('.sw[data-k='+k+']').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});document.getElementById(k==='ext'?'en':'in').textContent=C[k][i].n;document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.dataset.v===k)});show()})});
 C.ext.concat(C.int).forEach(function(c){var p=new Image();p.src=c.img})})();
