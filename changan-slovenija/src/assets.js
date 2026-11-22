@@ -30,6 +30,8 @@ import i27 from "./img/gen/s07-int-orange.jpg";
 import i28 from "./img/gen/s07-int-white.jpg";
 import i29 from "./img/gen/s07-orange.jpg";
 import i30 from "./img/gen/s07-white.jpg";
+import i31 from "./img/gen/wheel-f.webp";
+import i32 from "./img/gen/wheel-r.webp";
 
 export const GEN = {
   "/img/gen/cs55-1.jpg": i0,
@@ -63,4 +65,6 @@ export const GEN = {
   "/img/gen/s07-int-white.jpg": i28,
   "/img/gen/s07-orange.jpg": i29,
   "/img/gen/s07-white.jpg": i30,
+  "/img/gen/wheel-f.webp": i31,
+  "/img/gen/wheel-r.webp": i32,
 };
