@@ -1,5 +1,5 @@
 import html from "./index.html";
-import { renderModel, renderTestDrive } from "./models.js";
+import { renderModel, renderTestDrive, renderAbout } from "./models.js";
 import { GEN } from "./assets.js";
 import s05 from "./img/deepal-s05.jpg";
 import s07 from "./img/deepal-s07.jpg";
@@ -95,6 +95,11 @@ export default {
     if (pathname === "/api/test-drive") {
       if (request.method !== "POST") return json({ ok: false, error: "Metoda ni dovoljena." }, 405);
       return handleTestDrive(request, env);
+    }
+    if (pathname === "/o-nas" || pathname === "/o-nas/") {
+      return new Response(renderAbout(html), {
+        headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" },
+      });
     }
     if (pathname === "/testna-voznja" || pathname === "/testna-voznja/") {
       return new Response(renderTestDrive(html), {

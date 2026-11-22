@@ -386,3 +386,116 @@ catch(err){msg.className='err';msg.textContent=err.message||'Pošiljanje ni uspe
 </body>
 </html>`;
 }
+
+export function renderAbout(home) {
+  const style = home.match(/<style>[\s\S]*?<\/style>/)[0];
+  const header = home
+    .match(/<header>[\s\S]*?<\/header>/)[0]
+    .replace('class="logo" href="#"', 'class="logo" href="/"')
+    .replace(/href="#(modeli|prednosti|kontakt)"/g, 'href="/#$1"');
+  const footer = home.match(/<footer>[\s\S]*?<\/footer>/)[0];
+  const url = `${SITE}/o-nas`;
+  const timeline = [
+    ["1984", "Prva serija mikrovozil zapelje s tekočega traku, kar označi začetek nove dobe."],
+    ["2003", "Changan ustanovi oblikovalski center v Torinu v Italiji."],
+    ["2005", "Strateška partnerstva z znanimi svetovnimi znamkami, kot sta Ford in Mazda."],
+    ["2010", "Razvojno-raziskovalni center v Združenem kraljestvu, ustanovljen v Nottinghamu in pozneje preseljen v Birmingham."],
+    ["2024", "V Münchnu je registrirano podjetje Changan Automobile Deutschland GmbH, nemška podružnica družbe."],
+  ];
+  const nums = [
+    ["18.000+", "inženirjev in tehnikov iz 31 držav"],
+    ["10", "raziskovalnih in razvojnih središč v 6 državah"],
+    ["14", "proizvodnih baz"],
+    ["9000", "prodajnih mest"],
+    ["77", "držav, skoraj 120.000 zaposlenih"],
+    ["12.400+", "preskusov in 5 mio km testnih voženj na model"],
+  ];
+  const values = [
+    ["Poslanstvo", "Voditi avtomobilsko civilizacijo v boljše življenje."],
+    ["Vizija", "Postati blagovna znamka svetovnega razreda, ki postavlja nove standarde kakovosti in inovacij."],
+    ["Vrednote", "Osredotočenost na stranke, izdelke in zaposlene ter predanost učinkovitosti."],
+  ];
+  const tl = timeline.map(([y, t]) => `<li><b>${y}</b><span>${esc(t)}</span></li>`).join("");
+  const nm = nums.map(([v, l]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("");
+  const vals = values.map(([h, t]) => `<div class="feat"><h3>${esc(h)}</h3><p style="color:var(--mut)">${esc(t)}</p></div>`).join("");
+  return `<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){try{var t=localStorage.getItem('theme')}catch(e){}if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
+<script>document.documentElement.classList.add('js')</script>
+<title>O nas – Changan Slovenija</title>
+<meta name="description" content="Spoznajte znamko Changan, njeno zgodovino, inovacije in kakovost ter Changan v Sloveniji.">
+<meta property="og:title" content="O nas – Changan Slovenija">
+<meta property="og:description" content="Spoznajte znamko Changan in njeno prisotnost v Sloveniji.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sl_SI">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="${SITE}/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="${url}">
+${style}
+<style>
+.ab{padding:56px 0 24px}.ab h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;margin:12px 0 14px}
+.tl{list-style:none;padding:0;margin:0;border-left:2px solid var(--line);display:grid;gap:26px}
+.tl li{position:relative;padding-left:28px;display:grid;gap:4px}
+.tl li:before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2))}
+.tl b{font-size:1.25rem}.tl span{color:var(--mut);max-width:62ch}
+.prose{max-width:68ch;color:var(--mut)}.prose p+p{margin-top:14px}
+.src{color:var(--mut);font-size:.82rem;margin-top:26px}
+.split{display:grid;grid-template-columns:1fr 1.2fr;gap:48px}@media(max-width:860px){.split{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+${header}
+<main>
+<div class="ab"><div class="wrap">
+  <div class="crumb" style="color:var(--mut);font-size:.9rem"><a href="/">Domov</a> / O nas</div>
+  <span class="pill" style="margin-top:14px">Delimo si prihodnost</span>
+  <h1>O nas</h1>
+  <p class="lead" style="margin-bottom:0">Changan je globalna avtomobilska znamka z močno mrežo razvoja in proizvodnje. V Sloveniji jo predstavlja podjetje Crossroad Slovenija s prodajno mrežo po vsej državi.</p>
+</div></div>
+
+<section><div class="wrap split">
+  <div><h2>Changan v Sloveniji</h2>
+    <div class="prose"><p>Znamki Changan in Deepal v Slovenijo uvaža podjetje Crossroad Slovenija, ki ima ekskluzivno zastopstvo za regijo.</p>
+    <p>Vozila lahko preizkusite in kupite pri prodajalcih v Ljubljani, Celju, Mariboru, Murski Soboti, Novem mestu in na Vrhniki. Ponudba trenutno obsega Deepal S05 in S05 PHEV, Deepal S07 ter Changan CS55 PLUS in CS75 PLUS.</p></div>
+    <p style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="/testna-voznja">Rezerviraj testno vožnjo</a><a class="btn ghost" href="/#kontakt">Prodajna mreža</a></p>
+  </div>
+  <div class="stats" style="margin-top:0;grid-template-columns:1fr 1fr">
+    <div><b>5</b><span>modelov v ponudbi</span></div>
+    <div><b>7</b><span>prodajnih mest v Sloveniji</span></div>
+    <div><b>7 let</b><span>ali 160.000 km garancije na vozilo*</span></div>
+    <div><b>12 let</b><span>garancije proti prerjavenju*</span></div>
+  </div>
+</div></section>
+
+<section class="alt"><div class="wrap"><h2>Zgodovina znamke</h2><p class="lead">Nekaj mejnikov iz razvoja družbe Changan.</p>
+  <ol class="tl">${tl}</ol></div></section>
+
+<section><div class="wrap"><h2>Inovacije na svetovni ravni</h2><p class="lead">Močna globalna mreža za raziskave, razvoj in proizvodnjo.</p>
+  <div class="stats">${nm}</div>
+  <p class="src">Raziskovalna središča so v Čongčingu, Pekingu, Šanghaju, Dingdžovu, Hefeiju, Torinu, Jokohami, Birminghamu, Detroitu in Münchnu.</p></div></section>
+
+<section class="alt"><div class="wrap"><h2>Zavezanost kakovosti</h2>
+  <p class="lead">Changan je bil dve leti zapored uvrščen na 1. mesto med kitajskimi blagovnimi znamkami v študiji J. D. Power China Initial Quality Study (IQS). Vsak novi model opravi več kot 5 milijonov kilometrov preskusnih voženj in več kot 12.400 strogih preskusov.</p>
+  <div class="grid" style="margin-top:8px">${vals}</div>
+  <p class="src">* Pogoji garancije se lahko razlikujejo po modelih. Viri: <a href="https://changanslovenija.si/o-nas/" rel="noopener" style="text-decoration:underline">changanslovenija.si</a>, <a href="https://newsroom.changaneurope.com" rel="noopener" style="text-decoration:underline">Changan Europe</a>.</p></div></section>
+</main>
+${footer}
+<script>
+document.getElementById('tt').addEventListener('click',function(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}});
+document.getElementById('y').textContent=new Date().getFullYear();
+(function(){var els=[].slice.call(document.querySelectorAll('section h2,section .lead,.feat,.stats>div,.tl li,.prose'));
+els.forEach(function(el){el.classList.add('rv')});
+document.querySelectorAll('.grid,.stats,.tl').forEach(function(g){[].slice.call(g.children).forEach(function(c,i){c.style.setProperty('--d',(i*0.08)+'s')})});
+if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+els.forEach(function(el){io.observe(el)});})();
+</script>
+</body>
+</html>`;
+}
