@@ -166,7 +166,7 @@ export function renderModel(slug, home) {
           `<button type="button" class="sw" data-k="${kind}" data-i="${i}" style="--c:${c.hex}" aria-label="${esc(c.n)}" aria-pressed="${i === 0 ? "true" : "false"}" title="${esc(c.n)}"></button>`
       )
       .join("");
-  const viewer = `<div class="viewer" id="viewer"><div class="layer on"><img src="${cfg.ext[0].img}" alt="${esc(m.name)}"></div></div>
+  const viewer = `<div class="viewer" id="viewer"><div class="layer on"><img src="${cfg.ext[0].img}" alt="${esc(m.name)}"></div>${cfg.int.length ? `<button type="button" class="inset" id="inset" aria-label="Preklopi med zunanjostjo in notranjostjo"><img id="insetimg" src="${cfg.int[0].img}" alt=""><span class="il"><i id="insetdot" style="--c:${cfg.int[0].hex}"></i><span id="insettxt">Notranjost: ${esc(cfg.int[0].n)}</span></span></button>` : ""}</div>
     ${cfg.int.length ? `<div class="tabs" role="tablist"><button type="button" class="tab on" data-v="ext">Zunanjost</button><button type="button" class="tab" data-v="int">Notranjost</button></div>` : ""}
     <div class="pick"><div class="lbl">Barva zunanjosti: <b id="en">${esc(cfg.ext[0].n)}</b></div><div class="sws">${sw(cfg.ext, "ext")}</div></div>
     ${cfg.int.length ? `<div class="pick"><div class="lbl">Barva notranjosti: <b id="in">${esc(cfg.int[0].n)}</b></div><div class="sws">${sw(cfg.int, "int")}</div></div>` : ""}
@@ -222,6 +222,14 @@ a.card{display:block}
 .layer img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:5%;mix-blend-mode:multiply}
 .layer.int{background:#111}.layer.int img{object-fit:cover;padding:0;mix-blend-mode:normal}
 @media(prefers-reduced-motion:reduce){.layer{transition:none;transform:none}}
+.inset{position:absolute;right:12px;bottom:12px;z-index:5;width:30%;max-width:230px;padding:0;border:2px solid #fff;border-radius:12px;overflow:hidden;cursor:pointer;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.35);transition:transform .25s,box-shadow .25s}
+.inset:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.45)}
+.inset:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.inset>img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;transition:opacity .4s}
+.inset>img.out{opacity:0}
+.il{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:6px;padding:14px 8px 6px;font-size:.72rem;font-weight:600;color:#fff;text-align:left;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent)}
+.il i{flex:none;width:12px;height:12px;border-radius:50%;background:var(--c);border:1.5px solid #fff}
+@media(max-width:520px){.inset{width:38%}.il{font-size:.66rem}}
 .tabs{display:flex;gap:8px;margin:14px 0 4px}
 .tab{padding:8px 18px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--mut);font:inherit;font-size:.9rem;cursor:pointer}
 .tab.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -255,7 +263,12 @@ ${variants}
 ${footer}
 <script>
 (function(){var C=${JSON.stringify(cfg)};var viewer=document.getElementById('viewer');var st={v:'ext',ext:0,int:0},cur=C.ext[0].img,tok=0;
-function show(){var l=st.v==='ext'?C.ext:C.int;var src=l[st[st.v]].img;if(src===cur)return;cur=src;var my=++tok;var isInt=st.v==='int';
+var ins=document.getElementById('inset');
+function upd(){if(!ins)return;var o=st.v==='ext'?'int':'ext',it=C[o][st[o]],im=document.getElementById('insetimg');
+document.getElementById('insettxt').textContent=(o==='int'?'Notranjost: ':'Zunanjost: ')+it.n;document.getElementById('insetdot').style.setProperty('--c',it.hex);
+if(im.getAttribute('src')!==it.img){im.classList.add('out');var n=new Image();n.onload=n.onerror=function(){im.src=it.img;im.classList.remove('out')};n.src=it.img}}
+if(ins)ins.addEventListener('click',function(){st.v=st.v==='ext'?'int':'ext';document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.dataset.v===st.v)});show()});
+function show(){upd();var l=st.v==='ext'?C.ext:C.int;var src=l[st[st.v]].img;if(src===cur)return;cur=src;var my=++tok;var isInt=st.v==='int';
 var n=new Image();function go(){if(my!==tok)return;var layer=document.createElement('div');layer.className='layer'+(isInt?' int':'');var im=document.createElement('img');im.src=src;im.alt='';layer.appendChild(im);viewer.appendChild(layer);void layer.offsetWidth;
 var olds=[].slice.call(viewer.querySelectorAll('.layer.on'));layer.classList.add('on');olds.forEach(function(o){o.classList.remove('on');setTimeout(function(){o.remove()},1900)})}
 n.onload=go;n.onerror=go;n.src=src}
