@@ -119,7 +119,7 @@ section.strip{padding:40px 0}section.strip .stats{margin-top:0}
 /* Prva stran = točno en zaslon; animacija prevzame preostalo višino */
 .hero{height:calc(100vh - 65px);height:calc(100svh - 65px);min-height:470px;padding:0;display:block}
 .hero>.wrap{height:100%;display:flex;flex-direction:column;justify-content:center;padding-top:clamp(12px,3svh,40px);padding-bottom:clamp(12px,3svh,40px)}
-.hero .scene{flex:1 1 0;min-height:150px;max-height:320px;height:auto;margin-top:clamp(14px,3.5svh,40px);container-type:size}
+.hero .scene{flex:1 1 0;min-height:150px;max-height:calc(min(440px,85vw) * .304 + 140px);height:auto;margin-top:clamp(14px,3.5svh,40px);container-type:size}
 .hero .scene .vehicle{width:min(440px,92cqw,calc((100cqh - 96px) * 3.29))}
 .hero h1{font-size:clamp(1.9rem,min(6vw,6.2svh),4.2rem);margin:10px 0 clamp(8px,2svh,20px)}
 .hero p{font-size:clamp(.95rem,2.4svh,1.1rem);margin-bottom:clamp(14px,3svh,32px)}
