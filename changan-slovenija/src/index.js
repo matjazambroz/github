@@ -1,6 +1,11 @@
 import html from "./index.html";
 import { renderModel, renderTestDrive, renderAbout } from "./models.js";
 import { GEN } from "./assets.js";
+import fL from "./fonts/changan-L.woff2";
+import fR from "./fonts/changan-R.woff2";
+import fB from "./fonts/changan-B.woff2";
+
+const FONTS = { "/fonts/changan-L.woff2": fL, "/fonts/changan-R.woff2": fR, "/fonts/changan-B.woff2": fB };
 import s05 from "./img/deepal-s05.jpg";
 import s07 from "./img/deepal-s07.jpg";
 import cs55 from "./img/cs55-plus.jpg";
@@ -116,6 +121,11 @@ export default {
       if (!page) return new Response("Ni najdeno", { status: 404 });
       return new Response(page, {
         headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" },
+      });
+    }
+    if (FONTS[pathname]) {
+      return new Response(FONTS[pathname], {
+        headers: { "content-type": "font/woff2", "cache-control": "public, max-age=31536000, immutable" },
       });
     }
     if (GEN[pathname]) {
