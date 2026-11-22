@@ -123,6 +123,16 @@ export const MODELS = {
   },
 };
 
+export const DEALERS = [
+  "BM Motors – Avtocenter BTC, Ljubljana",
+  "Interclass cars, Ljubljana",
+  "Avto Wikra, Celje (Škofja vas)",
+  "Avtohiša Meško, Murska Sobota",
+  "Avtohiša Meško, Maribor",
+  "SPC Krevs, Novo mesto",
+  "Avtocenter BTG, Vrhnika",
+];
+
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
 export function renderModel(slug, home) {
@@ -133,7 +143,7 @@ export function renderModel(slug, home) {
     .match(/<header>[\s\S]*?<\/header>/)[0]
     .replace('class="logo" href="#"', 'class="logo" href="/"')
     .replace(/href="#(modeli|prednosti|kontakt)"/g, 'href="/#$1"')
-    .replace('href="/#kontakt">Testna', `href="/?model=${slug}#kontakt">Testna`);
+    .replace('href="/testna-voznja">Testna', `href="/testna-voznja?model=${slug}">Testna`);
   const footer = home.match(/<footer>[\s\S]*?<\/footer>/)[0];
   const url = `${SITE}/modeli/${slug}`;
   const others = Object.entries(MODELS).filter(([k]) => k !== slug);
@@ -229,7 +239,7 @@ ${header}
   <div class="crumb"><a href="/">Domov</a> / <a href="/#modeli">Modeli</a> / ${esc(m.name)}</div>
   <div class="row">
     <div><span class="pill">${esc(m.tag)}</span><h1>${esc(m.name)}</h1><p class="l"><b style="color:var(--fg)">${esc(m.title)}</b> ${esc(m.lead)}</p>
-      <div class="row2"><a class="btn" href="/?model=${slug}#kontakt">Rezerviraj testno vožnjo</a></div></div>
+      <div class="row2"><a class="btn" href="/testna-voznja?model=${slug}">Rezerviraj testno vožnjo</a></div></div>
     <div>${viewer}</div>
   </div>
   <div class="stats">${specs}</div>
@@ -260,6 +270,105 @@ document.querySelectorAll('.grid,.stats').forEach(function(g){[].slice.call(g.ch
 if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return}
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
 els.forEach(function(el){io.observe(el)});})();
+</script>
+</body>
+</html>`;
+}
+
+export function renderTestDrive(home) {
+  const style = home.match(/<style>[\s\S]*?<\/style>/)[0];
+  const header = home
+    .match(/<header>[\s\S]*?<\/header>/)[0]
+    .replace('class="logo" href="#"', 'class="logo" href="/"')
+    .replace(/href="#(modeli|prednosti|kontakt)"/g, 'href="/#$1"');
+  const footer = home.match(/<footer>[\s\S]*?<\/footer>/)[0];
+  const url = `${SITE}/testna-voznja`;
+  const models = Object.entries(MODELS).map(([k, m]) => `<option value="${esc(m.name)}" data-k="${k}">${esc(m.name)}</option>`).join("");
+  const dealers = DEALERS.map((d) => `<option>${esc(d)}</option>`).join("");
+  return `<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){try{var t=localStorage.getItem('theme')}catch(e){}if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
+<script>document.documentElement.classList.add('js')</script>
+<title>Testna vožnja – Changan Slovenija</title>
+<meta name="description" content="Rezervirajte testno vožnjo vozil Changan in Deepal pri prodajalcu v vaši bližini.">
+<meta property="og:title" content="Testna vožnja – Changan Slovenija">
+<meta property="og:description" content="Rezervirajte testno vožnjo vozil Changan in Deepal.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sl_SI">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="${SITE}/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="${url}">
+${style}
+<style>
+.td{padding:56px 0 80px}.td h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;margin:10px 0 14px}
+.td .cols{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;margin-top:36px;align-items:start}
+@media(max-width:860px){.td .cols{grid-template-columns:1fr}}
+.steps{list-style:none;padding:0;counter-reset:s;display:grid;gap:18px}
+.steps li{counter-increment:s;position:relative;padding-left:52px;color:var(--mut)}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#04111f;background:linear-gradient(135deg,var(--acc),var(--acc2))}
+:root[data-theme=light] .steps li:before{color:#fff}
+.steps b{display:block;color:var(--fg)}
+.box{margin-top:26px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg2);color:var(--mut);font-size:.92rem}
+.box b{color:var(--fg)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:520px){.two{grid-template-columns:1fr}}
+.fl{display:grid;gap:6px;font-size:.85rem;color:var(--mut)}
+#ok{display:none;padding:28px;border:1px solid var(--acc2);border-radius:var(--r)}#ok h2{margin-bottom:8px}
+</style>
+</head>
+<body>
+${header}
+<main><div class="td"><div class="wrap">
+  <div class="crumb" style="color:var(--mut);font-size:.9rem"><a href="/">Domov</a> / Testna vožnja</div>
+  <span class="pill" style="margin-top:14px">Rezervacija termina</span>
+  <h1>Rezervirajte testno vožnjo</h1>
+  <p class="lead" style="margin-bottom:0">Izberite model, prodajalca in želeni termin. Prodajalec vas pokliče ali vam piše in termin potrdi.</p>
+  <div class="cols">
+    <div>
+      <ol class="steps">
+        <li><b>Izpolnite obrazec</b>Izberite model, najbližjega prodajalca in približen termin.</li>
+        <li><b>Termin potrdimo</b>Prodajalec vas kontaktira in uskladi dan ter uro.</li>
+        <li><b>Pridite na vožnjo</b>Prepričajte se o vožnji, prostoru in opremi.</li>
+      </ol>
+      <div class="box"><b>Kaj prinesete?</b><br>Veljavno vozniško dovoljenje in osebni dokument. Natančne pogoje testne vožnje vam sporoči prodajalec.</div>
+      <div class="box"><b>Raje pokličete?</b><br>Kontakti prodajalcev so na <a href="/#kontakt" style="text-decoration:underline">začetni strani</a> ali na <a href="https://changanslovenija.si/prodajna-mreza" rel="noopener" style="text-decoration:underline">changanslovenija.si</a>.</div>
+    </div>
+    <div>
+      <form id="tf">
+        <label class="fl">Model<select name="model" required>${models}</select></label>
+        <label class="fl">Prodajalec<select name="prodajalec" required>${dealers}</select></label>
+        <div class="two">
+          <label class="fl">Želeni datum<input name="datum" type="date"></label>
+          <label class="fl">Del dneva<select name="cas"><option>Vseeno</option><option>Dopoldne</option><option>Popoldne</option></select></label>
+        </div>
+        <input name="ime" placeholder="Ime in priimek" required autocomplete="name">
+        <div class="two"><input name="email" type="email" placeholder="E-pošta" required autocomplete="email"><input name="tel" type="tel" placeholder="Telefon" required autocomplete="tel"></div>
+        <textarea name="sporocilo" placeholder="Opomba (neobvezno)"></textarea>
+        <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+        <label class="chk"><input type="checkbox" required> Strinjam se z obdelavo osebnih podatkov za namen dogovora o testni vožnji.</label>
+        <button class="btn" type="submit">Pošlji prošnjo za testno vožnjo</button>
+        <p id="msg" role="status"></p>
+      </form>
+      <div id="ok"><h2>Hvala!</h2><p style="color:var(--mut)">Prošnjo smo prejeli. Prodajalec vas bo kontaktiral in potrdil termin.</p><p style="margin-top:18px"><a class="btn ghost" href="/">Nazaj na začetno stran</a></p></div>
+    </div>
+  </div>
+</div></div></main>
+${footer}
+<script>
+document.getElementById('tt').addEventListener('click',function(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}});
+document.getElementById('y').textContent=new Date().getFullYear();
+(function(){var f=document.getElementById('tf');var d=f.datum,t=new Date();t.setMinutes(t.getMinutes()-t.getTimezoneOffset());d.min=t.toISOString().slice(0,10);
+var m=new URLSearchParams(location.search).get('model');if(m){var o=f.model.querySelector('option[data-k="'+m+'"]');if(o)f.model.value=o.value}
+f.addEventListener('submit',async function(e){e.preventDefault();var btn=f.querySelector('button'),msg=document.getElementById('msg');var body=Object.fromEntries(new FormData(f).entries());
+btn.disabled=true;msg.className='';msg.textContent='Pošiljam …';
+try{var r=await fetch('/api/test-drive',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});var j=await r.json();if(!j.ok)throw new Error(j.error);
+f.style.display='none';document.getElementById('ok').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
+catch(err){msg.className='err';msg.textContent=err.message||'Pošiljanje ni uspelo.';btn.disabled=false}})})();
 </script>
 </body>
 </html>`;
