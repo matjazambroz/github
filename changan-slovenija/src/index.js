@@ -120,7 +120,7 @@ export default {
     }
     if (GEN[pathname]) {
       return new Response(GEN[pathname], {
-        headers: { "content-type": pathname.endsWith(".webp") ? "image/webp" : "image/jpeg", "cache-control": "public, max-age=604800" },
+        headers: { "content-type": pathname.endsWith(".webp") ? "image/webp" : "image/jpeg", "cache-control": "public, max-age=86400" },
       });
     }
     if (IMAGES[pathname]) {
