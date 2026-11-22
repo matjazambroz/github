@@ -111,6 +111,12 @@ a.card{display:block}
 .btn,.btn:hover{color:#04111f}:root[data-theme=light] .btn,:root[data-theme=light] .btn:hover{color:#fff}.btn.ghost,.btn.ghost:hover{color:var(--fg)!important}
 .scene{background:linear-gradient(180deg,#0f2238,#0a1626)!important;border-color:#22344a!important}
 @media(max-width:520px){.scene{height:190px}.scene .vehicle{bottom:40px}.scene .road{height:52px}.scene .city{bottom:52px}.scene .road i{top:26px}}
+
+.hero{min-height:calc(100vh - 65px);min-height:calc(100svh - 65px);display:flex;flex-direction:column;justify-content:center;padding:28px 0}
+.hero>.wrap{width:100%}.hero .scene{margin-top:clamp(24px,5vh,56px)}
+section.strip{padding:40px 0}section.strip .stats{margin-top:0}
+.btn{white-space:nowrap}
+@media(max-width:520px){.hero{padding:24px 0}header .btn{padding:10px 16px;font-size:.88rem}nav{gap:10px}.logo span{display:none}.logo .wm{height:20px}}
 </style>
 </head>
 <body>
@@ -139,13 +145,16 @@ a.card{display:block}
       <div class="cars"><svg class="cl on" viewBox="0 0 760 231" aria-hidden="true"><g transform="translate(760 0) scale(-1 1)"><image href="/img/gen/hero-orange.webp?v=4" x="0" y="0" width="760" height="231"/></g></svg><svg class="cl" viewBox="0 0 760 231" aria-hidden="true"><g transform="translate(760 0) scale(-1 1)"><image href="/img/gen/hero-white.webp?v=4" x="0" y="0" width="760" height="231"/></g></svg><svg class="cl" viewBox="0 0 760 231" aria-hidden="true"><g transform="translate(760 0) scale(-1 1)"><image href="/img/gen/hero-black.webp?v=4" x="0" y="0" width="760" height="231"/></g></svg><svg class="cl" viewBox="0 0 760 231" aria-hidden="true"><g transform="translate(760 0) scale(-1 1)"><image href="/img/gen/hero-gray.webp?v=4" x="0" y="0" width="760" height="231"/></g></svg><svg class="cl" viewBox="0 0 760 231" aria-hidden="true"><g transform="translate(760 0) scale(-1 1)"><image href="/img/gen/hero-green.webp?v=4" x="0" y="0" width="760" height="231"/></g></svg><svg class="wheels" viewBox="0 0 760 231" aria-hidden="true"><g transform="translate(760 0) scale(-1 1)"><g transform="translate(170.06 179.09)"><g><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="0.45s" repeatCount="indefinite"/><image href="/img/gen/wheel-f.webp?v=4" x="-37.62" y="-37.62" width="75.25" height="75.25"/></g></g><g transform="translate(578.65 178.34)"><g><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="0.45s" repeatCount="indefinite"/><image href="/img/gen/wheel-r.webp?v=4" x="-37.62" y="-37.62" width="75.25" height="75.25"/></g></g></g></svg></div></div>
     </div>
   </div>
-  <div class="stats">
-    <div><b>EV + PHEV</b><span>električni in hibridni pogoni</span></div>
-    <div><b>Garancija</b><span>jamstva Changan*</span></div>
-    <div><b>Servis</b><span>podpora v prodajni mreži</span></div>
-    <div><b>Testna vožnja</b><span>pri prodajalcih po Sloveniji</span></div>
-  </div>
+
 </div></div>
+<section class="strip"><div class="wrap">
+  <div class="stats">
+  <div><b>EV + PHEV</b><span>električni in hibridni pogoni</span></div>
+  <div><b>Garancija</b><span>jamstva Changan*</span></div>
+  <div><b>Servis</b><span>podpora v prodajni mreži</span></div>
+  <div><b>Testna vožnja</b><span>pri prodajalcih po Sloveniji</span></div>
+</div>
+</div></section>
 
 <section id="modeli"><div class="wrap">
   <h2>Naši modeli</h2>
